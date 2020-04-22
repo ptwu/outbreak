@@ -1,0 +1,9 @@
+#require "oUnit";;
+#require "yojson";;
+#require "ANSITerminal";;
+#directory "_build";;
+#load "src/main.cmo";;
+#load "src/country.cmo";;
+#load "src/engine.cmo";;
+#load "src/virus.cmo";;
+#load "src/world.cmo";;

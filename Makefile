@@ -1,4 +1,4 @@
-MODULES=src/*
+MODULES=src/country src/engine src/main src/virus src/world
 OBJECTS=$(MODULES:=.cmo)
 TEST=src/test.byte
 MAIN=src/main.byte
@@ -8,10 +8,10 @@ default: build
 	utop
 
 build:
-	$(OCAMLBUILD) $(MAIN)
+	$(OCAMLBUILD) $(OBJECTS)
 
 test:
-	$(OCAMLBUILD) -tag 'debug' $(TEST) && ./$(TEST) -runner sequential
+	$(OCAMLBUILD) src/test.byte && ./test.byte -runner sequential
 
 play:
 	build && ./$(MAIN)
