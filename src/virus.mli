@@ -2,16 +2,16 @@ type t
 
 val init_virus : t
 
-val getinfect : t -> int
+val empty_upgrade : t
 
-val getsever : t -> int
+val get_infect : t -> int
 
-val getlethal : t -> int
+val get_sever : t -> int
 
-val getheat : t -> int
+val get_lethal : t -> int
 
-val getcold : t -> int
+val get_heat : t -> int
 
-val getdrug : t -> int
+val get_cold : t -> int
 
-val upgrade : string -> int -> t -> t
+val upgrade : t -> t -> t

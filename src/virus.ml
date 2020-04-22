@@ -16,44 +16,45 @@ let init_virus = {
   drug_res = 0;
 }
 
-let getinfect v =
+(** [empty_upgrade] represents an virus upgrade with empty stats. *)
+let empty_upgrade = {
+  infectivity = 0;
+  severity = 0;
+  lethality = 0;
+  heat_res = 0;
+  cold_res = 0;
+  drug_res = 0;
+}
+
+let get_infect v =
   v.infectivity
 
-let getsever v =
+let get_sever v =
   v.severity
 
-let getlethal v =
+let get_lethal v =
   v.lethality
 
-let getheat v =
+let get_heat v =
   v.heat_res
 
-let getcold v =
+let get_cold v =
   v.cold_res
 
-let getdrug v =
+let get_drug v =
   v.drug_res
 
-let upgrade upg_type upg_val v =
-  match upg_type with
-  | "infectivity" -> {infectivity = (getinfect v)+(upg_val);
-                      severity = (getsever v); lethality = (getlethal v);
-                      heat_res = (getheat v); cold_res = (getcold v);
-                      drug_res = (getdrug v)}
-  | "severity" -> {infectivity = (getinfect v); 
-                   severity = (getsever v)+(upg_val); lethality = (getlethal v);
-                   heat_res = (getheat v); cold_res = (getcold v);
-                   drug_res = (getdrug v)}
-  | "lethality" -> {infectivity = (getinfect v); severity = (getsever v);
-                    lethality = (getlethal v)+(upg_val); heat_res = (getheat v);
-                    cold_res = (getcold v); drug_res = (getdrug v)}
-  | "heat_res" -> {infectivity = (getinfect v); severity = (getsever v);
-                   lethality = (getlethal v); heat_res = (getheat v)+(upg_val);
-                   cold_res = (getcold v); drug_res = (getdrug v)}
-  | "cold_res" -> {infectivity = (getinfect v); severity = (getsever v);
-                   lethality = (getlethal v); heat_res = (getheat v);
-                   cold_res = (getcold v)+(upg_val); drug_res = (getdrug v)}
-  | "drug_res" -> {infectivity = (getinfect v); severity = (getsever v);
-                   lethality = (getlethal v); heat_res = (getheat v);
-                   cold_res = (getcold v); drug_res = (getdrug v)+(upg_val)}
-  | _ -> failwith "Invalid Upgrade"
+(** [upgrade upg_offsets v] is an upgraded virus representing the new stats
+    of a virus if it takes a record of attribute offsets containing offset
+    values of certain stats *)
+let upgrade (upg_offsets : t) (v : t) : t  = match upg_offsets with
+  | { infectivity = inf; severity = sev; lethality = le; heat_res = hr;
+      cold_res = cr; drug_res = dr } -> 
+    {
+      infectivity = get_infect v + inf;
+      severity = get_sever v + sev;
+      lethality = get_lethal v + le;
+      heat_res = get_heat v + hr;
+      cold_res = get_cold v + cr;
+      drug_res = get_drug v + dr
+    }
