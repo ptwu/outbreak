@@ -34,8 +34,8 @@ let getcold v =
 let getdrug v =
   v.drug_res
 
-let upgrade upg_name upg_val v =
-  match upg_name with
+let upgrade upg_type upg_val v =
+  match upg_type with
   | "infectivity" -> {infectivity = (getinfect v)+(upg_val); severity = (getsever v); lethality = (getlethal v); heat_res = (getheat v); cold_res = (getcold v); drug_res = (getdrug v)}
   | "severity" -> {infectivity = (getinfect v); severity = (getsever v)+(upg_val); lethality = (getlethal v); heat_res = (getheat v); cold_res = (getcold v); drug_res = (getdrug v)}
   | "lethality" -> {infectivity = (getinfect v); severity = (getsever v); lethality = (getlethal v)+(upg_val); heat_res = (getheat v); cold_res = (getcold v); drug_res = (getdrug v)}
