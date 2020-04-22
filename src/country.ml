@@ -1,5 +1,3 @@
-open Virus
-
 type country_id = string
 
 (** immutable info
