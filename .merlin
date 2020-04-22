@@ -1,4 +1,4 @@
 PKG oUnit
 PKG yojson
 PKG ANSITerminal
-B _build
+B _build/src
