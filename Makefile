@@ -1,13 +1,26 @@
+MODULES=src/*
+OBJECTS=$(MODULES:=.cmo)
+TEST=src/test.byte
+MAIN=src/main.byte
+OCAMLBUILD=ocamlbuild -use-ocamlfind
+
+default: build
+	utop
+
+build:
+	$(OCAMLBUILD) $(MAIN)
+
 test:
-	ocamlbuild -use-ocamlfind src/test.byte && ./test.byte -runner sequential
+	$(OCAMLBUILD) -tag 'debug' $(TEST) && ./$(TEST) -runner sequential
 
 play:
-	ocamlbuild -use-ocamlfind src/main.byte
-
-docs:
-	mkdir -p doc
-	ocamldoc -d doc -html src/*.ml
+	build && ./$(MAIN)
+	
+docs: build
+	mkdir -p docs
+	ocamlfind ocamldoc -I _build -package yojson,ANSITerminal \
+		-html -stars -d docs src/*.ml[i]
 
 clean:
 	ocamlbuild -clean
-	rm -rf doc
+	rm -rf docs
