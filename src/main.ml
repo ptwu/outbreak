@@ -21,11 +21,11 @@ let rec command_loop =
       | Progress -> print_game_msg "Virus progress here"
       | Cure -> print_game_msg "Cure here"
       | Buy t ->
-          (*begin match State.go (String.concat " " t) adv st with
-            | Illegal -> print_string "You can't do that!"; command_loop adv st
-            | Legal next -> command_loop adv next
-            end*)
-          print_game_msg "Buy upgrade here" )
+        (*begin match State.go (String.concat " " t) adv st with
+          | Illegal -> print_string "You can't do that!"; command_loop adv st
+          | Legal next -> command_loop adv next
+          end*)
+        print_game_msg "Buy upgrade here" )
 
 let play_game =
   (* let adv = Adventure.from_json (Yojson.Basic.from_file f) in
