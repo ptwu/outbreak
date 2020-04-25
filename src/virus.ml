@@ -6,6 +6,7 @@ type t = {
   cold_res : int;
   drug_res : int;
   anti_cure : int;
+  upgrades : string list;
 }
 
 let init_virus =
@@ -17,6 +18,7 @@ let init_virus =
     cold_res = 0;
     drug_res = 0;
     anti_cure = 0;
+    upgrades = [];
   }
 
 (** [empty_upgrade] represents an virus upgrade with empty stats. *)
@@ -29,6 +31,7 @@ let empty_upgrade =
     cold_res = 0;
     drug_res = 0;
     anti_cure = 0;
+    upgrades = ["empty upgrade"]
   }
 
 let infectivity v = v.infectivity
@@ -45,10 +48,12 @@ let drug_res v = v.drug_res
 
 let anti_cure v = v.anti_cure
 
+let upgrades v = v.upgrades
+
 (** [upgrade upg_offsets v] is an upgraded virus representing the new stats
     of a virus if it takes a record of attribute offsets containing offset
     values of certain stats *)
-let upgrade (upg_offsets : t) (v : t) : t =
+let upgrade (upg_name : string) (upg_offsets : t) (v : t) : t =
   {
     infectivity = v.infectivity + upg_offsets.infectivity;
     severity = v.severity + upg_offsets.severity;
@@ -57,4 +62,5 @@ let upgrade (upg_offsets : t) (v : t) : t =
     cold_res = v.cold_res + upg_offsets.cold_res;
     drug_res = v.drug_res + upg_offsets.drug_res;
     anti_cure = v.anti_cure + upg_offsets.anti_cure;
+    upgrades = upg_name :: v.upgrades
   }
