@@ -7,6 +7,7 @@ type t = {
   cold_res : int;
   drug_res : int;
   anti_cure : int;
+  upgrades : string list;
 }
 
 (** default values for a virus with default attributes and an empty upgrade
@@ -35,7 +36,9 @@ val drug_res : t -> int
 (** [anti_cure v] is the cure hampering stat of the virus [v] *)
 val anti_cure : t -> int
 
+val upgrades : t -> string list
+
 (** [upgrade upg_offsets v] takes a current virus [v] and applies a virus
     upgrade stat vector [upg_offsets] to it, returning the resultant new
     virus with the [upg_offsets] added to [v] *)
-val upgrade : t -> t -> t
+val upgrade : string -> t -> t -> t
