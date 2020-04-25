@@ -14,6 +14,10 @@ type border = DRY | SEA | AIR
 
 type population = { healthy : int; infected : int; dead : int }
 
+(** Accessibility is a record with three fields: [dry], [sea], and [air].
+    [dry] is a pair with an accessibility value and list of countries accessible
+    by land; [sea] is accessibility to other countries by sea, [air] is
+    accessibility to other countries by air. *)
 type accessibility = { dry : int * country_id list; sea : int; air : int }
 
 (** [t] is the abstract type representing a certain country *)
@@ -51,16 +55,16 @@ val infected : t -> int
 (** [dead c] is the # of dead people in the country [c] *)
 val dead : t -> int
 
-(** [land_access c] returns a pair of the number of countries outbound and a
-    list of country ids accessible by land from [c] *)
+(** [land_access c] returns a pair of the accessibility of outbound countries
+    and a list of country ids accessible by land from [c] *)
 val land_access : t -> int * country_id list
 
-(** [sea_access c] returns a pair of the number of countries outbound and a list
-    of country ids accessible by sea from [c] *)
+(** [sea_access c] returns the accessibility of other countries by sea 
+    from [c] *)
 val sea_access : t -> int
 
-(** [sea_access c] returns a pair of the number of countries outbound and a list
-    of country ids accessible by air from [c] *)
+(** [air_access c] returns the accessibility of other countries by air
+    from [c] *)
 val air_access : t -> int
 
 (** [close_border c b] is the resultant country representation type once the
