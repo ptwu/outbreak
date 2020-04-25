@@ -1,6 +1,12 @@
-type t
+type t = {
+  countries: Country.t list;
+  cure_progress: float;
+  cure_rate: float;
+}
 
-val cure_progress : t -> int
+val init_world : t
+
+val cure_progress : t -> float
 
 val world_pop : t -> int
 
