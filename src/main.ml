@@ -1,8 +1,4 @@
 let rec command_loop =
-  (*if (State.current_room_id st = "treasure_room")
-    then if (List.length (Adventure.global_item_names adv) 
-    (*= List.length (State.room_items st)*) > 0)
-      then (print_string (Adventure.win adv); exit 0)*)
   print_string "Game text here";
   match read_line () with
   | exception End_of_file -> ()
