@@ -20,10 +20,6 @@ type t = {
   borders : accessibility;
 }
 
-type border
-
-type country_id
-
 val id : t -> country_id
 
 val name : t -> string
