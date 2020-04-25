@@ -1,6 +1,7 @@
 type object_phrase = string list
 
 type command = 
+  | Quit
   | Upgrades
   | Buy of object_phrase
   | Progress
@@ -22,6 +23,7 @@ let parse str =
   | [] -> raise Empty
   | h :: t ->
     if (h = "upgrades") then Upgrades
+    else if (h = "quit") then Quit
     else if (h = "progress") then Progress
     else if (h = "cure") then Cure
     else if (h = "buy")
