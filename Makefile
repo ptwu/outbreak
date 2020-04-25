@@ -1,4 +1,4 @@
-MODULES=src/country src/engine src/main src/virus src/world
+MODULES=src/country src/engine src/main src/virus src/world src/main src/command
 OBJECTS=$(MODULES:=.cmo)
 TEST=src/test.byte
 MAIN=src/main.byte

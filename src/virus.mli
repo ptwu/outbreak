@@ -4,14 +4,16 @@ val init_virus : t
 
 val empty_upgrade : t
 
-val get_infect : t -> int
+val get_infectivity : t -> int
 
-val get_sever : t -> int
+val get_severity : t -> int
 
-val get_lethal : t -> int
+val get_lethality : t -> int
 
-val get_heat : t -> int
+val get_heat_res : t -> int
 
-val get_cold : t -> int
+val get_cold_res : t -> int
+
+val get_drug_res : t -> int
 
 val upgrade : t -> t -> t
