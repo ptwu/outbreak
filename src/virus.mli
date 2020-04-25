@@ -32,6 +32,9 @@ val cold_res : t -> int
 (** [drug_res v] is the drug resistance stat of the virus [v] *)
 val drug_res : t -> int
 
+(** [anti_cure v] is the cure hampering stat of the virus [v] *)
+val anti_cure : t -> int
+
 (** [upgrade upg_offsets v] takes a current virus [v] and applies a virus
     upgrade stat vector [upg_offsets] to it, returning the resultant new
     virus with the [upg_offsets] added to [v] *)
