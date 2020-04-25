@@ -24,3 +24,7 @@ val world_infected_pop : t -> int
 (** [world_dead_pop w] is the total dead in the population in 
     [w]*)
 val world_dead_pop : t -> int
+
+(** [score] is the progress/score of the virus, which takes into account the 
+    world's infected and dead population *)
+val score : t -> float

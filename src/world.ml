@@ -39,3 +39,7 @@ let world_infected_pop w =
 
 let world_dead_pop w =
   w.countries |> List.map dead |> List.fold_left (+) 0
+
+let score w =
+  float (world_infected_pop w + 2*(world_dead_pop w)) -. cure_progress w
+(** or whatever formula we want to use *)
