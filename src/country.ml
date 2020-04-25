@@ -16,7 +16,7 @@ type population = { healthy : int; infected : int; dead : int }
 (** Closed borders = 0 *)
 type accessibility = { dry : int * country_id list; sea : int; air : int }
 
-(** "Main" mutatable type representing a country *)
+(** "Main" mutable type representing a country *)
 type t = {
   id : country_id;
   info : info;
@@ -68,9 +68,9 @@ let close_border c b =
     c with
     borders =
       ( match b with
-      | DRY -> { c.borders with dry = (0, []) }
-      | SEA -> { c.borders with sea = 0 }
-      | AIR -> { c.borders with air = 0 } );
+        | DRY -> { c.borders with dry = (0, []) }
+        | SEA -> { c.borders with sea = 0 }
+        | AIR -> { c.borders with air = 0 } );
   }
 
 let infect c n =

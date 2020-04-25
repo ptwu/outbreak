@@ -1,8 +1,24 @@
-type t
+type country_id = string
 
-type border
+type info = {
+  name : string;
+  temperature : int;
+  health_care : int;
+  density : int;
+}
 
-type country_id
+type border = DRY | SEA | AIR
+
+type population = { healthy : int; infected : int; dead : int }
+
+type accessibility = { dry : int * country_id list; sea : int; air : int }
+
+type t = {
+  id : country_id;
+  info : info;
+  population : population;
+  borders : accessibility;
+}
 
 val id : t -> country_id
 
