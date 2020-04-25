@@ -2,10 +2,11 @@ open Country
 
 type t = {
   countries: Country.t list;
-  cure_progress: int;
+  cure_progress: float;
+  cure_rate: float;
 }
 
-let example = {
+let init_world = {
   countries = [{
       id = "greenland";
       info =
@@ -18,13 +19,14 @@ let example = {
       population = { healthy = 300000; infected = 0; dead = 0 };
       borders = { dry = (50, [ "us" ]); sea = 50; air = 50 };
     }];
-  cure_progress = 100;
+  cure_progress = 0.0;
+  cure_rate = 0.0;
 }
 
 let world_from_json json = failwith "unimplemented"
 
 (* Note: current max threshold for cure progress is hardcoded 100 *)
-let cure_progress world = world.cure_progress / 100
+let cure_progress world = world.cure_progress /. 100.0
 
 let world_pop world = 
   world.countries |> List.map total_pop |> List.fold_left (+) 0 

@@ -22,6 +22,11 @@ val hality : t -> int
 val heat_res : t -> int
 
 val cold_res : t -> int
+<<<<<<< HEAD
+
+val drug_res : t -> int
+=======
+>>>>>>> 2b0796d786869ec2e95da92dfeaf3dbe2c4dd9da
 
 val drug_res : t -> int
 
