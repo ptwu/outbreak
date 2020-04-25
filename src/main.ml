@@ -1,5 +1,4 @@
 let rec command_loop =
-  print_string "Game text here";
   match read_line () with
   | exception End_of_file -> ()
   | input -> begin match Command.parse input with
