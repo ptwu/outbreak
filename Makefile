@@ -14,7 +14,7 @@ test:
 	$(OCAMLBUILD) src/test.byte && ./test.byte -runner sequential
 
 play:
-	build && ./$(MAIN)
+	$(OCAMLBUILD) $(MAIN) 
 	
 docs: build
 	mkdir -p docs

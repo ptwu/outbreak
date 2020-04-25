@@ -2,7 +2,7 @@
 let print_msg attr = ANSITerminal.(print_string attr)
 
 (** [print_success msg] prints a formatted success message [msg]. *)
-let print_game_msg = print_msg [ ANSITerminal.red ]
+let print_game_msg = print_msg []
 
 (** [print_success msg] prints a formatted success message [msg]. *)
 let print_success = print_msg [ ANSITerminal.green ]
@@ -10,49 +10,37 @@ let print_success = print_msg [ ANSITerminal.green ]
 (** [print_error err] prints a formatted error message [err]. *)
 let print_error = print_msg [ ANSITerminal.red ]
 
-(** [repl adv state] prompts for the next action in state [state] of [adv]. *)
-(* let rec repl adv state =
-  state |> sim_description adv |> print_endline;
-  state |> list_items (Room (current_room_id state)) adv |> print_items;
-  try
-    match () |> read_line |> parse with
-    | Go t -> handle_go state (repl adv) (go (build_phrase t) adv state)
-    | Take t ->
-      let input_item = build_phrase t in 
-      handle_take input_item state (repl adv) (take input_item adv state)
-    | Drop t -> 
-      let input_item = build_phrase t in 
-      handle_drop input_item adv state (repl adv) (drop input_item adv state)
-    | Unlock t -> handle_unlock state (repl adv) (unlock (build_phrase t) adv state)
-    | Lock t -> handle_lock state (repl adv) (lock (build_phrase t) adv state)
-    | Inventory ->
-      list_items Inventory adv state |> print_inv;
-      repl adv state
-    | Look ->
-      let curr_room = Room (current_room_id state) in
-      list_items curr_room adv state |> print_items;
-      repl adv state
-    | Score ->
-      print_score (score adv state);
-      repl adv state
-    | Quit -> ()
-  with Empty | Malformed ->
-    print_error "Invalid command. Please try again.\n";
-    repl adv state *)
+let rec command_loop =
+  (*if (State.current_room_id st = "treasure_room")
+    then if (List.length (Adventure.global_item_names adv)
+    (*= List.length (State.room_items st)*) > 0)
+      then (print_string (Adventure.win adv); exit 0)*)
+  print_game_msg "Game text here";
+  match read_line () with
+  | exception End_of_file -> ()
+  | input -> (
+      match Command.parse input with
+      | Quit -> exit 0
+      | Upgrades -> print_game_msg "Upgrades here"
+      | Progress -> print_game_msg "Virus progress here"
+      | Cure -> print_game_msg "Cure here"
+      | Buy t ->
+          (*begin match State.go (String.concat " " t) adv st with
+            | Illegal -> print_string "You can't do that!"; command_loop adv st
+            | Legal next -> command_loop adv next
+            end*)
+          print_game_msg "Buy upgrade here" )
 
-(** [play_game f] starts the adventure in file [f]. *)
-let play_game f =
-  try
-    ();
-  with Sys_error err -> print_error err
+let play_game =
+  (* let adv = Adventure.from_json (Yojson.Basic.from_file f) in
+     let st = State.init_state adv in *)
+  command_loop
 
 (** [main ()] prompts for the game to play, then starts it. *)
 let main () =
-  print_game_msg "Welcome to #outbreak;;";
-  print_endline "[game intro text placeholder]";
-  match read_line () with
-  | exception End_of_file -> ()
-  | file_name -> play_game file_name
+  print_game_msg "\n\nWelcome to #outbreak;;\n";
+  print_game_msg "> ";
+  play_game
 
 (* Execute the game engine. *)
 let () = main ()
