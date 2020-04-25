@@ -14,7 +14,7 @@ let rec command_loop =
       | Buy t -> (*begin match State.go (String.concat " " t) adv st with
                    | Illegal -> print_string "You can't do that!"; command_loop adv st
                    | Legal next -> command_loop adv next
-                   end*) print_string (String.concat " " ["Buy upgrade"; t])
+                   end*) print_string "Buy upgrade here"
     end
 
 
