@@ -9,7 +9,7 @@ type info = {
   density : int;
 }
 
-type border = DRY | SEA | AIR
+type border = LAND | SEA | AIR
 
 type population = { healthy : int; infected : int; dead : int }
 
@@ -68,7 +68,7 @@ let close_border c b =
     c with
     borders =
       ( match b with
-        | DRY -> { c.borders with dry = (0, []) }
+        | LAND -> { c.borders with dry = (0, []) }
         | SEA -> { c.borders with sea = 0 }
         | AIR -> { c.borders with air = 0 } );
   }

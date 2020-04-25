@@ -10,7 +10,7 @@ type info = {
   density : int;
 }
 
-type border = DRY | SEA | AIR
+type border = LAND | SEA | AIR
 
 type population = { healthy : int; infected : int; dead : int }
 
