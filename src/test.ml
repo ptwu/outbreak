@@ -12,7 +12,7 @@ let make_virus_upgrade_test
     (init: Virus.t) 
     (expected_output : Virus.t) : test = 
   name >:: (fun _ -> 
-      assert_equal expected_output (upgrade offsets init))
+      assert_equal expected_output (upgrade "test upgrade" offsets init))
 
 let upgrade_vector =  {
   infectivity = 2;
@@ -22,6 +22,7 @@ let upgrade_vector =  {
   cold_res = 2;
   drug_res = 4;
   anti_cure = 6;
+  upgrades = [];
 }
 
 let expected_upgraded_virus =  {
@@ -32,6 +33,7 @@ let expected_upgraded_virus =  {
   cold_res = 2;
   drug_res = 4;
   anti_cure = 6;
+  upgrades = ["test upgrade"]
 }
 
 let virus_tests = [
