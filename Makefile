@@ -1,7 +1,7 @@
-MODULES=src/country src/engine src/main src/virus src/world src/main src/command
+MODULES=src/country src/engine src/main src/virus src/world
 OBJECTS=$(MODULES:=.cmo)
-TEST=test.byte
-MAIN=main.byte
+TEST=src/test.byte
+MAIN=src/main.byte
 OCAMLBUILD=ocamlbuild -use-ocamlfind
 
 default: build
@@ -11,13 +11,10 @@ build:
 	$(OCAMLBUILD) $(OBJECTS)
 
 test:
-	$(OCAMLBUILD) src/$(TEST) && ./$(TEST) -runner sequential
+	$(OCAMLBUILD) src/test.byte && ./test.byte -runner sequential
 
 play:
-	$(OCAMLBUILD) src/$(MAIN) && ./$(MAIN)
-
-play2:
-	src/main.byte
+	build && ./$(MAIN)
 	
 docs: build
 	mkdir -p docs
