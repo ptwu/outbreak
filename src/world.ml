@@ -26,7 +26,7 @@ let init_world = {
 let world_from_json json = failwith "unimplemented"
 
 (* Note: current max threshold for cure progress is hardcoded 100 *)
-let cure_progress w = w.cure_progress /. 100.0
+let cure_progress w = w.cure_progress
 
 let world_pop w = 
   w.countries |> List.map total_pop |> List.fold_left (+) 0 
