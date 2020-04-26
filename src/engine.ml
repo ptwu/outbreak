@@ -11,20 +11,27 @@ let step_cure_progress w =
 
 let step_cure_rate w = { w with cure_rate = w.cure_rate *. 1.1 }
 
+(** [(/./) a b] is the floating division of b by a. *)
 let (/./) a b = b /. a
 
-let step_kill { infectivity } w =
-  let chance = infectivity |> float_of_int |> (/./) 100.0 in
+(** [step_kill v w] is the resultant world state after one tick of death
+    simulation has passed for all countries in [st]. *)
+let step_kill { hality } w =
+  let chance = hality |> float_of_int |> (/./) 100.0 in
   let round n = n |> float_of_int |> ( *. ) chance |> ceil |> int_of_float in
   let killed c = infected c |> round |> kill c in
   { w with countries = w.countries |> List.map killed }
 
-let step_infect { hality } w =
-  let chance = hality |> float_of_int |> (/./) 100.0 in
+(** [step_infect v w] is the resultant world state after one tick of infection
+    simulation has passed for all countries in [st]. *)
+let step_infect { infectivity } w =
+  let chance = infectivity |> float_of_int |> (/./) 100.0 in
   let round n = n |> float_of_int |> ( *. ) chance |> ceil |> int_of_float in
   let infected c = healthy c |> round |> infect c in
   { w with countries = w.countries |> List.map infected }
 
+(** [step_spread v w] is the resultant world state after one tick of spreading
+    simulation has passed for all countries in [st]. *)
 let step_spread { infectivity } w =
   let { countries } = w in
   let roll_dry { dry } =
@@ -49,6 +56,8 @@ let step_spread { infectivity } w =
       |> List.map (spread roll_air);
   }
 
+(** [step_once st] is the resultant world state after one tick of
+    simulation has passed for [st]. *)
 let step_once { virus; world } =
   {
     virus;
@@ -57,8 +66,8 @@ let step_once { virus; world } =
       |> step_infect virus |> step_spread virus;
   }
 
-let rec step n s =
-  if n <= 0 then s else s |> step_once |> step (n - 1)
+let rec step n st =
+  if n <= 0 then st else st |> step_once |> step (n - 1)
 
 let status { world } =
   Printf.sprintf "Healthy: %d\nInfected: %d\nDead: %d\n\n" (world_healthy_pop world) (world_infected_pop world) (world_dead_pop world)
