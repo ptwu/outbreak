@@ -1,0 +1,17 @@
+.MainMenuButton {
+  text-transform: none !important; 
+  background: #7c0000 !important;
+  color: white !important;
+}
+
+.MainMenuCard {
+  padding-bottom: 42px !important;
+}
+
+.InstructionsSection {
+  background: whitesmoke;
+  padding-bottom: 5px;
+  text-align: justify;
+  padding-left: 15px;
+  padding-right: 15px;
+}
