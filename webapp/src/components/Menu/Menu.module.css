@@ -1,0 +1,9 @@
+.MainMenuButton {
+  text-transform: none !important; 
+  background: #7c0000 !important;
+  color: white !important;
+}
+
+.MainMenuCard {
+  padding-bottom: 42px !important;
+}
