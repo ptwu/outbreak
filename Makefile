@@ -10,6 +10,10 @@ default: build
 build:
 	$(OCAMLBUILD) $(OBJECTS)
 
+buildall:
+	cd webapp; npm install && npm run build
+	$(OCAMLBUILD) $(OBJECTS)
+
 test:
 	$(OCAMLBUILD) src/$(TEST) && ./$(TEST) -runner sequential
 
