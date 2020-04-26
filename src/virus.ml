@@ -1,4 +1,4 @@
-type t = {
+type stats = {
   infectivity : int;
   severity : int;
   hality : int;
@@ -6,69 +6,102 @@ type t = {
   cold_res : int;
   drug_res : int;
   anti_cure : int;
-  upgrades : string list;
 }
 
-type upgrade = t
+type t = {
+  name : string;
+  stats : stats;
+  upgrades : string list;
+  points : int;
+}
+
+type upgrade = { id : string; name : string; stats : stats; cost : int }
 
 let init_virus =
   {
-    infectivity = 1;
-    severity = 1;
-    hality = 1;
-    heat_res = 0;
-    cold_res = 0;
-    drug_res = 0;
-    anti_cure = 0;
+    name = "Corona";
+    stats =
+      {
+        infectivity = 1;
+        severity = 0;
+        hality = 0;
+        heat_res = 0;
+        cold_res = 0;
+        drug_res = 0;
+        anti_cure = 0;
+      };
     upgrades = [];
+    points = 0;
   }
 
-let empty_upgrade : upgrade =
-  {
-    infectivity = 0;
-    severity = 0;
-    hality = 0;
-    heat_res = 0;
-    cold_res = 0;
-    drug_res = 0;
-    anti_cure = 0;
-    upgrades = ["empty upgrade"]
-  }
+let init_upgrades =
+  [
+    ( {
+        id = "cough";
+        name = "Symptom: Coughing";
+        stats =
+          {
+            infectivity = 15;
+            severity = 0;
+            hality = 0;
+            heat_res = 0;
+            cold_res = 0;
+            drug_res = 0;
+            anti_cure = 0;
+          };
+        cost = 1;
+      },
+      {
+        id = "internalbleeding";
+        name = "Symptom: Internal Bleeding";
+        stats =
+          {
+            infectivity = 0;
+            severity = 50;
+            hality = 50;
+            heat_res = 0;
+            cold_res = 0;
+            drug_res = 0;
+            anti_cure = 0;
+          };
+        cost = 10;
+      } );
+  ]
 
-let infectivity v = v.infectivity
+let infectivity v = v.stats.infectivity
 
-let severity v = v.severity
+let severity v = v.stats.severity
 
-let get_infect v =
-  v.infectivity
+let hality v = v.stats.hality
 
-let get_sever v =
-  v.severity
+let heat_res v = v.stats.heat_res
 
-let get_lethal v =
-  v.hality
+let cold_res v = v.stats.cold_res
 
-let get_heat v =
-  v.heat_res
+let drug_res v = v.stats.drug_res
 
-let get_cold v =
-  v.cold_res
+let anti_cure v = v.stats.anti_cure
 
 let get_drug v =
   v.drug_res
 
-(** [upgrade upg_offsets v] is an upgraded virus representing the new stats
+(** [upgrade u v] is an upgraded virus representing the new stats
     of a virus if it takes a record of attribute offsets containing offset
     values of certain stats *)
-
-let upgrade (upg_name : string) (u : upgrade) (v : t) : t =
+let upgrade (u : upgrade) (v : t) : t =
+  let us, vs = (u.stats, v.stats) in
   {
-    infectivity = v.infectivity + u.infectivity;
-    severity = v.severity + u.severity;
-    hality = v.hality + u.hality;
-    heat_res = v.heat_res + u.heat_res;
-    cold_res = v.cold_res + u.cold_res;
-    drug_res = v.drug_res + u.drug_res;
-    anti_cure = v.anti_cure + u.anti_cure;
-    upgrades = upg_name :: v.upgrades
+    v with
+    stats =
+      {
+        infectivity = vs.infectivity + us.infectivity;
+        severity = vs.severity + us.severity;
+        hality = vs.hality + us.hality;
+        heat_res = vs.heat_res + us.heat_res;
+        cold_res = vs.cold_res + us.cold_res;
+        drug_res = vs.drug_res + us.drug_res;
+        anti_cure = vs.anti_cure + us.anti_cure;
+      };
+    upgrades = u.name :: v.upgrades;
+    points = v.points - u.cost;
   }

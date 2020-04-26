@@ -63,11 +63,12 @@ let step_spread { infectivity } w =
 (** [step_once st] is the resulting world state after one tick of
     simulation has passed for [st]. *)
 let step_once { virus; world } =
+  let { stats } = virus in
   {
     virus;
     world =
-      world |> step_cure_progress |> step_cure_rate |> step_kill virus
-      |> step_infect virus |> step_spread virus;
+      world |> step_cure_progress |> step_cure_rate |> step_kill stats
+      |> step_infect stats |> step_spread stats;
   }
 
 let rec step n st = if n <= 0 then st else st |> step_once |> step (n - 1)

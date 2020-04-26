@@ -1,5 +1,5 @@
-(** The representation type for a virus. *)
-type t = {
+(** The representation type for the stats of a virus. *)
+type stats = {
   infectivity : int;
   severity : int;
   hality : int;
@@ -7,12 +7,18 @@ type t = {
   cold_res : int;
   drug_res : int;
   anti_cure : int;
-  upgrades : string list;
 }
 
-(** The representation type for an upgrade. *)
-type upgrade = t
+(** The representation type for a virus. *)
+type t = {
+  stats : stats;
+  upgrades : string list;
+  points : int;
+}
 
+(** The representation type for a virus upgrade. *)
+type upgrade = stats
+    
 (** [init_virus] represents a virus with default stats. *)
 val init_virus : t
 

@@ -38,5 +38,5 @@ let world_infected_pop world =
 let world_dead_pop world =
   world.countries |> List.map dead |> List.fold_left (+) 0
 
-let score world =
-  (world_infected_pop world + 2 * world_dead_pop world) - (cure_progress world)
+let score w =
+  float (world_infected_pop w + (2 * world_dead_pop w)) -. cure_progress w
