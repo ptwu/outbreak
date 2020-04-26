@@ -36,6 +36,7 @@ val drug_res : t -> int
 (** [anti_cure v] is the cure hampering stat of the virus [v] *)
 val anti_cure : t -> int
 
+(** [upgrades v] is the  *)
 val upgrades : t -> string list
 
 (** [upgrade upg_offsets v] takes a current virus [v] and applies a virus
