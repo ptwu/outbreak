@@ -36,11 +36,8 @@ val get_heat : t -> int
 
 val get_cold : t -> int
 
-                    <<<<<<< HEAD
-val upgrade : t -> t -> t
-                        =======
-                        (** [upgrade upg_offsets v] takes a current virus [v] and applies a virus
-                            upgrade stat vector [upg_offsets] to it, returning the resulting
-                            virus with the [upg_offsets] added to [v] *)
+
+(** [upgrade upg_offsets v] takes a current virus [v] and applies a virus
+    upgrade stat vector [upg_offsets] to it, returning the resulting
+    virus with the [upg_offsets] added to [v] *)
 val upgrade : string -> upgrade -> t -> t
-  >>>>>>> 1b3524146e929fac0446e82bc8cba77c9b616df0
