@@ -24,3 +24,6 @@ docs: build
 clean:
 	ocamlbuild -clean
 	rm -rf docs
+	
+zip:
+	clean && zip outbreak.zip *
