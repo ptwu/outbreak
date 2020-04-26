@@ -44,6 +44,8 @@ val sea_access : t -> int
 
 val air_access : t -> int
 
+(** [close_border c b] is the resulting country representation type after the
+    border variant (either [DRY], [SEA], or [AIR]) has been closed *)
 val close_border : t -> border -> t
 
 val infect : t -> int -> t

@@ -13,8 +13,7 @@ type object_phrase = string list
 type command = 
   | Upgrades
   | Buy of object_phrase
-  | Progress
-  | Cure
+  | Step of int
 
 (** Raised when an empty command is parsed. *)
 exception Empty
@@ -35,3 +34,6 @@ exception Malformed
     "cure" or if the verb is "quit" and there is a non-empty object phrase,
     or if the verb is "go" and there is an empty object phrase.*)
 val parse : string -> command
+
+(** [build_phrase lst] is the string represented by [lst] *)
+val build_phrase : object_phrase -> string
