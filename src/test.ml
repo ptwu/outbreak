@@ -404,7 +404,7 @@ let country_tests = [
 
 let world_tests = [
   make_cure_progress_test "testing cure progress in dummy world" 
-    World.init_world 0.0; 
+    World.init_world 100; 
   make_world_pop_test "testing world population in dummy world" 
     World.init_world 300000;
   make_world_healthy_pop_test "testing world healthy population in dummy world"
@@ -414,7 +414,7 @@ let world_tests = [
   make_world_dead_pop_test "testing world dead population in dummy world"
     World.init_world 0;
   make_score_test "testing player score in dummy world"
-    World.init_world 0.0
+    World.init_world -100
 ]
 
 let suite = "outbreak tests suite" >::: List.flatten [
