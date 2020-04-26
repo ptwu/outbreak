@@ -26,4 +26,4 @@ clean:
 	rm -rf docs
 	
 zip:
-	clean && zip outbreak.zip *
+	ocamlbuild -clean && zip -r outbreak.zip * -x webapp/node_modules/\*
