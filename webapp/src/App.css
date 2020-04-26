@@ -1,0 +1,12 @@
+.App {
+  text-align: center;
+}
+
+.NavbarText {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.Navbar {
+  background: #b01d00 !important;
+}
