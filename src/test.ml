@@ -22,7 +22,7 @@ let make_cure_progress_test
     (init: World.t) 
     (expected_output : float) : test = 
   name >:: (fun _ -> 
-      assert_equal expected_output (cure_progress init))
+      assert_equal expected_output (World.cure_progress init))
 
 (** [make_world_pop_test name init expected_output] constructs an 
     OUnit test named [name] that asserts the quality of [expected_output]
@@ -72,7 +72,7 @@ let make_score_test
     (init: World.t) 
     (expected_output : float) : test = 
   name >:: (fun _ -> 
-      assert_equal expected_output (score init))
+      assert_equal expected_output (World.score init))
 
 (** [make_country_id_test name init expected_output] constructs an 
     OUnit test named [name] that asserts the quality of [expected_output]
