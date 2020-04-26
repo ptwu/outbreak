@@ -4,9 +4,7 @@ type command =
   | Quit
   | Upgrades
   | Buy of object_phrase
-  | Progress
   | Step of int
-  | Cure
 
 exception Empty
 
@@ -22,16 +20,14 @@ let parse str =
     str |> String.split_on_char ' ' |> List.filter (fun s -> s <> "")
   in
   match list with
-  | "upgrades" :: _ -> Upgrades
   | "quit" :: _ -> Quit
-  | "progress" :: _ -> Progress
+  | "upgrades" :: _ -> Upgrades
+  | "buy" :: t -> Buy t
   | "step" :: [] -> Step 1
   | "step" :: t :: [] ->
     (match int_of_string_opt t with 
      | Some l -> Step l
      | None -> raise Malformed)
-  | "cure" :: _ -> Cure
-  | "buy" :: t -> Buy t
   | [] -> raise Empty
   | _ -> raise Malformed
 

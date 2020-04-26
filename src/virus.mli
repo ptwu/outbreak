@@ -44,6 +44,6 @@ val anti_cure : t -> int
 val upgrades : t -> string list
 
 (** [upgrade upg_offsets v] takes a current virus [v] and applies a virus
-    upgrade stat vector [upg_offsets] to it, returning the resultant new
+    upgrade stat vector [upg_offsets] to it, returning the resulting
     virus with the [upg_offsets] added to [v] *)
 val upgrade : string -> upgrade -> t -> t

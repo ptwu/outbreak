@@ -14,9 +14,7 @@ type command =
   | Quit
   | Upgrades
   | Buy of object_phrase
-  | Progress
   | Step of int
-  | Cure
 
 (** Raised when an empty command is parsed. *)
 exception Empty

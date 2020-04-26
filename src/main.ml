@@ -17,11 +17,9 @@ let rec repl state =
       match Command.parse input with
       | Quit -> exit 0
       | Upgrades -> print_game_msg "Upgrades here"
-      | Progress -> print_game_msg "Virus progress here"
       | Step l ->
           print_game_msg "Fast forwarding!\n\n";
           state |> step l |> repl
-      | Cure -> print_game_msg "Cure here"
       | Buy t ->
           (*begin match State.go (String.concat " " t) adv st with
             | Illegal -> print_string "You can't do that!"; command_loop adv st

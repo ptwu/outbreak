@@ -8,7 +8,7 @@ type t = {
     an Outbreak game. *)
 val init_state : t
 
-(** [step l st] is the resultant game state after [l] ticks have passed from [st]. *)
+(** [step l st] is the resulting game state after [l] ticks have passed from [st]. *)
 val step : int -> t -> t
 
 (** [status st] is a formatted string describing the status of [st]. *)
