@@ -8,7 +8,11 @@
 - Node.js 10.x.x
 - npm 6.9.x (this is required to install the dependencies for the webapp; installed with Node.js)
 
-You can install Node.js and npm by running `sudo apt update`, `sudo apt install nodejs`,  and `sudo apt install npm`
+You can install Node.js and npm by running `sudo apt update`, `sudo apt install nodejs`,  and `sudo apt install npm`. 
+
+Use the commands `node -v` and `npm -v` to verify that your versions are up to date. 
+
+(known bug for WSL on Windows: you may have to execute `sudonpm install -g npm` once or twice after installing it with `sudo apt install` if your version is way below 6.9.x.)
 
 ### Game Description
 
