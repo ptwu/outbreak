@@ -8,11 +8,11 @@ open World
     with [upgrade offsets init]. *)
 let make_virus_upgrade_test
     (name : string) 
-    (offsets: Virus.t)
+    (offsets: Virus.upgrade)
     (init: Virus.t) 
     (expected_output : Virus.t) : test = 
   name >:: (fun _ -> 
-      assert_equal expected_output (upgrade "test upgrade" offsets init))
+      assert_equal expected_output (upgrade offsets init))
 
 (** [make_cure_progress_test name init expected_output] constructs an 
     OUnit test named [name] that asserts the quality of [expected_output]
@@ -238,27 +238,38 @@ let make_kill_test
   name >:: (fun _ -> 
       assert_equal expected_output (kill init n))
 
-let upgrade_vector =  {
-  infectivity = 2;
-  severity = 1;
-  hality = 10;
-  heat_res = 1;
-  cold_res = 2;
-  drug_res = 4;
-  anti_cure = 6;
-  upgrades = [];
+let dummy_upgrade = {
+  id = "test_upgrade";
+  name = "test";
+  stats =
+    {
+      infectivity = 2;
+      severity = 1;
+      hality = 10;
+      heat_res = 1;
+      cold_res = 2;
+      drug_res = 4;
+      anti_cure = 6;
+    };
+  cost = 2;
 }
 
-let expected_upgraded_virus =  {
-  infectivity = 3;
-  severity = 2;
-  hality = 11;
-  heat_res = 1;
-  cold_res = 2;
-  drug_res = 4;
-  anti_cure = 6;
-  upgrades = ["test upgrade"]
-}
+let expected_upgraded_virus =  
+  {
+    name = "Corona";
+    stats =
+      {
+        infectivity = 3;
+        severity = 1;
+        hality = 10;
+        heat_res = 1;
+        cold_res = 2;
+        drug_res = 4;
+        anti_cure = 6;
+      };
+    upgrades = ["test_upgrade"];
+    points = 1;
+  }
 
 let dummy_country =
   {
@@ -360,7 +371,7 @@ let dummy_kill_expected_country =
 
 let virus_tests = [
   make_virus_upgrade_test "testing basic upgrade with dummy vals" 
-    upgrade_vector Virus.init_virus expected_upgraded_virus
+    dummy_upgrade (add_points 3 Virus.init_virus) expected_upgraded_virus
 ]
 
 let country_tests = [
@@ -389,7 +400,7 @@ let country_tests = [
   make_air_access_test "testing air access with dummy country"
     dummy_country 50;
   make_close_border_test "testing closing land border with dummy country"
-    dummy_country LAND dummy_land_expected_country;
+    dummy_country DRY dummy_land_expected_country;
   make_close_border_test "testing closing sea border with dummy country"
     dummy_country SEA dummy_sea_expected_country;
   make_close_border_test "testing closing air border with dummy country"
@@ -404,7 +415,7 @@ let country_tests = [
 
 let world_tests = [
   make_cure_progress_test "testing cure progress in dummy world" 
-    World.init_world 100; 
+    World.init_world 0.0;
   make_world_pop_test "testing world population in dummy world" 
     World.init_world 300000;
   make_world_healthy_pop_test "testing world healthy population in dummy world"
@@ -414,7 +425,7 @@ let world_tests = [
   make_world_dead_pop_test "testing world dead population in dummy world"
     World.init_world 0;
   make_score_test "testing player score in dummy world"
-    World.init_world -100
+    World.init_world 0.0
 ]
 
 let suite = "outbreak tests suite" >::: List.flatten [

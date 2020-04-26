@@ -9,41 +9,42 @@ type stats = {
   anti_cure : int;
 }
 
+(** The representation type for a virus upgrade. *)
+type upgrade = { id : string; name : string; stats : stats; cost : int }
+
 (** The representation type for a virus. *)
 type t = {
+  name : string;
   stats : stats;
   upgrades : string list;
   points : int;
 }
 
-(** The representation type for a virus upgrade. *)
-type upgrade = stats
-    
-(** [init_virus] represents a virus with default stats. *)
+
+(** [init_virus] is a virus with initial stats. *)
 val init_virus : t
 
-(** [empty_upgrade] represents a virus upgrade with empty stats. *)
-val empty_upgrade : t
+(** [init_upgrades] is a list of initial virus upgrades. *)
+val init_upgrades : upgrade list
 
 (** [infectivity v] is the infectivity stat of the virus [v] *)
 val infectivity : t -> int
 
-val init_virus : t
+val severity : t -> int
 
-val empty_upgrade : t
+val hality : t -> int
 
-val get_infect : t -> int
+val heat_res : t -> int
 
-val get_sever : t -> int
+val cold_res : t -> int
 
-val get_lethal : t -> int
+val drug_res : t -> int
 
-val get_heat : t -> int
+val anti_cure : t -> int
 
-val get_cold : t -> int
-
+val add_points : int -> t -> t
 
 (** [upgrade upg_offsets v] takes a current virus [v] and applies a virus
     upgrade stat vector [upg_offsets] to it, returning the resulting
     virus with the [upg_offsets] added to [v] *)
-val upgrade : string -> upgrade -> t -> t
+val upgrade : upgrade -> t -> t

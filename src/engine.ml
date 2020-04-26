@@ -9,7 +9,7 @@ let init_state = { virus = Virus.init_virus; world = World.init_world }
 let step_cure_progress w =
   { w with cure_progress = w.cure_progress +. w.cure_rate }
 
-let step_cure_rate w = { w with cure_rate = w.cure_rate *. 1.1 }
+let step_cure_rate w = { w with cure_rate = w.cure_rate *. 1.01 }
 
 (** [(/./) a b] is the floating division of b by a. *)
 let ( /./ ) a b = b /. a

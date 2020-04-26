@@ -11,6 +11,7 @@ type object_phrase = string list
 (** [command] is a player command that is decomposed into a verb and possibly 
     an object phrase. *)
 type command = 
+  | Quit
   | Upgrades
   | Buy of object_phrase
   | Step of int
