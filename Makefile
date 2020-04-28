@@ -33,4 +33,4 @@ clean:
 	rm -rf docs
 	
 zip:
-	ocamlbuild -clean && zip -r outbreak.zip * -x webapp/node_modules/\*
+	ocamlbuild -clean && zip -r outbreak.zip * .merlin .ocamlinit .gitignore -x webapp/node_modules/\*
