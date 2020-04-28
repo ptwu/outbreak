@@ -22,3 +22,5 @@ All the OCaml packages should be included from the CS 3110 default installation 
 - `make buildall` builds everything in the app for production, including the webapp
 
 - `make play` starts the game from terminal mode.
+
+- `make test` evaluates the test cases in src/test.ml.
