@@ -1,10 +1,17 @@
 open Virus
 open World
 open Country
+open Stats
+open Upgrades
 
-type t = { virus : Virus.t; world : World.t }
+type t = { virus : Virus.t; world : World.t; shop : Upgrades.t }
 
-let init_state = { virus = Virus.init_virus; world = World.init_world }
+let init_state =
+  {
+    virus = Virus.init_virus;
+    world = World.init_world;
+    shop = Upgrades.init_upgrades;
+  }
 
 let step_cure_progress w =
   { w with cure_progress = w.cure_progress +. w.cure_rate }
@@ -41,7 +48,7 @@ let step_spread { infectivity } w =
   let roll_dry { dry } =
     let chance, neighbors = dry in
     let helper a c =
-      if List.mem c.id neighbors && c.population.infected > 0 then 1
+      if c.population.infected > 0 && List.mem c.id neighbors then 1
       else 0
     in
     let bad_neighbors = List.fold_left helper 0 countries in
@@ -62,21 +69,27 @@ let step_spread { infectivity } w =
 
 (** [step_once st] is the resulting world state after one tick of
     simulation has passed for [st]. *)
-let step_once { virus; world } =
+let step_once { virus; world; shop } =
   let { stats } = virus in
   {
     virus;
     world =
       world |> step_cure_progress |> step_cure_rate |> step_kill stats
       |> step_infect stats |> step_spread stats;
+    shop;
   }
 
 let rec step n st = if n <= 0 then st else st |> step_once |> step (n - 1)
 
+let purchase name ({ virus; world; shop } as default) =
+  let comp { id } = id = name in
+  match List.find_opt comp shop with
+  | None -> default
+  | Some u -> { virus = upgrade virus u; world; shop }
+
 let status { world } =
-  Printf.sprintf "Healthy: %d\nInfected: %d\nDead: %d\nCure Progress: %f out of %d\n\n"
+  Printf.sprintf
+    "Healthy: %d\nInfected: %d\nDead: %d\nCure Progress: %f out of %d\n\n"
     (world_healthy_pop world)
     (world_infected_pop world)
-    (world_dead_pop world)
-    (world |> cure_progress)
-    (100)
+    (world_dead_pop world) (world |> cure_progress) 100
