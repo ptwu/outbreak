@@ -1,6 +1,9 @@
 #require "oUnit";;
 #require "yojson";;
 #require "ANSITerminal";;
+#require "Lwt";;
+#require "Cohttp";;
+#require "Cohttp_lwt_unix";;
 #directory "_build";;
 #load "src/main.cmo";;
 #load "src/country.cmo";;

@@ -1,7 +1,8 @@
-MODULES=src/country src/engine src/main src/virus src/world src/main src/command
+MODULES=src/country src/engine src/main src/virus src/world src/main src/command src/example
 OBJECTS=$(MODULES:=.cmo)
 TEST=test.byte
 MAIN=main.byte
+SERVER=example.byte
 OCAMLBUILD=ocamlbuild -use-ocamlfind
 
 default: build
@@ -20,8 +21,8 @@ test:
 play:
 	$(OCAMLBUILD) src/$(MAIN) && ./$(MAIN)
 
-play2:
-	src/main.byte
+server:
+	$(OCAMLBUILD) src/$(SERVER) && ./$(SERVER)
 	
 docs: build
 	mkdir -p docs
