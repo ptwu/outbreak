@@ -1,2 +1,2 @@
-PKG oUnit yojson cohttp lwt
+PKG oUnit yojson lwt cohttp ANSITerminal
 B _build/src

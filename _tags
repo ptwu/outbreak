@@ -1,2 +1,3 @@
 true: package(oUnit),package(yojson),package(ANSITerminal),package(cohttp-lwt-unix)
+true: thread
 <webapp>: -traverse
