@@ -1,8 +1,8 @@
-MODULES=src/country src/engine src/main src/virus src/world src/main src/command src/example
+MODULES=src/country src/main src/virus src/world src/engine src/upgrades src/stats src/command src/server
 OBJECTS=$(MODULES:=.cmo)
 TEST=test.byte
 MAIN=main.byte
-SERVER=example.byte
+SERVER=server.byte
 OCAMLBUILD=ocamlbuild -use-ocamlfind
 
 default: build
@@ -26,7 +26,7 @@ server:
 	
 docs: build
 	mkdir -p docs
-	ocamlfind ocamldoc -I _build -package yojson,ANSITerminal \
+	ocamlfind ocamldoc -I _build -package yojson,ANSITerminal,opium \
 		-html -stars -d docs src/*.ml[i]
 
 clean:

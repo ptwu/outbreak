@@ -1,11 +1,13 @@
 #require "oUnit";;
 #require "yojson";;
 #require "ANSITerminal";;
-#require "Lwt";;
-#require "Cohttp";;
 #directory "_build";;
 #load "src/main.cmo";;
 #load "src/country.cmo";;
 #load "src/engine.cmo";;
 #load "src/virus.cmo";;
 #load "src/world.cmo";;
+#load "src/upgrades.cmo";;
+#load "src/virus.cmo";;
+#load "src/stats.cmo";;
+#load "src/server.cmo";;

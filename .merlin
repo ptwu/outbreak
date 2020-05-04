@@ -1,3 +1,3 @@
-PKG oUnit yojson cohttp cohttp-lwt-unix ANSITerminal
+PKG oUnit yojson opium ANSITerminal
 B _build/src
 S src/**
