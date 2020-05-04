@@ -1,2 +1,3 @@
-true: package(oUnit),package(yojson),package(ANSITerminal)
-<webapp>: -traverse
+true: package(oUnit),package(yojson),package(ANSITerminal),package(opium)
+true: thread
+"webapp": -traverse

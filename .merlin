@@ -1,4 +1,3 @@
-PKG oUnit
-PKG yojson
-PKG ANSITerminal
+PKG oUnit yojson opium ANSITerminal
 B _build/src
+S src/**
