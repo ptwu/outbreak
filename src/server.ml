@@ -26,5 +26,11 @@ let default =
   not_found (fun _req ->
       `Json Ezjsonm.(dict [("message", string "Route not found")]) |> respond')
 
+let app : Opium.App.t =
+  App.empty |> App.cmd_name "#outbreak;; backend" |> game_state |> step |> step_n |> default
+
 let _ =
-  App.empty |> game_state |> step |> step_n |> default |> App.run_command
+  match App.run_command' app with
+  | `Ok app -> Lwt_main.run app
+  | `Error -> exit 1
+  | `Not_running -> exit 0
