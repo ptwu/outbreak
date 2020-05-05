@@ -28,4 +28,4 @@ install the opium package.
 
 - `make test` evaluates the test cases in src/test.ml.
 
-- `make clean` cleans the OCaml temp fi
+- `make clean` cleans the OCaml temp files out of the project.
