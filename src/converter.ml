@@ -41,9 +41,10 @@ let json_of_country ({ id; info; population; borders } : Country.t) =
     "population", json_of_population population;
   ]
 
-let json_of_world ({ countries; cure_progress; cure_rate } : World.t) =
+let json_of_world ({ countries; cure_progress; cure_rate } as world : World.t) =
   dict [
     "countries", list json_of_country countries;
+    "population", json_of_population (World.world_pop world);
     "cure_progress", float cure_progress;
     "cure_rate", float cure_rate;
   ]
