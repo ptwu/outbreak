@@ -1,45 +1,30 @@
 open Opium.Std
+open Converter
 
-type person = {name: string; age: int}
-
-let json_of_person {name; age} =
-  let open Ezjsonm in
-  dict [("name", string name); ("age", int age)]
+let game : Engine.t ref = ref Engine.init_state
 
 let print_param =
   put "/hello/:name" (fun req ->
       `String ("Hello " ^ param req "name") |> respond')
 
-let streaming =
-  let open Lwt.Infix in
-  get "/hello/stream" (fun _req ->
-      (* [create_stream] returns a push function that can be used to
-         push new content onto the stream. [f] is function that
-         expects to receive a promise that gets resolved when the user
-         decides that they have pushed all their content onto the stream.
-         When the promise forwarded to [f] gets resolved, the stream will be
-         closed. *)
-      let f, push = App.create_stream () in
-      let timers =
-        List.map
-          (fun t ->
-            Lwt_unix.sleep t
-            >|= fun () -> push (Printf.sprintf "Hello after %f seconds\n" t))
-          [1.; 2.; 3.]
-      in
-      f (Lwt.join timers))
+let step =
+  post "/step" (fun req ->
+      game := Engine.step 1 !game;
+      `String ("Stepped 1 times.") |> respond')
+
+let step_n =
+  post "/step/:n" (fun req ->
+      let n = "n" |> param req |> int_of_string in
+      game := Engine.step n !game;
+      `String (Printf.sprintf "Stepped %d times" n) |> respond')
+
+let game_state =
+  get "/game" (fun req ->
+      `Json (!game |> json_of_game) |> respond')
 
 let default =
   not_found (fun _req ->
       `Json Ezjsonm.(dict [("message", string "Route not found")]) |> respond')
 
-let print_person =
-  get "/person/:name/:age" (fun req ->
-      let person =
-        {name= param req "name"; age= "age" |> param req |> int_of_string}
-      in
-      `Json (person |> json_of_person) |> respond')
-
 let _ =
-  App.empty |> print_param |> print_person |> streaming |> default
-  |> App.run_command
+  App.empty |> game_state |> step |> step_n |> default |> App.run_command
