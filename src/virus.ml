@@ -1,18 +1,9 @@
-type stats = {
-  infectivity : int;
-  severity : int;
-  hality : int;
-  heat_res : int;
-  cold_res : int;
-  drug_res : int;
-  anti_cure : int;
-}
-
-type upgrade = { id : string; name : string; stats : stats; cost : int }
+open Stats
+open Upgrades
 
 type t = {
   name : string;
-  stats : stats;
+  stats : Stats.t;
   upgrades : string list;
   points : int;
 }
@@ -34,39 +25,6 @@ let init_virus =
     points = 0;
   }
 
-let init_upgrades =
-  [
-    {
-      id = "cough";
-      name = "Symptom: Coughing";
-      stats =
-        {
-          infectivity = 15;
-          severity = 0;
-          hality = 0;
-          heat_res = 0;
-          cold_res = 0;
-          drug_res = 0;
-          anti_cure = 0;
-        };
-      cost = 1;
-    };
-    {
-      id = "internalbleeding";
-      name = "Symptom: Internal Bleeding";
-      stats =
-        {
-          infectivity = 0;
-          severity = 50;
-          hality = 50;
-          heat_res = 0;
-          cold_res = 0;
-          drug_res = 0;
-          anti_cure = 0;
-        };
-      cost = 10;
-    };
-  ]
 
 let infectivity v = v.stats.infectivity
 
@@ -89,8 +47,8 @@ let add_points p v = { v with points = v.points + p }
 (** [upgrade u v] is an upgraded virus representing the new stats
     of a virus if it takes a record of attribute offsets containing offset
     values of certain stats *)
-let upgrade (u : upgrade) (v : t) : t =
-  let us, vs = (u.stats, v.stats) in
+let upgrade (v : t) (u : upgrade) : t =
+  let us, vs = (u.offsets, v.stats) in
   {
     v with
     stats =
