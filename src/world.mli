@@ -21,3 +21,7 @@ val world_dead_pop : t -> int
 val world_pop : t -> Country.population
 
 val score : t -> float
+
+val country_from_json : Yojson.Basic.t -> Country.t
+
+val world_from_json : Yojson.Basic.t -> t
