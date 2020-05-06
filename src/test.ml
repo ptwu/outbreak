@@ -2,17 +2,18 @@ open OUnit2
 open Virus
 open Country
 open World
+open Upgrades
 
 (** [make_virus_upgrade_test name offsets init expected_output] constructs an 
     OUnit test named [name] that asserts the quality of [expected_output]
     with [upgrade offsets init]. *)
 let make_virus_upgrade_test
     (name : string) 
-    (offsets: Virus.upgrade)
+    (offsets: upgrade)
     (init: Virus.t) 
     (expected_output : Virus.t) : test = 
   name >:: (fun _ -> 
-      assert_equal expected_output (upgrade offsets init))
+      assert_equal expected_output (upgrade init offsets))
 
 (** [make_cure_progress_test name init expected_output] constructs an 
     OUnit test named [name] that asserts the quality of [expected_output]
@@ -241,7 +242,7 @@ let make_kill_test
 let dummy_upgrade = {
   id = "test_upgrade";
   name = "test";
-  stats =
+  offsets =
     {
       infectivity = 2;
       severity = 1;
