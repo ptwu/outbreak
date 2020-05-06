@@ -1,3 +1,10 @@
+(** TESTING PLAN:
+    Our test suite started off testing functions individually with "dummy" 
+    virus, world, and upgrade values. Once we had our json parser and basic
+    functionality, we moved on from a glass box testing approach to a more black
+    box testing approach, where we used external world, virus, and upgrade
+    values. *)
+
 open OUnit2
 open Virus
 open Country
