@@ -1,0 +1,30 @@
+{
+  "countries": [
+    {
+      "country id": "greenland",
+      "info": {
+        "country name": "Greenland",
+        "temperature": -100,
+        "healthcare": 50,
+        "density": 10
+      },
+      "population": {
+        "healthy": 300000,
+        "infected": 0,
+        "dead": 0
+      },
+      "borders": {
+        "dry": [
+          50,
+          [
+            "us"
+          ]
+        ],
+        "sea": 50,
+        "air": 50
+      }
+    }
+  ],
+  "cure progress": 0.0,
+  "cure rate": 0.001
+}
