@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import styles from './WorldMap.module.css';
+import styles from './GameContainer.module.css';
 import {
   Card, Container,
 } from '@material-ui/core';
+import WorldMap from './WorldMap';
 
 export default ({ init }) => {
   const [name, setName] = useState(init.virus.name);
@@ -13,7 +14,7 @@ export default ({ init }) => {
   const [cureProgress, setCureProgress] = useState(0);
   // cure rate is not displayed
   const [healthy, setHealthy] = useState(0);
-  const [infected, setInfected] = useState();
+  const [infected, setInfected] = useState(0);
   const [deaths, setDeaths] = useState(0);
   const [shop, setShop] = useState(init.shop);
 
@@ -25,6 +26,9 @@ export default ({ init }) => {
     setPoints(virus.points);
     setCountryData(world.countries);
     setCureProgress(world.cure_progress);
+    setHealthy(world.population.healthy);
+    setInfected(world.population.infected);
+    setDeaths(world.population.dead);
     setShop(shop);
   }
 
@@ -43,15 +47,16 @@ export default ({ init }) => {
       <Container maxWidth="xl">
         <Card className={styles.GameplayCard}>
           <h1>{name}</h1>
-          <h4>Stats: {JSON.stringify(stats)}</h4>
+          <WorldMap />
+          {/* <h4>Stats: {JSON.stringify(stats)}</h4>
           <h4>Upgrades: {JSON.stringify(upgrades)}</h4>
           <h4>Points: {points}</h4>
           <h4>Country Data: {JSON.stringify(countryData)}</h4>
           <h4>Cure Progress: {cureProgress}</h4>
-          <h4># Healthy: not yet implemented</h4>
-          <h4># Infected: not yet implemented</h4>
-          <h4># Dead: not yet implemented</h4>
-          <h4>Shop: {JSON.stringify(shop)}</h4>
+          <h4># Healthy: {healthy}</h4>
+          <h4># Infected: {infected}</h4>
+          <h4># Dead: {deaths}</h4>
+          <h4>Shop: {JSON.stringify(shop)}</h4> */}
         </Card>
       </Container>
     </>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from './GameView.module.css';
 import Menu from './Menu/Menu';
-import WorldMap from './WorldMap/WorldMap';
+import GameContainer from './GameContainer/GameContainer';
 
 export default () => {
   const [isInMenu, setMenuState] = useState(true);
@@ -21,7 +21,7 @@ export default () => {
     <div className={styles.gameContainer}>
       {isInMenu
         ? <Menu menuOptionHandler={gameStartHandler} />
-        : <WorldMap init={initGameData} />
+        : <GameContainer init={initGameData} />
       }
     </div>
   );

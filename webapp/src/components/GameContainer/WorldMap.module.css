@@ -1,0 +1,19 @@
+.MapDisplay {
+  width: 60%;
+  height: 60%;
+  top: -100px !important;
+  left: 0;
+}
+
+svg {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.marker:hover {
+  filter: brightness(0.5);
+}
+
+.country:hover {
+  opacity: 100%;
+}
