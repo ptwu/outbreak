@@ -3,14 +3,16 @@ open World
 open Country
 open Stats
 open Upgrades
+open Yojson.Basic.Util
+open Converter
 
 type t = { virus : Virus.t; world : World.t; shop : Upgrades.t }
 
 let init_state =
   {
     virus = Virus.init_virus;
-    world = World.init_world;
-    shop = Upgrades.init_upgrades;
+    world = Converter.world_from_json (Yojson.Basic.from_file "init_world.json");
+    shop = Converter.shop_from_json (Yojson.Basic.from_file "init_shop.json");
   }
 
 let step_cure_progress w =
