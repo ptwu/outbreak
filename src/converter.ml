@@ -57,9 +57,60 @@ let json_of_upgrade ({ id; name; offsets; cost } : Upgrades.upgrade) =
     "cost", int cost;
   ]
 
+let json_of_shop (shop : Upgrades.t) = list json_of_upgrade shop
+
 let json_of_game ({ virus; world; shop } : Engine.t) =
   dict [
     "virus", json_of_virus virus;
     "world", json_of_world world;
-    "shop", list json_of_upgrade shop
+    "shop", json_of_shop shop;
   ]
+
+let country_from_json json : Country.t =
+  {
+    id = ["id"] |> find json |> get_string;
+    info = {
+      name = ["info"; "name"] |> find json |> get_string;
+      temperature = ["info"; "temperature"] |> find json |> get_int;
+      health_care = ["info"; "health_care"] |> find json |> get_int;
+      density = ["info"; "density"] |> find json |> get_int;
+    };
+    population = {
+      healthy = ["population"] |> find json |> get_int;
+      infected = 0;
+      dead = 0;
+    };
+    borders = {
+      dry = ["borders"; "dry"] |> find json |> get_pair get_int (get_list get_string);
+      sea = ["borders"; "sea"] |> find json |> get_int;
+      air = ["borders"; "air"] |> find json |> get_int;
+    };
+  }
+
+let world_from_json json : World.t =
+  {
+    countries = ["countries"] |> find json |> get_list country_from_json;
+    cure_progress = ["cure_progress"] |> find json |> get_float;
+    cure_rate = ["cure_rate"] |> find json |> get_float;
+  }
+
+let stats_from_json json : Stats.t =
+  {
+    infectivity = ["infectivity"] |> find json |> get_int;
+    severity = ["severity"] |> find json |> get_int;
+    hality = ["hality"] |> find json |> get_int;
+    heat_res = ["heat_res"] |> find json |> get_int;
+    cold_res = ["cold_res"] |> find json |> get_int;
+    drug_res = ["cold_res"] |> find json |> get_int;
+    anti_cure = ["cold_res"] |> find json |> get_int;
+  }
+
+let upgrade_from_json json : Upgrades.upgrade =
+  {
+    id = ["id"] |> find json |> get_string;
+    name = ["name"] |> find json |> get_string;
+    offsets = ["offsets"] |> find json |> stats_from_json;
+    cost = ["infectivity"] |> find json |> get_int;
+  }
+
+let shop_from_json json : Upgrades.t = get_list upgrade_from_json json

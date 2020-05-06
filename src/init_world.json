@@ -1,30 +1,51 @@
 {
   "countries": [
     {
-      "country id": "greenland",
+      "id": "oceania",
       "info": {
-        "country name": "Greenland",
+        "name": "Oceania",
         "temperature": -100,
-        "healthcare": 50,
+        "health_care": 50,
         "density": 10
       },
-      "population": {
-        "healthy": 300000,
-        "infected": 0,
-        "dead": 0
-      },
+      "population": 10000000,
       "borders": {
-        "dry": [
-          50,
-          [
-            "us"
-          ]
-        ],
+        "dry": [50, []],
+        "sea": 50,
+        "air": 50
+      }
+    },
+    {
+      "id": "asia",
+      "info": {
+        "name": "Asia",
+        "temperature": 50,
+        "health_care": 50,
+        "density": 10
+      },
+      "population": 20000000,
+      "borders": {
+        "dry": [50, ["europe"]],
+        "sea": 50,
+        "air": 50
+      }
+    },
+    {
+      "id": "europe",
+      "info": {
+        "name": "Europe",
+        "temperature": 50,
+        "health_care": 50,
+        "density": 10
+      },
+      "population": 20000000,
+      "borders": {
+        "dry": [50, ["asia"]],
         "sea": 50,
         "air": 50
       }
     }
   ],
-  "cure progress": 0.0,
-  "cure rate": 0.001
+  "cure_progress": 0.0,
+  "cure_rate": 0.001
 }

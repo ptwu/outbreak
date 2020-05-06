@@ -4,8 +4,11 @@ type t = {
   cure_rate: float;
 }
 
-(** [cure_progress w] is the progress of the cure developing in [w] for the virus *)
+(** [cure_progress w] is the progress of cure development in [w] for the virus *)
 val cure_progress : t -> float
+
+(** [cure_rate w] is the rate of the cure development in [w] for the virus *)
+val cure_rate : t -> float
 
 val init_world : t
 
@@ -21,7 +24,3 @@ val world_dead_pop : t -> int
 val world_pop : t -> Country.population
 
 val score : t -> float
-
-val country_from_json : Yojson.Basic.t -> Country.t
-
-val world_from_json : Yojson.Basic.t -> t
