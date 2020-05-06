@@ -4,6 +4,7 @@ import {
   Card, Container,
 } from '@material-ui/core';
 import WorldMap from './WorldMap';
+import ReactTooltip from "react-tooltip";
 
 export default ({ init }) => {
   const [name, setName] = useState(init.virus.name);
@@ -42,12 +43,15 @@ export default ({ init }) => {
     return () => clearInterval(interval);
   }, []);
 
+  const [tooltipContent, setTooltipContent] = useState('');
+
   return (
     <>
       <Container maxWidth="xl">
         <Card className={styles.GameplayCard}>
           <h1>{name}</h1>
-          <WorldMap />
+          <WorldMap setContent={setTooltipContent} />
+          <ReactTooltip>{tooltipContent}</ReactTooltip>
           {/* <h4>Stats: {JSON.stringify(stats)}</h4>
           <h4>Upgrades: {JSON.stringify(upgrades)}</h4>
           <h4>Points: {points}</h4>
