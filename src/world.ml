@@ -51,6 +51,11 @@ let country_from_json json =
   let cbord = json |> member "borders" |> bordhelp in
   {id=cid; info=cinfo; population=cpop; borders=cbord}
 
+let world_from_json json =
+  let wcount = json |> member "countries" |> to_list |> List.map country_from_json in
+  let wcureprog = json |> member "cure progress" |> to_float in
+  let wcurerate = json |> member "cure rate" |> to_float in
+  {countries=wcount; cure_progress=wcureprog; cure_rate=wcurerate}
 
 (* Note: current max threshotd for cur  progress is hardcoded 100 *)
 let world_pop world = 
