@@ -25,15 +25,15 @@ let make_cure_progress_test
   name >:: (fun _ -> 
       assert_equal expected_output (World.cure_progress init))
 
-(** [make_world_pop_test name init expected_output] constructs an 
+(** [make_world_total_pop_test name init expected_output] constructs an 
     OUnit test named [name] that asserts the quality of [expected_output]
-    with [world_pop init]. *)
-let make_world_pop_test
+    with [world_total_pop init]. *)
+let make_world_total_pop_test
     (name : string)
     (init: World.t) 
     (expected_output : int) : test = 
   name >:: (fun _ -> 
-      assert_equal expected_output (world_pop init))
+      assert_equal expected_output (world_total_pop init))
 
 (** [make_world_healthy_pop_test name init expected_output] constructs an 
     OUnit test named [name] that asserts the quality of [expected_output]
