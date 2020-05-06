@@ -15,8 +15,8 @@ export default ({ menuOptionHandler }) => {
           <p>
             A CS 3110 Final Project by Enoch Chen, Peter Wu, and Shefali Janorkar.
           </p>
-          {isInInstructions ?
-            <div className={styles.InstructionsSection}>
+          {isInInstructions
+            ? (<div className={styles.InstructionsSection}>
               <h1>Instructions</h1>
               <p>You start by choosing a disease to play and picking a country
               to start in. Depending on the attributes of your disease, it
@@ -41,31 +41,32 @@ export default ({ menuOptionHandler }) => {
                 Start
               </Button>
             </div>
-            :
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <Grid container justify="center" spacing={8}>
-                  <Grid item>
-                    <Button
-                      variant="contained"
-                      className={styles.MainMenuButton}
-                      onClick={() => menuOptionHandler(false)}
-                    >
-                      Play
+            ) : (
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <Grid container justify="center" spacing={8}>
+                    <Grid item>
+                      <Button
+                        variant="contained"
+                        className={styles.MainMenuButton}
+                        onClick={() => menuOptionHandler(false)}
+                      >
+                        Play
                     </Button>
-                  </Grid>
-                  <Grid item>
-                    <Button
-                      variant="contained"
-                      className={styles.MainMenuButton}
-                      onClick={() => setInstructionsState(true)}
-                    >
-                      Instructions
+                    </Grid>
+                    <Grid item>
+                      <Button
+                        variant="contained"
+                        className={styles.MainMenuButton}
+                        onClick={() => setInstructionsState(true)}
+                      >
+                        Instructions
                     </Button>
+                    </Grid>
                   </Grid>
                 </Grid>
               </Grid>
-            </Grid>
+            )
           }
         </Container>
       </Card>

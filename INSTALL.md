@@ -5,6 +5,7 @@
 - OCaml 4.09.x
 - Node.js 10.x.x
 - npm 6.9.x
+- opium 0.18.0
 
 ### Installation Instructions
 
@@ -13,7 +14,9 @@
 1. You can install Node.js and npm by running `sudo apt update`, `sudo apt install nodejs`,  and `sudo apt install npm`. 
     - Use the commands `node -v` and `npm -v` to verify that your versions are up to date. (known bug for WSL on Windows: you may have to execute `sudonpm install -g npm` once or twice after installing it with `sudo apt install` if your version is way below 6.9.x.)
 
-All the OCaml packages should be included from the CS 3110 default installation environment. You should be good to go.
+2. Assuming you have the default CS 3110 OCaml `opam` installations, you still have to 
+install the opium package. 
+    - Use the command `opam install opium` to install this dependency for the backend.
 
 ### Building the System
 
@@ -24,3 +27,5 @@ All the OCaml packages should be included from the CS 3110 default installation 
 - `make play` starts the game from terminal mode.
 
 - `make test` evaluates the test cases in src/test.ml.
+
+- `make clean` cleans the OCaml temp files out of the project.
