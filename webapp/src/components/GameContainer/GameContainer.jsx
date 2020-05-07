@@ -22,9 +22,6 @@ export default ({ virusName }) => {
 
   const pickStartingCountryHandler = async (countryName) => {
     setStartingCountry(countryName);
-    await fetch('reset', {
-      method: 'POST'
-    }).then(() => { }, (err) => console.log(err));
     await fetch('/init', {
       method: 'POST',
       headers: {
@@ -53,11 +50,10 @@ export default ({ virusName }) => {
   useEffect(() => {
     if (startingCountry !== '') {
       const interval = setInterval(async () => {
-        await fetch('/step', { method: 'POST' }).then(() => { }, (err) => console.log(err));
-        await fetch('/game', { method: 'GET' })
-          .then((data) => data.json())
+        await fetch('/step/10', { method: 'POST' })
+          .then((data) => data.json(), (err) => console.log(err))
           .then(d => gameStateHandler(d));
-      }, 2000);
+      }, 1000);
       return () => clearInterval(interval);
     }
   }, [startingCountry]);
@@ -73,10 +69,10 @@ export default ({ virusName }) => {
             {startingCountry === ''
               ? <h2>Choose a continent to start your outbreak!</h2>
               : <h2>Your Outbreak started in {startingCountry}</h2>}
-            <WorldMap setContent={setTooltipContent} pickCountryHandler={pickStartingCountryHandler} />
+            <WorldMap setContent={setTooltipContent} pickCountryHandler={pickStartingCountryHandler} data={countryData} />
             <ReactTooltip>{tooltipContent}</ReactTooltip>
           </div>
-          <div className={styles.Points}>
+          {/* <div className={styles.Points}>
             <p>Stats: {JSON.stringify(stats)}</p>
             <p>Upgrades: {JSON.stringify(upgrades)}</p>
             <p>Points: {points}</p>
@@ -86,7 +82,7 @@ export default ({ virusName }) => {
             <p># Infected: {infected}</p>
             <p># Dead: {deaths}</p>
             <p>Shop: {JSON.stringify(shop)}</p>
-          </div>
+          </div> */}
         </Card>
       </Container>
     </>

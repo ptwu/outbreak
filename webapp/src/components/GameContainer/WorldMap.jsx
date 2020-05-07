@@ -8,7 +8,7 @@ import {
   Marker
 } from 'react-simple-maps';
 
-const WorldMap = ({ setContent, pickCountryHandler }) => {
+const WorldMap = ({ setContent, pickCountryHandler, data }) => {
   const [isInPickMode, setMode] = useState(true);
 
   const markers = [
@@ -43,14 +43,61 @@ const WorldMap = ({ setContent, pickCountryHandler }) => {
       coordinates: [134.7, -27]
     },
   ];
+
   const getContinentData = (id) => {
-    console.log(id);
-    return {
-      'name': 'South America',
-      'healthy': 1000000,
-      'infected': 1000,
-      'dead': 10
+    if (data !== undefined) {
+      const continent = data.find((a => a.info.name === id));
+      if (continent !== undefined) {
+        return {
+          'name': continent.info.name,
+          'healthy': continent.population.healthy,
+          'infected': continent.population.infected,
+          'dead': continent.population.dead
+        }
+      } else {
+        return {
+          'name': id,
+          'healthy': 'Loading...',
+          'infected': 'Loading...',
+          'dead': 'Loading...'
+        }
+      }
+    } else {
+      return {
+        'name': id,
+        'healthy': 'Loading...',
+        'infected': 'Loading...',
+        'dead': 'Loading...'
+      }
     }
+  }
+
+  const getContinentColor = (id) => {
+    if (data !== undefined) {
+      const continent = data.find((a => a.info.name === id));
+      if (continent !== undefined) {
+        const { population } = continent;
+        const { healthy, infected, dead } = population;
+        const percentage = healthy / (healthy + infected + dead);
+        const red = Math.floor(255 - (255 * percentage));
+        const green = Math.floor(255 * percentage);
+        const blue = 0
+        return rgbToHex(red, green, blue);
+      } else {
+        return '#999999';
+      }
+    } else {
+      return '#999999';
+    }
+  }
+
+  function componentToHex(c) {
+    var hex = c.toString(16);
+    return hex.length == 1 ? "0" + hex : hex;
+  }
+
+  function rgbToHex(r, g, b) {
+    return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
   }
 
   if (isInPickMode) {
@@ -137,29 +184,8 @@ const WorldMap = ({ setContent, pickCountryHandler }) => {
           {({ geographies, projection }) =>
             geographies.map((geo, i) => {
               if (geo.properties.NAME !== 'Antarctica') {
-                let fillColor = '#999999';
-                switch (geo.properties.CONTINENT) {
-                  case 'North America':
-                    fillColor = '#999999';
-                    break;
-                  case 'South America':
-                    fillColor = '#d1a7a7';
-                    break;
-                  case 'Africa':
-                    fillColor = '#999999';
-                    break;
-                  case 'Europe':
-                    fillColor = '#999999';
-                    break;
-                  case 'Asia':
-                    fillColor = '#999999';
-                    break;
-                  case 'Oceania':
-                    fillColor = '#999999';
-                    break;
-                  default:
-                    fillColor = '#999999';
-                }
+                let fillColor = getContinentColor(geo.properties.CONTINENT);
+
                 return (
                   <Geography
                     className={styles.country}
