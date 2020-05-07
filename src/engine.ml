@@ -33,7 +33,7 @@ let ( /./ ) a b = b /. a
 (** [step_kill v w] is the resulting world state after one tick of death
     simulation has passed for all countries in [st]. *)
 let step_kill { hality } w =
-  let chance = hality |> float_of_int |> ( /./ ) 100.0 in
+  let chance = hality |> ( /./ ) 100.0 in
   let round n =
     n |> float_of_int |> ( *. ) chance |> ceil |> int_of_float
   in
@@ -43,7 +43,7 @@ let step_kill { hality } w =
 (** [step_infect v w] is the resulting world state after one tick of infection
     simulation has passed for all countries in [st]. *)
 let step_infect { infectivity } w =
-  let chance = infectivity |> float_of_int |> ( /./ ) 100.0 in
+  let chance = infectivity |> ( /./ ) 100.0 in
   let round n =
     n |> float_of_int |> ( *. ) chance |> ceil |> int_of_float
   in
@@ -62,10 +62,10 @@ let step_spread { infectivity } w =
     in
     let bad_neighbors = List.fold_left helper 0 countries in
     (* if bordering countries are infected, then land infection more likely *)
-    Random.int 200 + infectivity < bad_neighbors * chance
+    Random.float 200. +. infectivity < float_of_int bad_neighbors *. chance
   in
-  let roll_sea { sea } = Random.int 200 + infectivity < sea in
-  let roll_air { air } = Random.int 200 + infectivity < air in
+  let roll_sea { sea } = Random.float 200. +. infectivity < sea in
+  let roll_air { air } = Random.float 200. +. infectivity < air in
   let spread roll c = if roll c.borders then infect c 1 else c in
   {
     w with
@@ -78,14 +78,18 @@ let step_spread { infectivity } w =
 
 (** [step_once st] is the resulting world state after one tick of
     simulation has passed for [st]. *)
-let step_once ({ virus; world } as st) =
+let step_once ({ virus; world; status } as st) =
   let { stats } = virus in
-  {
-    st with
-    world =
-      world |> step_cure_progress |> step_cure_rate |> step_kill stats
-      |> step_infect stats |> step_spread stats;
-  } |> update_status
+  match status with
+  | Init | Done _ -> st
+  | Playing -> 
+    {
+      st with
+      world =
+        world |> step_cure_progress |> step_cure_rate |> step_kill stats
+        |> step_infect stats |> step_spread stats;
+    } |> update_status
+
 
 let rec step n st = if n <= 0 then st else st |> step_once |> step (n - 1)
 

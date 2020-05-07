@@ -29,13 +29,13 @@ let json_of_population ({ healthy; infected; dead } : Country.population) =
 
 let json_of_stats ({ infectivity; severity; hality; heat_res; cold_res; drug_res; anti_cure } : Stats.t) = 
   dict [
-    "infectivity", int infectivity;
-    "severity", int severity;
-    "hality", int hality;
-    "heat_res", int heat_res;
-    "cold_res", int cold_res;
-    "drug_res", int drug_res;
-    "anti_cure", int anti_cure;
+    "infectivity", float infectivity;
+    "severity", float severity;
+    "hality", float hality;
+    "heat_res", float heat_res;
+    "cold_res", float cold_res;
+    "drug_res", float drug_res;
+    "anti_cure", float anti_cure;
   ]
 
 let json_of_virus ({ name; stats; upgrades; points } : Virus.t) =
@@ -96,9 +96,9 @@ let country_from_json json : Country.t =
       dead = 0;
     };
     borders = {
-      dry = ["borders"; "dry"] |> find json |> get_pair get_int (get_list get_string);
-      sea = ["borders"; "sea"] |> find json |> get_int;
-      air = ["borders"; "air"] |> find json |> get_int;
+      dry = ["borders"; "dry"] |> find json |> get_pair get_float (get_list get_string);
+      sea = ["borders"; "sea"] |> find json |> get_float;
+      air = ["borders"; "air"] |> find json |> get_float;
     };
   }
 
@@ -111,13 +111,13 @@ let world_from_json json : World.t =
 
 let stats_from_json json : Stats.t =
   {
-    infectivity = ["infectivity"] |> find json |> get_int;
-    severity = ["severity"] |> find json |> get_int;
-    hality = ["hality"] |> find json |> get_int;
-    heat_res = ["heat_res"] |> find json |> get_int;
-    cold_res = ["cold_res"] |> find json |> get_int;
-    drug_res = ["drug_res"] |> find json |> get_int;
-    anti_cure = ["anti_cure"] |> find json |> get_int;
+    infectivity = ["infectivity"] |> find json |> get_float;
+    severity = ["severity"] |> find json |> get_float;
+    hality = ["hality"] |> find json |> get_float;
+    heat_res = ["heat_res"] |> find json |> get_float;
+    cold_res = ["cold_res"] |> find json |> get_float;
+    drug_res = ["drug_res"] |> find json |> get_float;
+    anti_cure = ["anti_cure"] |> find json |> get_float;
   }
 
 let upgrade_from_json json : Upgrades.upgrade =

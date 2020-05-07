@@ -14,7 +14,7 @@ type border = DRY | SEA | AIR
 type population = { healthy : int; infected : int; dead : int }
 
 (** Closed borders = 0 *)
-type accessibility = { dry : int * country_id list; sea : int; air : int }
+type accessibility = { dry : float * country_id list; sea : float; air : float }
 
 (** "Main" mutable type representing a country *)
 type t = {
@@ -23,20 +23,6 @@ type t = {
   population : population;
   borders : accessibility;
 }
-
-let example =
-  {
-    id = "greenland";
-    info =
-      {
-        name = "Greenland";
-        temperature = -100;
-        health_care = 50;
-        density = 10;
-      };
-    population = { healthy = 300000; infected = 0; dead = 0 };
-    borders = { dry = (50, [ "us" ]); sea = 50; air = 50 };
-  }
 
 let id c = c.id
 
@@ -68,9 +54,9 @@ let close_border c b =
     c with
     borders =
       ( match b with
-        | DRY -> { c.borders with dry = (0, []) }
-        | SEA -> { c.borders with sea = 0 }
-        | AIR -> { c.borders with air = 0 } );
+        | DRY -> { c.borders with dry = (0., []) }
+        | SEA -> { c.borders with sea = 0. }
+        | AIR -> { c.borders with air = 0. } );
   }
 
 let infect c n =

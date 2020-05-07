@@ -13,18 +13,17 @@ let init_virus =
     name = "Corona";
     stats =
       {
-        infectivity = 1;
-        severity = 0;
-        hality = 0;
-        heat_res = 0;
-        cold_res = 0;
-        drug_res = 0;
-        anti_cure = 0;
+        infectivity = 0.000001;
+        severity = 0.;
+        hality = 0.;
+        heat_res = 0.;
+        cold_res = 0.;
+        drug_res = 0.;
+        anti_cure = 0.;
       };
     upgrades = [];
     points = 0;
   }
-
 
 let infectivity v = v.stats.infectivity
 
@@ -50,13 +49,13 @@ let upgrade (v : t) (u : upgrade) : t =
     v with
     stats =
       {
-        infectivity = vs.infectivity + us.infectivity;
-        severity = vs.severity + us.severity;
-        hality = vs.hality + us.hality;
-        heat_res = vs.heat_res + us.heat_res;
-        cold_res = vs.cold_res + us.cold_res;
-        drug_res = vs.drug_res + us.drug_res;
-        anti_cure = vs.anti_cure + us.anti_cure;
+        infectivity = vs.infectivity +. us.infectivity;
+        severity = vs.severity +. us.severity;
+        hality = vs.hality +. us.hality;
+        heat_res = vs.heat_res +. us.heat_res;
+        cold_res = vs.cold_res +. us.cold_res;
+        drug_res = vs.drug_res +. us.drug_res;
+        anti_cure = vs.anti_cure +. us.anti_cure;
       };
     upgrades = u.id :: v.upgrades;
     points = v.points - u.cost;

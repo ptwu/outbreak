@@ -55,7 +55,7 @@
       "id": "cough",
       "name": "Symptom: Coughing",
       "offsets": {
-        "infectivity": 2,
+        "infectivity": 0.001,
         "severity": 0,
         "hality": 0,
         "heat_res": 0,
@@ -70,8 +70,8 @@
       "name": "Symptom: Organ Failure",
       "offsets": {
         "infectivity": 0,
-        "severity": 50,
-        "hality": 15,
+        "severity": 0.01,
+        "hality": 0.001,
         "heat_res": 0,
         "cold_res": 0,
         "drug_res": 0,

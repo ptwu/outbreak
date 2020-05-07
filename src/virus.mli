@@ -13,19 +13,19 @@ type t = {
 val init_virus : t
 
 (** [infectivity v] is the infectivity stat of the virus [v] *)
-val infectivity : t -> int
+val infectivity : t -> float
 
-val severity : t -> int
+val severity : t -> float
 
-val hality : t -> int
+val hality : t -> float
 
-val heat_res : t -> int
+val heat_res : t -> float
 
-val cold_res : t -> int
+val cold_res : t -> float
 
-val drug_res : t -> int
+val drug_res : t -> float
 
-val anti_cure : t -> int
+val anti_cure : t -> float
 
 val add_points : int -> t -> t
 

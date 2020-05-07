@@ -1,9 +1,9 @@
 type t = {
-  infectivity : int;
-  severity : int;
-  hality : int;
-  heat_res : int;
-  cold_res : int;
-  drug_res : int;
-  anti_cure : int;
+  infectivity : float;
+  severity : float;
+  hality : float;
+  heat_res : float;
+  cold_res : float;
+  drug_res : float;
+  anti_cure : float;
 }
