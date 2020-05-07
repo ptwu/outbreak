@@ -1,6 +1,7 @@
 open Engine
 open Command
 open Upgrades
+open Converter
 
 (** [print_game_msg msg] prints an unformatted game message [msg]. *)
 let print_game_msg = ANSITerminal.print_string []
@@ -15,7 +16,7 @@ let print_success = ANSITerminal.print_string [ ANSITerminal.green ]
 let print_error = ANSITerminal.print_string [ ANSITerminal.red ]
 
 let rec repl state =
-  state |> status |> print_game_msg;
+  state |> status_str |> print_game_msg;
   try
     match read_line () with
     | exception End_of_file -> ()
@@ -43,7 +44,13 @@ let rec repl state =
 let play_game =
   (* let adv = Adventure.from_json (Yojson.Basic.from_file f) in
      let st = State.init_state adv in *)
-  repl Engine.init_state
+  repl 
+  {
+    virus = Virus.init_virus;
+    world = "data/init_world.json" |> open_in |> Ezjsonm.from_channel |> world_from_json;
+    shop = "data/init_shop.json" |> open_in |> Ezjsonm.from_channel |> shop_from_json;
+    status = Init;
+  }
 
 (** [main ()] prompts for the game to play, then starts it. *)
 let main () =

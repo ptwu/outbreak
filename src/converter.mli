@@ -1,3 +1,7 @@
+type init_req = { name : string; starter : string; }
+
+val init_req_from_json : Ezjsonm.value -> init_req
+
 val json_of_info : Country.info -> Ezjsonm.t
 
 val json_of_population : Country.population -> Ezjsonm.t
@@ -23,3 +27,5 @@ val stats_from_json : Ezjsonm.value -> Stats.t
 val upgrade_from_json : Ezjsonm.value -> Upgrades.upgrade
 
 val shop_from_json : Ezjsonm.value -> Upgrades.t
+
+val game_from_json : Ezjsonm.value -> Engine.t

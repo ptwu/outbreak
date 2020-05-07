@@ -11,7 +11,7 @@ type border = DRY | SEA | AIR
 
 type population = { healthy : int; infected : int; dead : int }
 
-type accessibility = { dry : int * country_id list; sea : int; air : int }
+type accessibility = { dry : float * country_id list; sea : float; air : float }
 
 type t = {
   id : country_id;
@@ -38,11 +38,11 @@ val infected : t -> int
 
 val dead : t -> int
 
-val land_access : t -> int * country_id list
+val land_access : t -> float * country_id list
 
-val sea_access : t -> int
+val sea_access : t -> float
 
-val air_access : t -> int
+val air_access : t -> float
 
 (** [close_border c b] is the resulting country representation type after the
     border variant (either [DRY], [SEA], or [AIR]) has been closed *)

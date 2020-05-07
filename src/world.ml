@@ -1,27 +1,9 @@
 open Country
-open Yojson.Basic.Util
 
 type t = {
   countries: Country.t list;
   cure_progress: float;
   cure_rate: float;
-}
-
-let init_world = {
-  countries = [{
-      id = "greenland";
-      info =
-        {
-          name = "Greenland";
-          temperature = -100;
-          health_care = 50;
-          density = 10;
-        };
-      population = { healthy = 300000; infected = 0; dead = 0 };
-      borders = { dry = (50, [ "us" ]); sea = 50; air = 50 };
-    }];
-  cure_progress = 0.0;
-  cure_rate = 0.001;
 }
 
 let cure_rate world =
@@ -47,6 +29,13 @@ let world_pop w = {
   infected = world_infected_pop w;
   dead = world_dead_pop w;
 }
+
+let infect_country (id : country_id) (n : int) ({ countries } as w) =
+  let inf c = if c.id = id then infect c n else c in
+  {
+    w with
+    countries = List.map inf countries
+  }
 
 let score w =
   float (world_infected_pop w + (2 * world_dead_pop w)) -. cure_progress w
