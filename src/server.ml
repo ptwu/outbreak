@@ -31,6 +31,11 @@ let handle_init_body body =
 let init req =
   req |> App.json_of_body_exn |> Lwt.map handle_init_body
 
+let purchase req =
+  let id = "id" |> param req in
+  game := Engine.purchase id !game;
+  game |> game_response |> respond'
+
 let step req =
   game := Engine.step 1 !game;
   game |> game_response |> respond'
@@ -48,6 +53,7 @@ let app : Opium.App.t =
   |> get "/game" game_state
   |> post "/reset" reset
   |> post "/init" init
+  |> post "/purchase/:id" purchase
   |> post "/step" step
   |> post "/step/:n" step_n
   |> not_found default

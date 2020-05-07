@@ -9,7 +9,7 @@ type status = Init | Playing | Done of bool * float
 type t = { virus : Virus.t; world : World.t; shop : Upgrades.t; status : status }
 
 let step_cure_progress w =
-  { w with cure_progress = max 100.0 w.cure_progress +. w.cure_rate }
+  { w with cure_progress = min 100.0 (w.cure_progress +. w.cure_rate) }
 
 let step_cure_rate w = { w with cure_rate = w.cure_rate *. 1.01 }
 
@@ -79,25 +79,37 @@ let step_spread { infectivity } w =
 (** [step_once st] is the resulting world state after one tick of
     simulation has passed for [st]. *)
 let step_once ({ virus; world; status } as st) =
-  let { stats } = virus in
   match status with
   | Init | Done _ -> st
   | Playing -> 
+    let { stats } = virus in
+    let world' =
+      world |> step_cure_progress |> step_cure_rate |> step_kill stats
+      |> step_infect stats |> step_spread stats
+    in
+    let points =
+      float_of_int (world_infected_pop world' - world_infected_pop world)
+      /. float_of_int (world_total_pop world) *. 20_000_000. +.
+      float_of_int (world_dead_pop world' - world_dead_pop world)
+      /. float_of_int (world_total_pop world) *. 10_000_000. |> int_of_float
+    in
     {
       st with
-      world =
-        world |> step_cure_progress |> step_cure_rate |> step_kill stats
-        |> step_infect stats |> step_spread stats;
+      virus = virus |> add_points (max 0 points);
+      world = world';
     } |> update_status
 
 
 let rec step n st = if n <= 0 then st else st |> step_once |> step (n - 1)
 
-let purchase name ({ virus; shop; } as st) =
-  let comp { id } = id = name in
-  match List.find_opt comp shop with
-  | None -> st
-  | Some u -> { st with virus = upgrade virus u; }
+let purchase name ({ virus; shop; status } as st) =
+  match status with
+  | Init | Done _ -> st
+  | Playing -> 
+    let comp { id } = id = name in
+    match List.find_opt comp shop with
+    | None -> st
+    | Some u -> { st with virus = upgrade virus u; }
 
 let init (name : string) (cid : country_id) ({ virus; world; status } as st : t) =
   match status with
