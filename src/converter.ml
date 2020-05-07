@@ -1,5 +1,17 @@
 open Ezjsonm
 
+type init_req =
+  {
+    name : string;
+    starter : string;
+  }
+
+let init_req_from_json json =
+  {
+    name = ["name"] |> find json |> get_string;
+    starter = ["starter"] |> find json |> get_string;
+  }
+
 let json_of_info ({ name; temperature; health_care; density } : Country.info) = 
   dict [
     "name", string name;

@@ -44,9 +44,6 @@ let get_drug v = v.drug_res
 
 let add_points p v = { v with points = v.points + p }
 
-(** [upgrade u v] is an upgraded virus representing the new stats
-    of a virus if it takes a record of attribute offsets containing offset
-    values of certain stats *)
 let upgrade (v : t) (u : upgrade) : t =
   let us, vs = (u.offsets, v.stats) in
   {
@@ -63,4 +60,10 @@ let upgrade (v : t) (u : upgrade) : t =
       };
     upgrades = u.id :: v.upgrades;
     points = v.points - u.cost;
+  }
+
+let change_name (n : string) (v : t) : t =
+  {
+    v with
+    name = n
   }

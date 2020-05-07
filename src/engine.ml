@@ -4,12 +4,28 @@ open Country
 open Stats
 open Upgrades
 
-type t = { virus : Virus.t; world : World.t; shop : Upgrades.t }
+type status = Init | Playing | Done of bool * float
+
+type t = { virus : Virus.t; world : World.t; shop : Upgrades.t; status : status }
 
 let step_cure_progress w =
-  { w with cure_progress = w.cure_progress +. w.cure_rate }
+  { w with cure_progress = max 100.0 w.cure_progress +. w.cure_rate }
 
 let step_cure_rate w = { w with cure_rate = w.cure_rate *. 1.01 }
+
+let update_status ({ world } as st) =
+  let status =
+    if world_healthy_pop world = 0 && world_infected_pop world = 0 then
+      Done (true, score world)
+    else if cure_progress world >= 100.0 then
+      Done (false, score world)
+    else
+      Playing
+  in
+  {
+    st with
+    status = status;
+  }
 
 (** [(/./) a b] is the floating division of b by a. *)
 let ( /./ ) a b = b /. a
@@ -62,25 +78,31 @@ let step_spread { infectivity } w =
 
 (** [step_once st] is the resulting world state after one tick of
     simulation has passed for [st]. *)
-let step_once { virus; world; shop } =
+let step_once ({ virus; world } as st) =
   let { stats } = virus in
   {
-    virus;
+    st with
     world =
       world |> step_cure_progress |> step_cure_rate |> step_kill stats
       |> step_infect stats |> step_spread stats;
-    shop;
-  }
+  } |> update_status
 
 let rec step n st = if n <= 0 then st else st |> step_once |> step (n - 1)
 
-let purchase name ({ virus; world; shop } as default) =
+let purchase name ({ virus; shop; } as st) =
   let comp { id } = id = name in
   match List.find_opt comp shop with
-  | None -> default
-  | Some u -> { virus = upgrade virus u; world; shop }
+  | None -> st
+  | Some u -> { st with virus = upgrade virus u; }
 
-let status { world } =
+let init (name : string) (cid : country_id) ({ virus; world } as st : t) =
+  {
+    st with
+    virus = change_name name virus;
+    world = infect_country cid 1 world;
+  }
+
+let status_str { world } =
   Printf.sprintf
     "Healthy: %d\nInfected: %d\nDead: %d\nCure Progress: %f out of %d\n\n"
     (world_healthy_pop world)

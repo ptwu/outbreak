@@ -29,7 +29,10 @@ val anti_cure : t -> int
 
 val add_points : int -> t -> t
 
-(** [upgrade upg_offsets v] takes a current virus [v] and applies a virus
-    upgrade stat vector [upg_offsets] to it, returning the resulting
-    virus with the [upg_offsets] added to [v] *)
+(** [upgrade u v] is an upgraded virus representing the new stats
+    of a virus if it takes a record of attribute offsets containing offset
+    values of certain stats *)
 val upgrade : t -> upgrade -> t
+
+(** [change_name n v] is [v] with name [n]. *)
+val change_name : string -> t -> t
