@@ -20,11 +20,23 @@ export default ({ virusName }) => {
   const [deaths, setDeaths] = useState(0);
   const [shop, setShop] = useState([]);
 
-  const pickStartingCountryHandler = (countryName) => {
+  const pickStartingCountryHandler = async (countryName) => {
     setStartingCountry(countryName);
+    await fetch('reset', {
+      method: 'POST'
+    }).then(() => { }, (err) => console.log(err));
+    await fetch('/init', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify({ name: virusName, starter: countryName })
+    })
+      .then(() => { }, (err) => console.log(err));
   }
 
   const gameStateHandler = (data) => {
+    console.log(data);
     const { virus, world, shop } = data;
     setName(virus.name);
     setStats(virus.stats);
@@ -48,7 +60,7 @@ export default ({ virusName }) => {
       }, 2000);
       return () => clearInterval(interval);
     }
-  }, []);
+  }, [startingCountry]);
 
   const [tooltipContent, setTooltipContent] = useState('');
 
@@ -58,10 +70,13 @@ export default ({ virusName }) => {
         <Card className={styles.GameplayCard}>
           <div className={styles.WorldMapContainer}>
             <h1>{name}</h1>
+            {startingCountry === ''
+              ? <h2>Choose a continent to start your outbreak!</h2>
+              : <h2>Your Outbreak started in {startingCountry}</h2>}
             <WorldMap setContent={setTooltipContent} pickCountryHandler={pickStartingCountryHandler} />
             <ReactTooltip>{tooltipContent}</ReactTooltip>
           </div>
-          {/* <div className={styles.Points}>
+          <div className={styles.Points}>
             <p>Stats: {JSON.stringify(stats)}</p>
             <p>Upgrades: {JSON.stringify(upgrades)}</p>
             <p>Points: {points}</p>
@@ -71,7 +86,7 @@ export default ({ virusName }) => {
             <p># Infected: {infected}</p>
             <p># Dead: {deaths}</p>
             <p>Shop: {JSON.stringify(shop)}</p>
-          </div> */}
+          </div>
         </Card>
       </Container>
     </>

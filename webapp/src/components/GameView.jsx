@@ -7,7 +7,7 @@ export default () => {
   const [isInMenu, setMenuState] = useState(true);
   const [virusName, setVirusName] = useState('');
 
-  const gameStartHandler = async (gameNotYetStarted, name, startingCountry) => {
+  const gameStartHandler = async (gameNotYetStarted, name) => {
     if (!gameNotYetStarted) {
       setVirusName(name);
       setMenuState(false);
@@ -18,7 +18,7 @@ export default () => {
     <div className={styles.gameContainer}>
       {isInMenu
         ? <Menu menuOptionHandler={gameStartHandler} />
-        : <GameContainer init={virusName} />
+        : <GameContainer virusName={virusName} />
       }
     </div>
   );
