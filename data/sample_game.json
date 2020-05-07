@@ -9,7 +9,7 @@
           "health_care": 50,
           "density": 10
         },
-        "population": 10000000,
+        "population": 200,
         "borders": {
           "dry": [50, []],
           "sea": 50,
@@ -24,7 +24,7 @@
           "health_care": 50,
           "density": 10
         },
-        "population": 20000000,
+        "population": 200,
         "borders": {
           "dry": [50, ["europe"]],
           "sea": 50,
@@ -39,9 +39,54 @@
           "health_care": 50,
           "density": 10
         },
-        "population": 20000000,
+        "population": 200,
         "borders": {
           "dry": [50, ["asia"]],
+          "sea": 50,
+          "air": 50
+        }
+      },
+      {
+        "id": "africa",
+        "info": {
+          "name": "Africa",
+          "temperature": 50,
+          "health_care": 50,
+          "density": 10
+        },
+        "population": 200,
+        "borders": {
+          "dry": [50, ["asia"]],
+          "sea": 50,
+          "air": 50
+        }
+      },
+      {
+        "id": "north_america",
+        "info": {
+          "name": "North America",
+          "temperature": 50,
+          "health_care": 50,
+          "density": 10
+        },
+        "population": 200,
+        "borders": {
+          "dry": [50, ["south_america"]],
+          "sea": 50,
+          "air": 50
+        }
+      },
+      {
+        "id": "south_america",
+        "info": {
+          "name": "South America",
+          "temperature": 50,
+          "health_care": 50,
+          "density": 10
+        },
+        "population": 200,
+        "borders": {
+          "dry": [50, ["north_america"]],
           "sea": 50,
           "air": 50
         }
