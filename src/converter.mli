@@ -27,3 +27,5 @@ val stats_from_json : Ezjsonm.value -> Stats.t
 val upgrade_from_json : Ezjsonm.value -> Upgrades.upgrade
 
 val shop_from_json : Ezjsonm.value -> Upgrades.t
+
+val game_from_json : Ezjsonm.value -> Engine.t

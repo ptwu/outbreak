@@ -62,10 +62,10 @@ let step_spread { infectivity } w =
     in
     let bad_neighbors = List.fold_left helper 0 countries in
     (* if bordering countries are infected, then land infection more likely *)
-    Random.int 100 + infectivity < bad_neighbors * chance
+    Random.int 200 + infectivity < bad_neighbors * chance
   in
-  let roll_sea { sea } = Random.int 100 + infectivity < sea in
-  let roll_air { air } = Random.int 100 + infectivity < air in
+  let roll_sea { sea } = Random.int 200 + infectivity < sea in
+  let roll_air { air } = Random.int 200 + infectivity < air in
   let spread roll c = if roll c.borders then infect c 1 else c in
   {
     w with
@@ -95,12 +95,16 @@ let purchase name ({ virus; shop; } as st) =
   | None -> st
   | Some u -> { st with virus = upgrade virus u; }
 
-let init (name : string) (cid : country_id) ({ virus; world } as st : t) =
-  {
-    st with
-    virus = change_name name virus;
-    world = infect_country cid 1 world;
-  }
+let init (name : string) (cid : country_id) ({ virus; world; status } as st : t) =
+  match status with
+  | Init ->
+    {
+      st with
+      virus = change_name name virus;
+      world = infect_country cid 1 world;
+      status = Playing
+    }
+  | Playing | Done _ -> st
 
 let status_str { world } =
   Printf.sprintf

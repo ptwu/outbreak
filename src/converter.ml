@@ -71,11 +71,14 @@ let json_of_upgrade ({ id; name; offsets; cost } : Upgrades.upgrade) =
 
 let json_of_shop (shop : Upgrades.t) = list json_of_upgrade shop
 
-let json_of_game ({ virus; world; shop } : Engine.t) =
+let json_of_game ({ virus; world; shop; status } : Engine.t) =
   dict [
     "virus", json_of_virus virus;
     "world", json_of_world world;
     "shop", json_of_shop shop;
+    "score", match status with
+    | Init | Playing -> float 0.0
+    | Done (_, s) -> float s
   ]
 
 let country_from_json json : Country.t =
@@ -126,3 +129,11 @@ let upgrade_from_json json : Upgrades.upgrade =
   }
 
 let shop_from_json json : Upgrades.t = get_list upgrade_from_json json
+
+let game_from_json json : Engine.t =
+  {
+    virus = Virus.init_virus;
+    world = ["world"] |> find json |> world_from_json;
+    shop = ["shop"] |> find json |> shop_from_json;
+    status = Init;
+  }
