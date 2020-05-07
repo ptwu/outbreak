@@ -1,8 +1,19 @@
 .GameplayCard {
   padding-bottom: 42px !important;
-  height: 85vh;
+  max-height: 80vh;
 }
 
 h1 {
   margin-bottom: 0;
+}
+
+.WorldMapContainer {
+  height: 85vh;
+}
+
+.Points {
+  position: absolute;
+  top: 50vh;
+  left:0;
+  text-align: left;
 }
