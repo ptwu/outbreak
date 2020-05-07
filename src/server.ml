@@ -1,7 +1,16 @@
 open Opium.Std
 open Converter
 
-let game : Engine.t ref = ref Engine.init_state
+(** [init_state] is an Engine type that represents the initial state of
+    an Outbreak game. *)
+let init_state : Engine.t =
+  {
+    virus = Virus.init_virus;
+    world = "data/init_world.json" |> open_in |> Ezjsonm.from_channel |> world_from_json;
+    shop = "data/init_shop.json" |> open_in |> Ezjsonm.from_channel |> shop_from_json;
+  }
+
+let game : Engine.t ref = ref init_state
 
 let print_param =
   put "/hello/:name" (fun req ->

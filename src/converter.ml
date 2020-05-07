@@ -101,8 +101,8 @@ let stats_from_json json : Stats.t =
     hality = ["hality"] |> find json |> get_int;
     heat_res = ["heat_res"] |> find json |> get_int;
     cold_res = ["cold_res"] |> find json |> get_int;
-    drug_res = ["cold_res"] |> find json |> get_int;
-    anti_cure = ["cold_res"] |> find json |> get_int;
+    drug_res = ["drug_res"] |> find json |> get_int;
+    anti_cure = ["anti_cure"] |> find json |> get_int;
   }
 
 let upgrade_from_json json : Upgrades.upgrade =
@@ -110,7 +110,7 @@ let upgrade_from_json json : Upgrades.upgrade =
     id = ["id"] |> find json |> get_string;
     name = ["name"] |> find json |> get_string;
     offsets = ["offsets"] |> find json |> stats_from_json;
-    cost = ["infectivity"] |> find json |> get_int;
+    cost = ["cost"] |> find json |> get_int;
   }
 
 let shop_from_json json : Upgrades.t = get_list upgrade_from_json json

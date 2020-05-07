@@ -5,10 +5,6 @@ type t = {
   shop : Upgrades.t
 }
 
-(** [init_state] is an Engine type that represents the initial state of
-    an Outbreak game. *)
-val init_state : t
-
 (** [step l st] is the resulting game state after [l] ticks have passed from [st]. *)
 val step : int -> t -> t
 
