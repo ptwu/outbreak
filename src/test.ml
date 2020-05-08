@@ -3,7 +3,9 @@
     virus, world, and upgrade values. Once we had our json parser and basic
     functionality, we moved on from a glass box testing approach to a more black
     box testing approach, where we used external world, virus, and upgrade
-    values. *)
+    values.
+    In addition, much of our testing later in development was through playtesting,
+    especially for the functionality of server.ml, engine.ml, and the webapp. *)
 
 open OUnit2
 open Virus
