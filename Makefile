@@ -19,8 +19,10 @@ test:
 	$(OCAMLBUILD) src/$(TEST) && ./$(TEST) -runner sequential
 
 run:
-	$(OCAMLBUILD) src/$(MAIN)
 	$(OCAMLBUILD) src/$(SERVER) && ./$(SERVER)& cd webapp; npm start
+
+webapp: build
+	cd webapp; npm start
 
 play:
 	$(OCAMLBUILD) src/$(MAIN) && ./$(MAIN)
