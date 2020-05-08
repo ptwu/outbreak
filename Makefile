@@ -21,7 +21,8 @@ test:
 run:
 	$(OCAMLBUILD) src/$(SERVER) && ./$(SERVER)& cd webapp; npm start
 
-webapp: build
+.PHONY: webapp
+webapp:
 	cd webapp; npm start
 
 play:
