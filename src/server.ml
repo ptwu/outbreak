@@ -1,6 +1,8 @@
 open Opium.Std
 open Converter
 
+let port = 3000
+
 (** [init_state] is an Engine type that represents the initial state of
     an Outbreak game. *)
 let init_state : Engine.t =
@@ -49,7 +51,9 @@ let default req =
   `Json Ezjsonm.(dict [("message", string "Route not found")]) |> respond'
 
 let app : Opium.App.t =
-  App.empty |> App.cmd_name "#outbreak;; backend"
+  App.empty
+  |> App.cmd_name "#outbreak;; backend"
+  |> App.port port
   |> get "/game" game_state
   |> post "/reset" reset
   |> post "/init" init
@@ -60,6 +64,8 @@ let app : Opium.App.t =
 
 let _ =
   match App.run_command' app with
-  | `Ok app -> Lwt_main.run app
+  | `Ok app ->
+    Printf.sprintf "starting #outbreak;; server on port %i \n" port |> print_endline;
+    Lwt_main.run app
   | `Error -> exit 1
   | `Not_running -> exit 0
