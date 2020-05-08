@@ -1,7 +1,5 @@
 type country_id = string
 
-(** immutable info
-    note for temperature: 0 is "neutral", negative is cold, positive is hot *)
 type info = {
   name : string;
   temperature : int;
@@ -13,10 +11,8 @@ type border = DRY | SEA | AIR
 
 type population = { healthy : int; infected : int; dead : int }
 
-(** Closed borders = 0 *)
 type accessibility = { dry : float * country_id list; sea : float; air : float }
 
-(** "Main" mutable type representing a country *)
 type t = {
   id : country_id;
   info : info;
@@ -59,6 +55,7 @@ let close_border c b =
         | AIR -> { c.borders with air = 0. } );
   }
 
+
 let infect c n =
   let n' = min n c.population.healthy in
   {
@@ -71,8 +68,6 @@ let infect c n =
       };
   }
 
-(* Right now this is basically [infect] but reversed.
-   We might want to change it later tho *)
 let recover c n =
   let n' = min n c.population.infected in
   {
