@@ -5,10 +5,29 @@
     functionality, we moved on from a glass box testing approach to a more black
     box testing approach, where we used world, virus, and upgrade values with
     more abstract functions that would be directly used on them during the game.
-
     In addition, much of our testing later in development was through
     playtesting, especially for the functionality of server.ml, engine.ml, and
-    the webapp. *)
+    the webapp.
+
+    Modules tested by OUnit:
+      country.ml
+      virus.ml
+      world.ml
+      stats.ml
+      upgrades.ml
+
+    Modules playtested:
+      engine.ml
+      server.ml
+      converter.ml
+
+    This plan demonstrates the correctness of the system by ensuring the
+    correctness of individual functions of the program on a small scale as well
+    as testing certain modules in the context in which they will be used. This
+    allows for smaller issues to be discovered with more precision and fixed
+    more quickly, and for larger ones to be viewed in the context of gameplay
+    itself.
+*)
 
 open OUnit2
 open Virus
@@ -313,9 +332,15 @@ let dummy_virus0 =
     points = 0;
   }
 
-let dummy_virus1 = {dummy_virus0 with name="Influenza"}
+let dummy_virus1 = {
+  dummy_virus0 with
+  name = "Influenza"
+}
 
-let dummy_virus = {dummy_virus0 with points=3}
+let dummy_virus = {
+  dummy_virus0 with
+  points = 3
+}
 
 let dummy_upgrade = {
   id = "test_upgrade";
@@ -333,7 +358,10 @@ let dummy_upgrade = {
   cost = 2;
 }
 
-let bad_upgrade = {dummy_upgrade with cost=100}
+let bad_upgrade = {
+  dummy_upgrade with 
+  cost = 100
+}
 
 let expected_upgraded_virus = {
   dummy_virus with
@@ -410,12 +438,15 @@ let dummy_kill_expected_country2 = {
 }
 
 let w = {
-  countries=[dummy_country];
-  cure_progress=0.0;
-  cure_rate=0.01
+  countries = [dummy_country];
+  cure_progress = 0.0;
+  cure_rate = 0.01
 }
 
-let w2 = {w with countries=[dummy_country2]}
+let w2 = {
+  w with 
+  countries = [dummy_country2]
+}
 
 let virus_tests = [
   make_virus_upgrade_test "testing basic upgrade with dummy virus" 
