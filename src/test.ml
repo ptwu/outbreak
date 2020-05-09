@@ -268,7 +268,7 @@ let expected_upgraded_virus =
     name = "Corona";
     stats =
       {
-        infectivity = 3.;
+        infectivity = 2.000001;
         severity = 1.;
         hality = 10.;
         heat_res = 1.;
@@ -378,9 +378,11 @@ let dummy_kill_expected_country =
     borders = { dry = (50., [ "us" ]); sea = 50.; air = 50. };
   }
 
+let w = ("data/sample_game.json" |> open_in |> Ezjsonm.from_channel |> game_from_json).world
+
 let virus_tests = [
-  (* make_virus_upgrade_test "testing basic upgrade with dummy vals" 
-     dummy_upgrade (add_points 3 Virus.init_virus) expected_upgraded_virus *)
+  make_virus_upgrade_test "testing basic upgrade with dummy vals" 
+    dummy_upgrade (add_points 3 Virus.init_virus) expected_upgraded_virus
 ]
 
 let country_tests = [
@@ -422,20 +424,20 @@ let country_tests = [
     dummy_recover_expected_country 25000 dummy_kill_expected_country;
 ]
 
+
 let world_tests = [
-  (* let w = "data/sample_game.json" |> open_in |> Ezjsonm.from_channel |> world_from_json in
-     make_cure_progress_test "testing cure progress in world" 
-     w 0.0;
-     make_world_total_pop_test "testing world population in world" 
-     w 300000;
-     make_world_healthy_pop_test "testing world healthy population in world"
-     w 300000;
-     make_world_infected_pop_test "testing world infected population in world"
-     w 0;
-     make_world_dead_pop_test "testing world dead population in world"
-     w 0;
-     make_score_test "testing player score in world"
-     w 0.0 *)
+  make_cure_progress_test "testing cure progress in world" 
+    w 0.0;
+  make_world_total_pop_test "testing world population in world" 
+    w 1200;
+  make_world_healthy_pop_test "testing world healthy population in world"
+    w 1200;
+  make_world_infected_pop_test "testing world infected population in world"
+    w 0;
+  make_world_dead_pop_test "testing world dead population in world"
+    w 0;
+  make_score_test "testing player score in world"
+    w 0.0
 ]
 
 let suite = "outbreak tests suite" >::: List.flatten [
