@@ -1,3 +1,5 @@
+(** Conversion between game model and Ezjsonm types. *)
+
 (** [init_req] is the type of a 'init' request body. *)
 type init_req = { name : string; starter : string; }
 

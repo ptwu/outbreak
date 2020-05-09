@@ -1,6 +1,6 @@
 type object_phrase = string list
 
-type command = 
+type t = 
   | Quit
   | Upgrades
   | Buy of object_phrase
