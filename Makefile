@@ -33,7 +33,7 @@ server:
 	
 docs: build
 	mkdir -p docs
-	ocamlfind ocamldoc -I _build/src -package yojson,ANSITerminal,opium \
+	ocamlfind ocamldoc -I _build/src -package ANSITerminal,opium \
 		-html -stars -d docs src/*.ml[i]
 
 clean:
