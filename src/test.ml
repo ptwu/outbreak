@@ -1,11 +1,14 @@
 (** TESTING PLAN:
+
     Our test suite started off testing functions individually with "dummy" 
     virus, world, and upgrade values. Once we had our json parser and basic
     functionality, we moved on from a glass box testing approach to a more black
-    box testing approach, where we used external world, virus, and upgrade
-    values.
-    In addition, much of our testing later in development was through playtesting,
-    especially for the functionality of server.ml, engine.ml, and the webapp. *)
+    box testing approach, where we used world, virus, and upgrade values with
+    more abstract functions that would be directly used on them during the game.
+
+    In addition, much of our testing later in development was through
+    playtesting, especially for the functionality of server.ml, engine.ml, and
+    the webapp. *)
 
 open OUnit2
 open Virus
@@ -36,6 +39,17 @@ let make_add_points_test
   name >:: (fun _ -> 
       assert_equal expected_output (add_points points init))
 
+(** [make_change_name_test name n v expected_output] constructs an 
+    OUnit test named [name] that asserts the quality of [expected_output]
+    with [change_name n v]. *)
+let make_change_name_test
+    (name : string) 
+    (n: string)
+    (v: Virus.t) 
+    (expected_output : Virus.t) : test = 
+  name >:: (fun _ -> 
+      assert_equal expected_output (change_name n v))
+
 (** [make_cure_progress_test name init expected_output] constructs an 
     OUnit test named [name] that asserts the quality of [expected_output]
     with [cure_progress init]. *)
@@ -45,6 +59,16 @@ let make_cure_progress_test
     (expected_output : float) : test = 
   name >:: (fun _ -> 
       assert_equal expected_output (World.cure_progress init))
+
+(** [make_cure_rate_test name init expected_output] constructs an 
+    OUnit test named [name] that asserts the quality of [expected_output]
+    with [cure_rate init]. *)
+let make_cure_rate_test
+    (name : string)
+    (init: World.t) 
+    (expected_output : float) : test = 
+  name >:: (fun _ -> 
+      assert_equal expected_output (World.cure_rate init))
 
 (** [make_world_total_pop_test name init expected_output] constructs an 
     OUnit test named [name] that asserts the quality of [expected_output]
@@ -289,22 +313,9 @@ let dummy_virus0 =
     points = 0;
   }
 
-let dummy_virus =  
-  {
-    name = "Corona";
-    stats =
-      {
-        infectivity = 1.;
-        severity = 0.;
-        hality = 0.;
-        heat_res = 0.;
-        cold_res = 0.;
-        drug_res = 0.;
-        anti_cure = 0.;
-      };
-    upgrades = [];
-    points = 3;
-  }
+let dummy_virus1 = {dummy_virus0 with name="Influenza"}
+
+let dummy_virus = {dummy_virus0 with points=3}
 
 let dummy_upgrade = {
   id = "test_upgrade";
@@ -322,38 +333,22 @@ let dummy_upgrade = {
   cost = 2;
 }
 
-let bad_upgrade = {
-  id = "test_upgrade";
-  name = "test";
-  offsets =
-    {
-      infectivity = 2.;
-      severity = 1.;
-      hality = 10.;
-      heat_res = 1.;
-      cold_res = 2.;
-      drug_res = 4.;
-      anti_cure = 6.;
-    };
-  cost = 100;
-}
+let bad_upgrade = {dummy_upgrade with cost=100}
 
-let expected_upgraded_virus =  
-  {
-    name = "Corona";
-    stats =
-      {
-        infectivity = 3.;
-        severity = 1.;
-        hality = 10.;
-        heat_res = 1.;
-        cold_res = 2.;
-        drug_res = 4.;
-        anti_cure = 6.;
-      };
-    upgrades = ["test_upgrade"];
-    points = 1;
-  }
+let expected_upgraded_virus = {
+  dummy_virus with
+  stats={
+    infectivity = 3.;
+    severity = 1.;
+    hality = 10.;
+    heat_res = 1.;
+    cold_res = 2.;
+    drug_res = 4.;
+    anti_cure = 6.;
+  };
+  upgrades=["test_upgrade"];
+  points=1;
+}
 
 let dummy_country =
   {
@@ -369,103 +364,48 @@ let dummy_country =
     borders = { dry = (50., [ "us" ]); sea = 50.; air = 50. };
   }
 
-let dummy_country2 =
-  {
-    id = "greenland";
-    info =
-      {
-        name = "Greenland";
-        temperature = -100;
-        health_care = 50;
-        density = 10;
-      };
-    population = { healthy = 299900; infected = 100; dead = 0 };
-    borders = { dry = (50., [ "us" ]); sea = 50.; air = 50. };
-  }
+let dummy_country2 = {
+  dummy_country with
+  population = { healthy = 299900; infected = 100; dead = 0 }
+}
 
-let dummy_land_expected_country =
-  {
-    id = "greenland";
-    info =
-      {
-        name = "Greenland";
-        temperature = -100;
-        health_care = 50;
-        density = 10;
-      };
-    population = { healthy = 300000; infected = 0; dead = 0 };
-    borders = { dry = (0., []); sea = 50.; air = 50. };
-  }
+let dummy_land_expected_country = {
+  dummy_country with
+  borders = { dry = (0., []); sea = 50.; air = 50. }
+}
 
-let dummy_sea_expected_country =
-  {
-    id = "greenland";
-    info =
-      {
-        name = "Greenland";
-        temperature = -100;
-        health_care = 50;
-        density = 10;
-      };
-    population = { healthy = 300000; infected = 0; dead = 0 };
-    borders = { dry = (50., [ "us" ]); sea = 0.; air = 50. };
-  }
+let dummy_sea_expected_country = {
+  dummy_country with
+  borders = { dry = (50., [ "us" ]); sea = 0.; air = 50. }
+}
 
-let dummy_air_expected_country =
-  {
-    id = "greenland";
-    info =
-      {
-        name = "Greenland";
-        temperature = -100;
-        health_care = 50;
-        density = 10;
-      };
-    population = { healthy = 300000; infected = 0; dead = 0 };
-    borders = { dry = (50., [ "us" ]); sea = 50.; air = 0. };
-  }
+let dummy_air_expected_country = {
+  dummy_country with
+  borders = { dry = (50., [ "us" ]); sea = 50.; air = 0. }
+}
 
-let dummy_infect_expected_country =
-  {
-    id = "greenland";
-    info =
-      {
-        name = "Greenland";
-        temperature = -100;
-        health_care = 50;
-        density = 10;
-      };
-    population = { healthy = 200000; infected = 100000; dead = 0 };
-    borders = { dry = (50., [ "us" ]); sea = 50.; air = 50. };
-  }
+let dummy_infect_expected_country = {
+  dummy_country with
+  population = { healthy = 200000; infected = 100000; dead = 0 }
+}
 
-let dummy_recover_expected_country =
-  {
-    id = "greenland";
-    info =
-      {
-        name = "Greenland";
-        temperature = -100;
-        health_care = 50;
-        density = 10;
-      };
-    population = { healthy = 250000; infected = 50000; dead = 0 };
-    borders = { dry = (50., [ "us" ]); sea = 50.; air = 50. };
-  }
+let dummy_recover_expected_country = {
+  dummy_country with
+  population = { healthy = 250000; infected = 50000; dead = 0 }
+}
 
-let dummy_kill_expected_country =
-  {
-    id = "greenland";
-    info =
-      {
-        name = "Greenland";
-        temperature = -100;
-        health_care = 50;
-        density = 10;
-      };
-    population = { healthy = 250000; infected = 25000; dead = 25000 };
-    borders = { dry = (50., [ "us" ]); sea = 50.; air = 50. };
-  }
+let dummy_kill_expected_country = {
+  dummy_country with
+  population = { healthy = 250000; infected = 25000; dead = 25000 }
+}
+
+let w = {
+  countries=[dummy_country];
+  cure_progress=0.0;
+  cure_rate=0.01
+}
+
+let w2 = {w with countries=[dummy_country2]}
 
 let virus_tests = [
   make_virus_upgrade_test "testing basic upgrade with dummy virus" 
@@ -473,7 +413,11 @@ let virus_tests = [
   make_virus_upgrade_test "testing too expensive upgrade with dummy virus" 
     bad_upgrade dummy_virus dummy_virus;
   make_add_points_test "testing adding points with dummy virus"
-    3 dummy_virus0 dummy_virus
+    3 dummy_virus0 dummy_virus;
+  make_change_name_test "testing changing virus name"
+    "Influenza" dummy_virus0 dummy_virus1;
+  make_change_name_test "testing invalid virus name"
+    "" dummy_virus0 dummy_virus0
 ]
 
 let country_tests = [
@@ -515,20 +459,11 @@ let country_tests = [
     dummy_recover_expected_country 25000 dummy_kill_expected_country;
 ]
 
-let w = {
-  countries=[dummy_country];
-  cure_progress=0.0;
-  cure_rate=0.01
-}
-
-let w2 = {
-  countries=[dummy_country2];
-  cure_progress=0.0;
-  cure_rate=0.01
-}
 let world_tests = [
   make_cure_progress_test "testing cure progress in world" 
     w 0.0;
+  make_cure_rate_test "testing cure rate in world" 
+    w 0.01;
   make_world_total_pop_test "testing world population in world" 
     w 300000;
   make_world_healthy_pop_test "testing world healthy population in world"
@@ -541,7 +476,6 @@ let world_tests = [
     w 0.0;
   make_infect_country_test "testing infecting country"
     "greenland" 100 w w2
-
 ]
 
 let suite = "outbreak tests suite" >::: List.flatten [
