@@ -389,6 +389,11 @@ let dummy_infect_expected_country = {
   population = { healthy = 200000; infected = 100000; dead = 0 }
 }
 
+let dummy_infect_expected_country2 = {
+  dummy_country with
+  population = { healthy = 0; infected = 300000; dead = 0 }
+}
+
 let dummy_recover_expected_country = {
   dummy_country with
   population = { healthy = 250000; infected = 50000; dead = 0 }
@@ -397,6 +402,11 @@ let dummy_recover_expected_country = {
 let dummy_kill_expected_country = {
   dummy_country with
   population = { healthy = 250000; infected = 25000; dead = 25000 }
+}
+
+let dummy_kill_expected_country2 = {
+  dummy_country with
+  population = { healthy = 250000; infected = 0; dead = 50000 }
 }
 
 let w = {
@@ -453,10 +463,16 @@ let country_tests = [
     dummy_country AIR dummy_air_expected_country;
   make_infect_test "testing country infection with dummy country"
     dummy_country 100000 dummy_infect_expected_country;
+  make_infect_test "testing invalid country infection with dummy country"
+    dummy_country 1000000 dummy_infect_expected_country2;
   make_recover_test "testing country recovery with dummy country"
     dummy_infect_expected_country 50000 dummy_recover_expected_country;
+  make_recover_test "testing invalid country recovery with dummy country"
+    dummy_infect_expected_country 1000000 dummy_country;
   make_kill_test "testing country death with dummy country"
     dummy_recover_expected_country 25000 dummy_kill_expected_country;
+  make_kill_test "testing invalid country death with dummy country"
+    dummy_recover_expected_country 1000000 dummy_kill_expected_country2;
 ]
 
 let world_tests = [
