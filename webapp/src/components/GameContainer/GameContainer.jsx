@@ -1,7 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import styles from './GameContainer.module.css';
 import {
-  Card, Container,
+  Card,
+  Container,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  TextField,
+  DialogActions,
+  Grid,
+  CardContent,
+  Typography
 } from '@material-ui/core';
 import WorldMap from './WorldMap';
 import ReactTooltip from 'react-tooltip';
@@ -22,9 +32,24 @@ export default ({ virusName }) => {
   const [deaths, setDeaths] = useState(0);
   const [shop, setShop] = useState([]);
 
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handlePurchase = async (itemId) => {
+    await fetch(`/purchase/${itemId}`, {
+      method: 'POST',
+    });
+  }
+
   const pickStartingCountryHandler = async (countryName) => {
     setStartingCountry(countryName);
-    console.log('sdfsdf');
     await fetch('/reset', {
       method: 'POST',
       headers: {
@@ -45,7 +70,6 @@ export default ({ virusName }) => {
   }
 
   const gameStateHandler = (data) => {
-    console.log(data);
     const { virus, world, shop } = data;
     setScore(data.score);
     setName(virus.name);
@@ -60,12 +84,19 @@ export default ({ virusName }) => {
     setShop(shop);
   }
 
+  const getDate = (days) => {
+    let copy = new Date();
+    console.log(days);
+    copy.setDate(copy.getDate() + days);
+    return copy.toString();
+  }
+
   useEffect(() => {
     if (startingCountry !== '') {
       const interval = setInterval(async () => {
         await fetch('/step', { method: 'POST' })
           .then((data) => data.json(), (err) => console.log(err))
-          .then(d => gameStateHandler(d));
+          .then(d => { gameStateHandler(d); });
       }, 1000);
       return () => clearInterval(interval);
     }
@@ -76,6 +107,45 @@ export default ({ virusName }) => {
   if (score === 0) {
     return (
       <>
+        <div>
+          <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" disableBackdropClick>
+            <DialogTitle id="form-dialog-title">Shop</DialogTitle>
+            <DialogContent maxWidth="xl">
+              <Grid container>
+                <Grid item xs={12}>
+                  <Grid container justify="center" spacing="8">
+                    {
+                      shop.map((item) => (
+                        <Grid item xs>
+                          <Card>
+                            <CardContent>
+                              <Typography gutterBottom variant="h5" component="h2">
+                                {item.name}
+                              </Typography>
+                              <Typography variant="body2" color="textSecondary" component="p" align="left">
+                                Cost: {item.cost}
+                              </Typography>
+                            </CardContent>
+                            <Button size="large" onClick={() => handlePurchase(item.id)}>
+                              Buy
+                            </Button>
+                          </Card>
+
+                        </Grid>
+
+                      ))
+                    }
+                  </Grid>
+                </Grid>
+              </Grid>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose}>
+                Exit
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </div>
         <Container maxWidth="xl">
           <Card className={styles.GameplayCard} style={{ position: 'relative' }}>
             <div className={styles.WorldMapContainer}>
@@ -89,6 +159,9 @@ export default ({ virusName }) => {
 
             {startingCountry !== ''
               ? <>
+                {/* <div className={styles.DateDisplay}>
+                  <p>📅 <b>Date</b>: </p>
+                </div> */}
                 <div className={styles.VirusStats}>
                   <p>💓 <b>Healthy</b>: {healthy}
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -100,7 +173,11 @@ export default ({ virusName }) => {
                   <p>🧪 <b>Cure Progress</b>: {Math.round(cureProgress)}%</p>
                 </div>
                 <div className={styles.ShopLHS}>
-                  <p>🧪 <b>Cure Progress</b>: {Math.round(cureProgress)}%</p>
+                  <p>🧬 <b>DNA Points</b>: {points}</p>
+
+                  <Button variant="contained" onClick={handleClickOpen} className={styles.ShopButton}>
+                    Shop
+                  </Button>
                 </div>
               </>
               : undefined}
