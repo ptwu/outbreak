@@ -52,12 +52,10 @@ export default ({ virusName }) => {
       setErrorToastOpen(true);
     } else {
       setToastOpen(true);
-      await fetch(`/purchase/${itemId}`, {
+      fetch(`/purchase/${itemId}`, {
         method: "POST",
-      }).then(
-        () => {},
-        (err) => console.log(err)
-      );
+      }).catch((err) => console.log(err));
+      setShop(shop => shop.filter(u => u.id !== itemId))
       console.log(itemId + " " + itemCost);
     }
   };
@@ -97,7 +95,7 @@ export default ({ virusName }) => {
     setHealthy(world.population.healthy);
     setInfected(world.population.infected);
     setDeaths(world.population.dead);
-    setShop(shop.filter(x => !virus.upgrades.includes(x.id)));
+    setShop(shop.filter((x) => !virus.upgrades.includes(x.id)));
   };
 
   const getDate = () => {
