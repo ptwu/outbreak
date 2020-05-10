@@ -52,16 +52,16 @@ export default ({ virusName }) => {
       setErrorToastOpen(true);
     } else {
       setToastOpen(true);
-      handleClose();
-      await fetch(`/purchase/${itemId}`, {
+      fetch(`/purchase/${itemId}`, {
         method: "POST",
-      });
+      }).catch((err) => console.log(err));
+      setShop(shop => shop.filter(u => u.id !== itemId))
       console.log(itemId + " " + itemCost);
     }
   };
 
-  const pickStartingCountryHandler = async (countryName) => {
-    setStartingCountry(countryName);
+  const pickStartingCountryHandler = async (id, name) => {
+    setStartingCountry(name);
     try {
       await fetch("/reset", {
         method: "POST",
@@ -70,19 +70,16 @@ export default ({ virusName }) => {
         },
         body: JSON.stringify(InitGameDataJSON),
       });
-      await fetch("/init", {
+      const data = await fetch("/init", {
         method: "POST",
         headers: {
           "content-type": "application/json",
         },
-        body: JSON.stringify({ name: virusName, starter: countryName }),
-      })
-        .then(
-          (data) => data.json(),
-          (err) => console.log(err)
-        )
-        .then((d) => gameStateHandler(d));
+        body: JSON.stringify({ name: virusName, starter: id }),
+      });
+      gameStateHandler(await data.json());
     } catch (error) {
+      console.log(error);
       setError(true);
     }
     setStartTime(performance.now());
@@ -98,7 +95,7 @@ export default ({ virusName }) => {
     setHealthy(world.population.healthy);
     setInfected(world.population.infected);
     setDeaths(world.population.dead);
-    setShop(shop);
+    setShop(shop.filter((x) => !virus.upgrades.includes(x.id)));
   };
 
   const getDate = () => {
@@ -125,7 +122,7 @@ export default ({ virusName }) => {
             (err) => setError(true)
           )
           .then((d) => gameStateHandler(d));
-      }, 1000);
+      }, 500);
       return () => clearInterval(interval);
     }
   }, [startingCountry]);
@@ -223,7 +220,6 @@ export default ({ virusName }) => {
                 ) : (
                     <h2>Your Outbreak started in {startingCountry}</h2>
                   )}
-
                 <WorldMap
                   setContent={setTooltipContent}
                   pickCountryHandler={pickStartingCountryHandler}
@@ -278,9 +274,9 @@ export default ({ virusName }) => {
         <Container maxWidth="lg">
           <Card className={styles.GameplayCard}>
             {cureProgress >= 100 ? (
-              <h1 style={{ color: "#A60000" }}>You Lose</h1>
+              <h1 style={{ color: '#A60000' }}>You Lose</h1>
             ) : (
-                <h1 style={{ color: "#008a25" }}>You Win</h1>
+                <h1 style={{ color: '#008a25' }}>You Win</h1>
               )}
             {cureProgress >= 100 ? (
               <h3>

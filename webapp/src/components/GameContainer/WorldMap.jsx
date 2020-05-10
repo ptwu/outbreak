@@ -13,31 +13,37 @@ const WorldMap = ({ setContent, pickCountryHandler, data }) => {
 
   const markers = [
     {
+      id: 'south_america',
       markerOffset: -30,
       name: "South America",
       coordinates: [-58, -13],
     },
     {
+      id: 'north_america',
       markerOffset: -30,
       name: "North America",
       coordinates: [-93.5, 39],
     },
     {
+      id: 'europe',
       markerOffset: -30,
       name: "Europe",
       coordinates: [22.844, 44.924],
     },
     {
+      id: 'africa',
       markerOffset: -30,
       name: "Africa",
       coordinates: [20.737, 3.137],
     },
     {
+      id: 'asia',
       markerOffset: -30,
       name: "Asia",
       coordinates: [90.44, 35],
     },
     {
+      id: 'oceania',
       markerOffset: -30,
       name: "Oceania",
       coordinates: [134.7, -27],
@@ -128,15 +134,12 @@ const WorldMap = ({ setContent, pickCountryHandler, data }) => {
           }
         </Geographies>
 
-        {markers.map(({ name, coordinates, markerOffset }) => (
+        {markers.map(({ id, name, coordinates, markerOffset }) => (
           <Marker
             key={name}
             coordinates={coordinates}
             className={styles.marker}
-            onClick={() => {
-              setMode(false);
-              pickCountryHandler(name);
-            }}
+            onClick={() => { setMode(false); pickCountryHandler(id, name); }}
             data-tip=""
             onMouseEnter={() => {
               setContent(`Start Outbreak in ${name}`);
