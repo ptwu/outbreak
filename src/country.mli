@@ -1,3 +1,5 @@
+(** Representation of country game model. *)
+
 (** [country_id] is the type representing the id used to access the country's
     information. *)
 type country_id = string

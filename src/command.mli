@@ -1,3 +1,5 @@
+(** Parsing of player commands for terminal mode. *)
+
 (** [object_phrase] is the object phrase that can be part of a player command.  
     Each element of the list represents a word of the object phrase, where a 
     {i word} is defined as a consecutive sequence of non-space characters.
@@ -10,7 +12,7 @@ type object_phrase = string list
 
 (** [command] is a player command that is decomposed into a verb and possibly 
     an object phrase. *)
-type command = 
+type t = 
   | Quit
   | Upgrades
   | Buy of object_phrase
@@ -34,7 +36,7 @@ exception Malformed
     is {i malformed} if the verb is neither "upgrades", "buy", "progress", nor 
     "cure" or if the verb is "quit" and there is a non-empty object phrase,
     or if the verb is "go" and there is an empty object phrase.*)
-val parse : string -> command
+val parse : string -> t
 
 (** [build_phrase lst] is the string represented by [lst] *)
 val build_phrase : object_phrase -> string

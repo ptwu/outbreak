@@ -1,3 +1,5 @@
+(** Representation of upgrades game model. *)
+
 (** The representation type for a virus upgrade. *)
 type upgrade = { id : string; name : string; offsets : Stats.t; cost : int }
 

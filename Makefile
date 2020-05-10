@@ -19,23 +19,32 @@ test:
 	$(OCAMLBUILD) src/$(TEST) && ./$(TEST) -runner sequential
 
 run:
-	$(OCAMLBUILD) src/$(MAIN)
 	$(OCAMLBUILD) src/$(SERVER) && ./$(SERVER)& cd webapp; npm start
+
+.PHONY: webapp
+webapp:
+	cd webapp; npm start
 
 play:
 	$(OCAMLBUILD) src/$(MAIN) && ./$(MAIN)
 
 server:
 	$(OCAMLBUILD) src/$(SERVER) && ./$(SERVER)
+
+docs: docs-public docs-private
 	
-docs: build
-	mkdir -p docs
-	ocamlfind ocamldoc -I _build/src -package yojson,ANSITerminal,opium \
-		-html -stars -d docs src/*.ml[i]
+docs-public: build
+	mkdir -p doc.public
+	ocamlfind ocamldoc -I _build/src -short-functors -package ANSITerminal,opium \
+	-html -stars -d doc.public $(MODULES:=.ml[i])
+
+docs-private: build
+	mkdir -p doc.private
+	ocamlfind ocamldoc -I _build/src -short-functors -package ANSITerminal,opium \
+	-inv-merge-ml-mli -html -stars -d doc.private $(MODULES:=.ml)  $(MODULES:=.mli)
 
 clean:
-	ocamlbuild -clean
-	rm -rf docs
+	rm -rf _build doc.public doc.private outbreak.zip
 	
-zip:
-	ocamlbuild -clean && zip -r outbreak.zip * .merlin .ocamlinit .gitignore -x webapp/node_modules/\*
+zip: clean
+	zip -r outbreak.zip * .merlin .ocamlinit .gitignore -x webapp/node_modules/\*

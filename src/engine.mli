@@ -1,3 +1,5 @@
+(** Representation of dynamic game state. *)
+
 (** Representation type for a certain game's status. *)
 type status = Init | Playing | Done of bool * float
 

@@ -1,3 +1,5 @@
+(** Representation of stats game model. *)
+
 (** The representation type for the stats of a virus. *)
 type t = {
   infectivity : float;

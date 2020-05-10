@@ -1,5 +1,4 @@
 #require "oUnit";;
-#require "yojson";;
 #require "ANSITerminal";;
 #directory "_build";;
 #load "src/main.cmo";;
