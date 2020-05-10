@@ -9,7 +9,7 @@
           "health_care": 50,
           "density": 10
         },
-        "population": 200,
+        "population": 20000,
         "borders": {
           "dry": [50, []],
           "sea": 50,
@@ -24,7 +24,7 @@
           "health_care": 50,
           "density": 10
         },
-        "population": 200,
+        "population": 20000,
         "borders": {
           "dry": [50, ["europe"]],
           "sea": 50,
@@ -39,7 +39,7 @@
           "health_care": 50,
           "density": 10
         },
-        "population": 200,
+        "population": 20000,
         "borders": {
           "dry": [50, ["asia"]],
           "sea": 50,
@@ -54,7 +54,7 @@
           "health_care": 50,
           "density": 10
         },
-        "population": 200,
+        "population": 20000,
         "borders": {
           "dry": [50, ["asia"]],
           "sea": 50,
@@ -69,7 +69,7 @@
           "health_care": 50,
           "density": 10
         },
-        "population": 200,
+        "population": 20000,
         "borders": {
           "dry": [50, ["south_america"]],
           "sea": 50,
@@ -84,7 +84,7 @@
           "health_care": 50,
           "density": 10
         },
-        "population": 200,
+        "population": 20000,
         "borders": {
           "dry": [50, ["north_america"]],
           "sea": 50,
@@ -93,14 +93,14 @@
       }
     ],
     "cure_progress": 0.0,
-    "cure_rate": 0.001
+    "cure_rate": 0.0005
   },
   "shop": [
     {
       "id": "cough",
       "name": "Symptom: Coughing",
       "offsets": {
-        "infectivity": 0.001,
+        "infectivity": 0.01,
         "severity": 0,
         "hality": 0,
         "heat_res": 0,
@@ -116,13 +116,13 @@
       "offsets": {
         "infectivity": 0,
         "severity": 0.01,
-        "hality": 0.001,
+        "hality": 0.1,
         "heat_res": 0,
         "cold_res": 0,
         "drug_res": 0,
         "anti_cure": 0
       },
-      "cost": 1000000
+      "cost": 500
     }
   ]
 }

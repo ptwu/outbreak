@@ -15,27 +15,24 @@ let step_cure_progress w =
 
 (** [step_cure_rate w] is the resulting world state after one tick of 
     cure rate simulation has passed for [w]. *)
-let step_cure_rate w = { w with cure_rate = w.cure_rate *. 1.01 }
-
-(** [(/./) a b] is the floating division of b by a. *)
-let ( /./ ) a b = b /. a
+let step_cure_rate w = { w with cure_rate = min 0.2 w.cure_rate *. 1.005 }
 
 (** [step_kill v w] is the resulting world state after one tick of death
     simulation has passed for all countries in [st]. *)
 let step_kill { hality } w =
-  let chance = hality |> ( /./ ) 100.0 in
   let round n =
-    n |> float_of_int |> ( *. ) chance |> ceil |> int_of_float
+    n |> float_of_int |> ( *. ) hality |> ceil |> int_of_float
   in
-  let killed c = infected c |> round |> kill c in
+  let killed c = 
+    print_endline (Printf.sprintf "%d" (round (infected c)));
+  infected c |> round |> kill c in
   { w with countries = w.countries |> List.map killed }
 
 (** [step_infect v w] is the resulting world state after one tick of infection
     simulation has passed for all countries in [st]. *)
 let step_infect { infectivity } w =
-  let chance = infectivity |> ( /./ ) 100.0 in
   let round n =
-    n |> float_of_int |> ( *. ) chance |> ceil |> int_of_float
+    n |> float_of_int |> ( *. ) infectivity |> ceil |> int_of_float
   in
   let infected c = healthy c |> round |> infect c in
   { w with countries = w.countries |> List.map infected }
@@ -52,10 +49,10 @@ let step_spread { infectivity } w =
     in
     let bad_neighbors = List.fold_left helper 0 countries in
     (* if bordering countries are infected, then land infection more likely *)
-    Random.float 200. +. infectivity < float_of_int bad_neighbors *. chance
+    Random.float 500. -. infectivity < float_of_int bad_neighbors *. chance
   in
-  let roll_sea { sea } = Random.float 200. +. infectivity < sea in
-  let roll_air { air } = Random.float 200. +. infectivity < air in
+  let roll_sea { sea } = Random.float 500. -. infectivity < sea in
+  let roll_air { air } = Random.float 500. -. infectivity < air in
   let spread roll c = if roll c.borders then infect c 1 else c in
   {
     w with
@@ -93,15 +90,14 @@ let step_once ({ virus; world; status } as st) =
       world |> step_cure_progress |> step_cure_rate |> step_kill stats
       |> step_infect stats |> step_spread stats
     in
-    let points =
-      float_of_int (world_infected_pop world' - world_infected_pop world)
-      /. float_of_int (world_total_pop world) *. 20_000_000. +.
-      float_of_int (world_dead_pop world' - world_dead_pop world)
-      /. float_of_int (world_total_pop world) *. 10_000_000. |> int_of_float
+    let rec points _ =
+      if Random.int 100 >= 50 && world_infected_pop world' - world_infected_pop world > 0 then
+       (log (5. +. stats.infectivity *. 5. +. stats.hality *. 10.) |> ceil |> int_of_float) + Random.int 2 + points ()
+      else 0
     in
     {
       st with
-      virus = virus |> add_points (max 0 points);
+      virus = virus |> add_points (max 0 (points ()));
       world = world';
     } |> update_status
 
