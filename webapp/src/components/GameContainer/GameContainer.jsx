@@ -7,7 +7,6 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  TextField,
   DialogActions,
   Grid,
   CardContent,
@@ -20,8 +19,6 @@ import InitGameDataJSON from './data/sample_game.json';
 export default ({ virusName }) => {
   const [name, setName] = useState(virusName);
   const [startingCountry, setStartingCountry] = useState('');
-  const [stats, setStats] = useState([]);
-  const [upgrades, setUpgrades] = useState([]);
   const [score, setScore] = useState(0);
   const [points, setPoints] = useState(0);
   const [countryData, setCountryData] = useState([]);
@@ -31,7 +28,7 @@ export default ({ virusName }) => {
   const [infected, setInfected] = useState(0);
   const [deaths, setDeaths] = useState(0);
   const [shop, setShop] = useState([]);
-
+  const [startTime, setStartTime] = useState(0);
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -67,14 +64,13 @@ export default ({ virusName }) => {
     })
       .then((data) => data.json(), (err) => console.log(err))
       .then(d => gameStateHandler(d));
+    setStartTime(performance.now());
   }
 
   const gameStateHandler = (data) => {
     const { virus, world, shop } = data;
     setScore(data.score);
     setName(virus.name);
-    setStats(virus.stats);
-    setUpgrades(virus.upgrades);
     setPoints(virus.points);
     setCountryData(world.countries);
     setCureProgress(world.cure_progress);
@@ -84,11 +80,17 @@ export default ({ virusName }) => {
     setShop(shop);
   }
 
-  const getDate = (days) => {
-    let copy = new Date();
-    console.log(days);
-    copy.setDate(copy.getDate() + days);
-    return copy.toString();
+  const getDate = () => {
+    let date = new Date();
+    const endTime = performance.now();
+    date.setDate(date.getDate() + Math.floor((endTime - startTime) / 1000));
+    return (
+      (date.getMonth() > 8 ? date.getMonth() + 1 : "0" + (date.getMonth() + 1)) +
+      "/" +
+      (date.getDate() > 9 ? date.getDate() : "0" + date.getDate()) +
+      "/" +
+      date.getFullYear()
+    );
   }
 
   useEffect(() => {
@@ -110,13 +112,13 @@ export default ({ virusName }) => {
         <div>
           <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" disableBackdropClick>
             <DialogTitle id="form-dialog-title">Shop</DialogTitle>
-            <DialogContent maxWidth="xl">
+            <DialogContent>
               <Grid container>
                 <Grid item xs={12}>
-                  <Grid container justify="center" spacing="8">
+                  <Grid container justify="center" spacing={8}>
                     {
-                      shop.map((item) => (
-                        <Grid item xs>
+                      shop.map((item, i) => (
+                        <Grid item xs key={i}>
                           <Card>
                             <CardContent>
                               <Typography gutterBottom variant="h5" component="h2">
@@ -130,9 +132,7 @@ export default ({ virusName }) => {
                               Buy
                             </Button>
                           </Card>
-
                         </Grid>
-
                       ))
                     }
                   </Grid>
@@ -159,9 +159,9 @@ export default ({ virusName }) => {
 
             {startingCountry !== ''
               ? <>
-                {/* <div className={styles.DateDisplay}>
-                  <p>📅 <b>Date</b>: </p>
-                </div> */}
+                <div className={styles.DateDisplay}>
+                  <p>📅 <b>Date</b>: {getDate()} </p>
+                </div>
                 <div className={styles.VirusStats}>
                   <p>💓 <b>Healthy</b>: {healthy}
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
