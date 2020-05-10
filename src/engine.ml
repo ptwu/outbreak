@@ -23,18 +23,20 @@ let step_kill { hality } w =
   let round n =
     n |> float_of_int |> ( *. ) hality |> ceil |> int_of_float
   in
-  let killed c = 
-    print_endline (Printf.sprintf "%d" (round (infected c)));
-  infected c |> round |> kill c in
+  let killed c = infected c |> round |> kill c in
   { w with countries = w.countries |> List.map killed }
 
 (** [step_infect v w] is the resulting world state after one tick of infection
     simulation has passed for all countries in [st]. *)
 let step_infect { infectivity } w =
-  let round n =
-    n |> float_of_int |> ( *. ) infectivity |> ceil |> int_of_float
+  let m c =
+    1. +. float_of_int (infected c) /.float_of_int (total_pop c) *. 1000.
   in
-  let infected c = healthy c |> round |> infect c in
+  let round c n =
+    print_endline (Printf.sprintf "%f" (m c));
+    n |> float_of_int |> ( *. ) (infectivity *. m c) |> ceil |> int_of_float
+  in
+  let infected c = healthy c |> round c |> infect c in
   { w with countries = w.countries |> List.map infected }
 
 (** [step_spread v w] is the resulting world state after one tick of spreading
@@ -62,7 +64,7 @@ let step_spread { infectivity } w =
       |> List.map (spread roll_sea)
       |> List.map (spread roll_air);
   }
-  
+
 (** [update_status st] is the game state with status [Done] if the game is over
     and [Playing] otherwise. *)
 let update_status ({ world } as st) =
@@ -92,7 +94,7 @@ let step_once ({ virus; world; status } as st) =
     in
     let rec points _ =
       if Random.int 100 >= 50 then
-       (log (5. +. stats.infectivity *. 5. +. stats.hality *. 10.) |> ceil |> int_of_float) + Random.int 2 + points ()
+        (log (5. +. stats.infectivity *. 5. +. stats.hality *. 10.) |> ceil |> int_of_float) + Random.int 2 + points ()
       else 0
     in
     {
