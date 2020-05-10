@@ -158,11 +158,13 @@ export default ({ virusName }) => {
               aria-labelledby="form-dialog-title"
               disableBackdropClick
             >
-              <DialogTitle id="form-dialog-title">Shop</DialogTitle>
+              <DialogTitle id="form-dialog-title" className={styles.ShopText}>
+                Shop
+              </DialogTitle>
               <DialogContent>
                 <Grid container>
                   <Grid item xs={12}>
-                    <Grid container justify="center" spacing={8}>
+                    <Grid container justify="center" spacing={3}>
                       {shop.map((item, i) => (
                         <Grid item xs key={i}>
                           <Card>
@@ -171,6 +173,7 @@ export default ({ virusName }) => {
                                 gutterBottom
                                 variant="h5"
                                 component="h2"
+                                className={styles.ShopText}
                               >
                                 {item.name}
                               </Typography>
@@ -179,12 +182,14 @@ export default ({ virusName }) => {
                                 color="textSecondary"
                                 component="p"
                                 align="left"
+                                className={styles.ShopText}
                               >
-                                Cost: {item.cost}
+                                Cost: 🧬{item.cost}
                               </Typography>
                             </CardContent>
                             <Button
                               size="large"
+                              className={styles.ShopText}
                               onClick={() => handlePurchase(item.id, item.cost)}
                             >
                               Buy
@@ -201,6 +206,8 @@ export default ({ virusName }) => {
               </DialogActions>
             </Dialog>
           </div>
+
+          {/* Display card */}
           <Container maxWidth="xl">
             <Card
               className={styles.GameplayCard}
@@ -211,8 +218,8 @@ export default ({ virusName }) => {
                 {startingCountry === "" ? (
                   <h2>Choose a continent to start your outbreak!</h2>
                 ) : (
-                  <h2>Your Outbreak started in {startingCountry}</h2>
-                )}
+                    <h2>Your Outbreak started in {startingCountry}</h2>
+                  )}
                 <WorldMap
                   setContent={setTooltipContent}
                   pickCountryHandler={pickStartingCountryHandler}
@@ -267,18 +274,18 @@ export default ({ virusName }) => {
         <Container maxWidth="lg">
           <Card className={styles.GameplayCard}>
             {cureProgress >= 100 ? (
-              <h1 style={{ color: "#A60000" }}>You Lose</h1>
+              <h1 style={{ color: '#A60000' }}>You Lose</h1>
             ) : (
-              <h1 style={{ color: "#008a25" }}>You Win</h1>
-            )}
+                <h1 style={{ color: '#008a25' }}>You Win</h1>
+              )}
             {cureProgress >= 100 ? (
               <h3>
                 A vaccine has been discovered for {name}, and the world is back
                 to <i>functional</i> order.
               </h3>
             ) : (
-              <h3>{name} has wrought havoc on the entire world!</h3>
-            )}
+                <h3>{name} has wrought havoc on the entire world!</h3>
+              )}
             <br />
             <h1>Final Score: {points}</h1>
           </Card>

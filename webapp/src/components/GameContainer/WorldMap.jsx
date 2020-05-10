@@ -1,12 +1,12 @@
-import React, { memo, useState } from 'react';
-import styles from './WorldMap.module.css';
-import geoUrl from './world-50m.json';
+import React, { memo, useState } from "react";
+import styles from "./WorldMap.module.css";
+import geoUrl from "./world-50m.json";
 import {
   ComposableMap,
   Geographies,
   Geography,
-  Marker
-} from 'react-simple-maps';
+  Marker,
+} from "react-simple-maps";
 
 const WorldMap = ({ setContent, pickCountryHandler, data }) => {
   const [isInPickMode, setMode] = useState(true);
@@ -15,87 +15,87 @@ const WorldMap = ({ setContent, pickCountryHandler, data }) => {
     {
       id: 'south_america',
       markerOffset: -30,
-      name: 'South America',
-      coordinates: [-58, -13]
+      name: "South America",
+      coordinates: [-58, -13],
     },
     {
       id: 'north_america',
       markerOffset: -30,
-      name: 'North America',
-      coordinates: [-93.5, 39]
+      name: "North America",
+      coordinates: [-93.5, 39],
     },
     {
       id: 'europe',
       markerOffset: -30,
-      name: 'Europe',
-      coordinates: [22.844, 44.924]
+      name: "Europe",
+      coordinates: [22.844, 44.924],
     },
     {
       id: 'africa',
       markerOffset: -30,
-      name: 'Africa',
-      coordinates: [20.737, 3.137]
+      name: "Africa",
+      coordinates: [20.737, 3.137],
     },
     {
       id: 'asia',
       markerOffset: -30,
-      name: 'Asia',
-      coordinates: [90.44, 35]
+      name: "Asia",
+      coordinates: [90.44, 35],
     },
     {
       id: 'oceania',
       markerOffset: -30,
-      name: 'Oceania',
-      coordinates: [134.7, -27]
+      name: "Oceania",
+      coordinates: [134.7, -27],
     },
   ];
 
   const getContinentData = (id) => {
     if (data !== undefined) {
-      const continent = data.find((a => a.info.name === id));
+      const continent = data.find((a) => a.info.name === id);
       if (continent !== undefined) {
         return {
-          'name': continent.info.name,
-          'healthy': continent.population.healthy,
-          'infected': continent.population.infected,
-          'dead': continent.population.dead
-        }
+          name: continent.info.name,
+          healthy: continent.population.healthy,
+          infected: continent.population.infected,
+          dead: continent.population.dead,
+        };
       } else {
         return {
-          'name': id,
-          'healthy': 'Loading...',
-          'infected': 'Loading...',
-          'dead': 'Loading...'
-        }
+          name: id,
+          healthy: "Loading...",
+          infected: "Loading...",
+          dead: "Loading...",
+        };
       }
     } else {
       return {
-        'name': id,
-        'healthy': 'Loading...',
-        'infected': 'Loading...',
-        'dead': 'Loading...'
-      }
+        name: id,
+        healthy: "Loading...",
+        infected: "Loading...",
+        dead: "Loading...",
+      };
     }
-  }
+  };
 
   const getContinentColor = (id) => {
     if (data !== undefined) {
-      const continent = data.find((a => a.info.name === id));
+      const continent = data.find((a) => a.info.name === id);
       if (continent !== undefined) {
         const { population } = continent;
         const { healthy, infected, dead } = population;
         const percentage = healthy / (healthy + infected + dead);
-        const red = Math.floor(255 - (255 * percentage));
+        const red = Math.floor(255 - 255 * percentage);
         const green = Math.floor(220 * percentage);
-        const blue = 0
+        const blue = 0;
         return rgbToHex(red, green, blue);
       } else {
-        return '#999999';
+        return "#999999";
       }
     } else {
-      return '#999999';
+      return "#999999";
     }
-  }
+  };
 
   function componentToHex(c) {
     var hex = c.toString(16);
@@ -117,8 +117,8 @@ const WorldMap = ({ setContent, pickCountryHandler, data }) => {
         <Geographies geography={geoUrl}>
           {({ geographies }) =>
             geographies.map((geo, i) => {
-              if (geo.properties.NAME !== 'Antarctica') {
-                const fillColor = '#999999';
+              if (geo.properties.NAME !== "Antarctica") {
+                const fillColor = "#999999";
                 return (
                   <Geography
                     className={styles.country}
@@ -145,7 +145,7 @@ const WorldMap = ({ setContent, pickCountryHandler, data }) => {
               setContent(`Start Outbreak in ${name}`);
             }}
             onMouseLeave={() => {
-              setContent('');
+              setContent("");
             }}
           >
             <g
@@ -163,13 +163,17 @@ const WorldMap = ({ setContent, pickCountryHandler, data }) => {
             <text
               textAnchor="middle"
               y={markerOffset}
-              style={{ fontFamily: 'system-ui', fill: '#000000', fontWeight: 'bold' }}
+              style={{
+                fontFamily: "system-ui",
+                fill: "#000000",
+                fontWeight: "bold",
+              }}
               className={styles.marker}
               onMouseEnter={() => {
                 setContent(`Start Outbreak in ${name}`);
               }}
               onMouseLeave={() => {
-                setContent('');
+                setContent("");
               }}
             >
               {name}
@@ -189,7 +193,7 @@ const WorldMap = ({ setContent, pickCountryHandler, data }) => {
         <Geographies geography={geoUrl}>
           {({ geographies, projection }) =>
             geographies.map((geo, i) => {
-              if (geo.properties.NAME !== 'Antarctica') {
+              if (geo.properties.NAME !== "Antarctica") {
                 let fillColor = getContinentColor(geo.properties.CONTINENT);
 
                 return (
@@ -229,7 +233,7 @@ const WorldMap = ({ setContent, pickCountryHandler, data }) => {
               Dead: ${getContinentData(name).dead}`);
               }}
               onMouseLeave={() => {
-                setContent('');
+                setContent("");
               }}
             >
               <circle cx="12" cy="10" r="3" />
@@ -238,7 +242,11 @@ const WorldMap = ({ setContent, pickCountryHandler, data }) => {
             <text
               textAnchor="middle"
               y={markerOffset}
-              style={{ fontFamily: 'system-ui', fill: '#000000', fontWeight: 'bold' }}
+              style={{
+                fontFamily: "system-ui",
+                fill: "#000000",
+                fontWeight: "bold",
+              }}
               className={styles.marker}
               onMouseEnter={() => {
                 setContent(`Healthy: ${getContinentData(name).healthy}  |  
@@ -246,7 +254,7 @@ const WorldMap = ({ setContent, pickCountryHandler, data }) => {
               Dead: ${getContinentData(name).dead}`);
               }}
               onMouseLeave={() => {
-                setContent('');
+                setContent("");
               }}
             >
               {name}
@@ -256,6 +264,6 @@ const WorldMap = ({ setContent, pickCountryHandler, data }) => {
       </ComposableMap>
     );
   }
-}
+};
 
 export default memo(WorldMap);
