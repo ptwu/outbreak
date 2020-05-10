@@ -1,3 +1,5 @@
+(** Representation of world game model. *)
+
 (** [t] is the type representing a world:
       [countries]: a list of countries in the world
       [cure_progress]: the amount of progress made on a cure

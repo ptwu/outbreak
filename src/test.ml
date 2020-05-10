@@ -448,6 +448,8 @@ let w2 = {
   countries = [dummy_country2]
 }
 
+let w = ("data/sample_game.json" |> open_in |> Ezjsonm.from_channel |> game_from_json).world
+
 let virus_tests = [
   make_virus_upgrade_test "testing basic upgrade with dummy virus" 
     dummy_upgrade dummy_virus expected_upgraded_virus;
@@ -505,6 +507,7 @@ let country_tests = [
   make_kill_test "testing invalid country death with dummy country"
     dummy_recover_expected_country 1000000 dummy_kill_expected_country2;
 ]
+
 
 let world_tests = [
   make_cure_progress_test "testing cure progress in world" 
