@@ -121,14 +121,14 @@
       }
     ],
     "cure_progress": 0.0,
-    "cure_rate": 0.0005
+    "cure_rate": 0.001
   },
   "shop": [
     {
       "id": "cough",
       "name": "Symptom: Coughing",
       "offsets": {
-        "infectivity": 0.01,
+        "infectivity": 0.001,
         "severity": 0,
         "hality": 0,
         "heat_res": 0,
@@ -144,13 +144,13 @@
       "offsets": {
         "infectivity": 0,
         "severity": 0.01,
-        "hality": 0.1,
+        "hality": 0.001,
         "heat_res": 0,
         "cold_res": 0,
         "drug_res": 0,
         "anti_cure": 0
       },
-      "cost": 500
+      "cost": 1000000
     }
   ]
 }

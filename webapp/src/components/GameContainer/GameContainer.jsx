@@ -1,16 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import styles from './GameContainer.module.css';
 import {
-  Card, Container,
+  Card,
+  Container,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  TextField,
+  DialogActions,
+  Grid,
+  CardContent,
+  Typography
 } from '@material-ui/core';
 import WorldMap from './WorldMap';
-import ReactTooltip from "react-tooltip";
+import ReactTooltip from 'react-tooltip';
+import InitGameDataJSON from './data/sample_game.json';
 
 export default ({ virusName }) => {
   const [name, setName] = useState(virusName);
   const [startingCountry, setStartingCountry] = useState('');
   const [stats, setStats] = useState([]);
   const [upgrades, setUpgrades] = useState([]);
+  const [score, setScore] = useState(0);
   const [points, setPoints] = useState(0);
   const [countryData, setCountryData] = useState([]);
   const [cureProgress, setCureProgress] = useState(0);
@@ -20,21 +32,46 @@ export default ({ virusName }) => {
   const [deaths, setDeaths] = useState(0);
   const [shop, setShop] = useState([]);
 
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handlePurchase = async (itemId) => {
+    await fetch(`/purchase/${itemId}`, {
+      method: 'POST',
+    });
+  }
+
   const pickStartingCountryHandler = async (countryName) => {
     setStartingCountry(countryName);
+    await fetch('/reset', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify(InitGameDataJSON),
+    })
+      .then(() => { }, (err) => console.log(err));
     await fetch('/init', {
       method: 'POST',
       headers: {
         'content-type': 'application/json'
       },
-      body: JSON.stringify({ name: virusName, starter: countryName })
+      body: JSON.stringify({ name: virusName, starter: countryName }),
     })
-      .then(() => { }, (err) => console.log(err));
+      .then((data) => data.json(), (err) => console.log(err))
+      .then(d => gameStateHandler(d));
   }
 
   const gameStateHandler = (data) => {
-    console.log(data);
     const { virus, world, shop } = data;
+    setScore(data.score);
     setName(virus.name);
     setStats(virus.stats);
     setUpgrades(virus.upgrades);
@@ -47,12 +84,19 @@ export default ({ virusName }) => {
     setShop(shop);
   }
 
+  const getDate = (days) => {
+    let copy = new Date();
+    console.log(days);
+    copy.setDate(copy.getDate() + days);
+    return copy.toString();
+  }
+
   useEffect(() => {
     if (startingCountry !== '') {
       const interval = setInterval(async () => {
-        await fetch('/step/10', { method: 'POST' })
+        await fetch('/step', { method: 'POST' })
           .then((data) => data.json(), (err) => console.log(err))
-          .then(d => gameStateHandler(d));
+          .then(d => { gameStateHandler(d); });
       }, 1000);
       return () => clearInterval(interval);
     }
@@ -60,31 +104,100 @@ export default ({ virusName }) => {
 
   const [tooltipContent, setTooltipContent] = useState('');
 
-  return (
-    <>
-      <Container maxWidth="xl">
+  if (score === 0) {
+    return (
+      <>
+        <div>
+          <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" disableBackdropClick>
+            <DialogTitle id="form-dialog-title">Shop</DialogTitle>
+            <DialogContent maxWidth="xl">
+              <Grid container>
+                <Grid item xs={12}>
+                  <Grid container justify="center" spacing="8">
+                    {
+                      shop.map((item) => (
+                        <Grid item xs>
+                          <Card>
+                            <CardContent>
+                              <Typography gutterBottom variant="h5" component="h2">
+                                {item.name}
+                              </Typography>
+                              <Typography variant="body2" color="textSecondary" component="p" align="left">
+                                Cost: {item.cost}
+                              </Typography>
+                            </CardContent>
+                            <Button size="large" onClick={() => handlePurchase(item.id)}>
+                              Buy
+                            </Button>
+                          </Card>
+
+                        </Grid>
+
+                      ))
+                    }
+                  </Grid>
+                </Grid>
+              </Grid>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose}>
+                Exit
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </div>
+        <Container maxWidth="xl">
+          <Card className={styles.GameplayCard} style={{ position: 'relative' }}>
+            <div className={styles.WorldMapContainer}>
+              <h1 className={styles.VirusNameText}>{name}</h1>
+              {startingCountry === ''
+                ? <h2>Choose a continent to start your outbreak!</h2>
+                : <h2>Your Outbreak started in {startingCountry}</h2>}
+              <WorldMap setContent={setTooltipContent} pickCountryHandler={pickStartingCountryHandler} data={countryData} />
+              <ReactTooltip>{tooltipContent}</ReactTooltip>
+            </div>
+
+            {startingCountry !== ''
+              ? <>
+                {/* <div className={styles.DateDisplay}>
+                  <p>📅 <b>Date</b>: </p>
+                </div> */}
+                <div className={styles.VirusStats}>
+                  <p>💓 <b>Healthy</b>: {healthy}
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                ☣️ <b>Infected</b>: {infected}
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                💀 <b>Dead</b>: {deaths}</p>
+                </div>
+                <div className={styles.CureProgress}>
+                  <p>🧪 <b>Cure Progress</b>: {Math.round(cureProgress)}%</p>
+                </div>
+                <div className={styles.ShopLHS}>
+                  <p>🧬 <b>DNA Points</b>: {points}</p>
+
+                  <Button variant="contained" onClick={handleClickOpen} className={styles.ShopButton}>
+                    Shop
+                  </Button>
+                </div>
+              </>
+              : undefined}
+
+          </Card>
+        </Container>
+      </>
+    );
+  } else {
+    return (
+      <Container maxWidth="lg">
         <Card className={styles.GameplayCard}>
-          <div className={styles.WorldMapContainer}>
-            <h1>{name}</h1>
-            {startingCountry === ''
-              ? <h2>Choose a continent to start your outbreak!</h2>
-              : <h2>Your Outbreak started in {startingCountry}</h2>}
-            <WorldMap setContent={setTooltipContent} pickCountryHandler={pickStartingCountryHandler} data={countryData} />
-            <ReactTooltip>{tooltipContent}</ReactTooltip>
-          </div>
-          {/* <div className={styles.Points}>
-            <p>Stats: {JSON.stringify(stats)}</p>
-            <p>Upgrades: {JSON.stringify(upgrades)}</p>
-            <p>Points: {points}</p>
-            <p>Country Data: {JSON.stringify(countryData)}</p>
-            <p>Cure Progress: {cureProgress}</p>
-            <p># Healthy: {healthy}</p>
-            <p># Infected: {infected}</p>
-            <p># Dead: {deaths}</p>
-            <p>Shop: {JSON.stringify(shop)}</p>
-          </div> */}
+          {cureProgress >= 100 ? <h1 style={{ color: '#A60000' }}>You Lose</h1> : <h1 style={{ color: '#008a25' }}>You Win</h1>}
+          {cureProgress >= 100
+            ? <h3>A vaccine has been discovered for {name}, and the world is back to <i>functional</i> order.</h3>
+            : <h3>{name} has wrought havoc on the entire world!</h3>}
+          <br />
+          <h1>Final Score: {points}</h1>
         </Card>
       </Container>
-    </>
-  )
+    );
+  }
 }

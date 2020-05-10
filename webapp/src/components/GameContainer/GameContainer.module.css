@@ -11,9 +11,56 @@ h1, h2 {
   height: 85vh;
 }
 
+.VirusNameText {
+  font-family: 'Courier New','Courier','Lucida Sans Typewriter','Lucida Typewriter','monospace' !important;
+  font-size: 36px;
+}
+
 .Points {
   position: absolute;
   top: 50vh;
   left:0;
   text-align: left;
+}
+
+.VirusStats {
+  position:absolute;
+  width:500px;
+  bottom:0px;
+  color: white;
+  background: #1f1f1f;
+  border: 5px solid #49A9F2;
+  left:calc(50% - 250px);
+}
+
+.CureProgress {
+  position:absolute;
+  width:300px;
+  bottom:0px;
+  right: 0;
+  font-size: 24px;
+  border: 5px solid #49A9F2;
+  background: grey;
+}
+
+.ShopLHS {
+  position:absolute;
+  width:300px;
+  bottom:0px;
+  left: 0;
+  font-size: 16px;
+  background: grey;
+  padding-bottom: 10px;
+}
+
+.ShopButton {
+  font-family: 'Roboto', 'Open Sans' !important;
+}
+
+.DateDisplay {
+  position:absolute;
+  width:300px;
+  top: 0;
+  right: 0;
+  font-size: 24px;
 }
