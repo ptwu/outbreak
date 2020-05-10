@@ -55,7 +55,7 @@ export default ({ virusName }) => {
       fetch(`/purchase/${itemId}`, {
         method: "POST",
       }).catch((err) => console.log(err));
-      setShop(shop => shop.filter(u => u.id !== itemId))
+      setShop((shop) => shop.filter((u) => u.id !== itemId));
       console.log(itemId + " " + itemCost);
     }
   };
@@ -165,38 +165,48 @@ export default ({ virusName }) => {
                 <Grid container>
                   <Grid item xs={12}>
                     <Grid container justify="center" spacing={3}>
-                      {shop.map((item, i) => (
-                        <Grid item xs key={i}>
-                          <Card>
-                            <CardContent>
-                              <Typography
-                                gutterBottom
-                                variant="h5"
-                                component="h2"
+                      {shop ? (
+                        shop.map((item, i) => (
+                          <Grid item xs key={i}>
+                            <Card>
+                              <CardContent>
+                                <Typography
+                                  gutterBottom
+                                  variant="h5"
+                                  component="h2"
+                                  className={styles.ShopText}
+                                >
+                                  {item.name}
+                                </Typography>
+                                <Typography
+                                  variant="body2"
+                                  color="textSecondary"
+                                  component="p"
+                                  align="left"
+                                  className={styles.ShopText}
+                                >
+                                  Cost: 🧬{item.cost}
+                                </Typography>
+                              </CardContent>
+                              <Button
+                                size="large"
                                 className={styles.ShopText}
+                                onClick={() =>
+                                  handlePurchase(item.id, item.cost)
+                                }
                               >
-                                {item.name}
-                              </Typography>
-                              <Typography
-                                variant="body2"
-                                color="textSecondary"
-                                component="p"
-                                align="left"
-                                className={styles.ShopText}
-                              >
-                                Cost: 🧬{item.cost}
-                              </Typography>
-                            </CardContent>
-                            <Button
-                              size="large"
-                              className={styles.ShopText}
-                              onClick={() => handlePurchase(item.id, item.cost)}
-                            >
-                              Buy
-                            </Button>
-                          </Card>
-                        </Grid>
-                      ))}
+                                Buy
+                              </Button>
+                            </Card>
+                          </Grid>
+                        ))
+                      ) : (
+                        <Card>
+                          <CardContent>
+                            "No more available upgrades!"
+                          </CardContent>
+                        </Card>
+                      )}
                     </Grid>
                   </Grid>
                 </Grid>
@@ -218,8 +228,8 @@ export default ({ virusName }) => {
                 {startingCountry === "" ? (
                   <h2>Choose a continent to start your outbreak!</h2>
                 ) : (
-                    <h2>Your Outbreak started in {startingCountry}</h2>
-                  )}
+                  <h2>Your Outbreak started in {startingCountry}</h2>
+                )}
                 <WorldMap
                   setContent={setTooltipContent}
                   pickCountryHandler={pickStartingCountryHandler}
@@ -274,18 +284,18 @@ export default ({ virusName }) => {
         <Container maxWidth="lg">
           <Card className={styles.GameplayCard}>
             {cureProgress >= 100 ? (
-              <h1 style={{ color: '#A60000' }}>You Lose</h1>
+              <h1 style={{ color: "#A60000" }}>You Lose</h1>
             ) : (
-                <h1 style={{ color: '#008a25' }}>You Win</h1>
-              )}
+              <h1 style={{ color: "#008a25" }}>You Win</h1>
+            )}
             {cureProgress >= 100 ? (
               <h3>
                 A vaccine has been discovered for {name}, and the world is back
                 to <i>functional</i> order.
               </h3>
             ) : (
-                <h3>{name} has wrought havoc on the entire world!</h3>
-              )}
+              <h3>{name} has wrought havoc on the entire world!</h3>
+            )}
             <br />
             <h1>Final Score: {points}</h1>
           </Card>
