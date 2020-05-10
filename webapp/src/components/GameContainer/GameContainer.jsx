@@ -4,13 +4,15 @@ import {
   Card, Container,
 } from '@material-ui/core';
 import WorldMap from './WorldMap';
-import ReactTooltip from "react-tooltip";
+import ReactTooltip from 'react-tooltip';
+import InitGameDataJSON from './data/sample_game.json';
 
 export default ({ virusName }) => {
   const [name, setName] = useState(virusName);
   const [startingCountry, setStartingCountry] = useState('');
   const [stats, setStats] = useState([]);
   const [upgrades, setUpgrades] = useState([]);
+  const [score, setScore] = useState(0);
   const [points, setPoints] = useState(0);
   const [countryData, setCountryData] = useState([]);
   const [cureProgress, setCureProgress] = useState(0);
@@ -22,19 +24,30 @@ export default ({ virusName }) => {
 
   const pickStartingCountryHandler = async (countryName) => {
     setStartingCountry(countryName);
+    console.log('sdfsdf');
+    await fetch('/reset', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify(InitGameDataJSON),
+    })
+      .then(() => { }, (err) => console.log(err));
     await fetch('/init', {
       method: 'POST',
       headers: {
         'content-type': 'application/json'
       },
-      body: JSON.stringify({ name: virusName, starter: countryName })
+      body: JSON.stringify({ name: virusName, starter: countryName }),
     })
-      .then(() => { }, (err) => console.log(err));
+      .then((data) => data.json(), (err) => console.log(err))
+      .then(d => gameStateHandler(d));
   }
 
   const gameStateHandler = (data) => {
     console.log(data);
     const { virus, world, shop } = data;
+    setScore(data.score);
     setName(virus.name);
     setStats(virus.stats);
     setUpgrades(virus.upgrades);
@@ -50,7 +63,7 @@ export default ({ virusName }) => {
   useEffect(() => {
     if (startingCountry !== '') {
       const interval = setInterval(async () => {
-        await fetch('/step/10', { method: 'POST' })
+        await fetch('/step', { method: 'POST' })
           .then((data) => data.json(), (err) => console.log(err))
           .then(d => gameStateHandler(d));
       }, 1000);
@@ -60,29 +73,38 @@ export default ({ virusName }) => {
 
   const [tooltipContent, setTooltipContent] = useState('');
 
-  if (points === 0) {
+  if (score === 0) {
     return (
       <>
         <Container maxWidth="xl">
           <Card className={styles.GameplayCard} style={{ position: 'relative' }}>
             <div className={styles.WorldMapContainer}>
-              <h1>{name}</h1>
+              <h1 className={styles.VirusNameText}>{name}</h1>
               {startingCountry === ''
                 ? <h2>Choose a continent to start your outbreak!</h2>
                 : <h2>Your Outbreak started in {startingCountry}</h2>}
               <WorldMap setContent={setTooltipContent} pickCountryHandler={pickStartingCountryHandler} data={countryData} />
               <ReactTooltip>{tooltipContent}</ReactTooltip>
             </div>
-            <div className={styles.Points}>
-              <p>Stats: {JSON.stringify(stats)}</p>
-              <p>Upgrades: {JSON.stringify(upgrades)}</p>
-              <p>Country Data: {JSON.stringify(countryData)}</p>
-              <p>Cure Progress: {cureProgress}</p>
-              <p># Healthy: {healthy}</p>
-              <p># Infected: {infected}</p>
-              <p># Dead: {deaths}</p>
-              <p>Shop: {JSON.stringify(shop)}</p>
-            </div>
+
+            {startingCountry !== ''
+              ? <>
+                <div className={styles.VirusStats}>
+                  <p>💓 <b>Healthy</b>: {healthy}
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                ☣️ <b>Infected</b>: {infected}
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                💀 <b>Dead</b>: {deaths}</p>
+                </div>
+                <div className={styles.CureProgress}>
+                  <p>🧪 <b>Cure Progress</b>: {Math.round(cureProgress)}%</p>
+                </div>
+                <div className={styles.ShopLHS}>
+                  <p>🧪 <b>Cure Progress</b>: {Math.round(cureProgress)}%</p>
+                </div>
+              </>
+              : undefined}
+
           </Card>
         </Container>
       </>

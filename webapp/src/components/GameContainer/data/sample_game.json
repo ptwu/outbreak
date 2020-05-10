@@ -1,0 +1,128 @@
+{
+  "world": {
+    "countries": [
+      {
+        "id": "oceania",
+        "info": {
+          "name": "Oceania",
+          "temperature": -100,
+          "health_care": 50,
+          "density": 10
+        },
+        "population": 200,
+        "borders": {
+          "dry": [50, []],
+          "sea": 50,
+          "air": 50
+        }
+      },
+      {
+        "id": "asia",
+        "info": {
+          "name": "Asia",
+          "temperature": 50,
+          "health_care": 50,
+          "density": 10
+        },
+        "population": 200,
+        "borders": {
+          "dry": [50, ["europe"]],
+          "sea": 50,
+          "air": 50
+        }
+      },
+      {
+        "id": "europe",
+        "info": {
+          "name": "Europe",
+          "temperature": 50,
+          "health_care": 50,
+          "density": 10
+        },
+        "population": 200,
+        "borders": {
+          "dry": [50, ["asia"]],
+          "sea": 50,
+          "air": 50
+        }
+      },
+      {
+        "id": "africa",
+        "info": {
+          "name": "Africa",
+          "temperature": 50,
+          "health_care": 50,
+          "density": 10
+        },
+        "population": 200,
+        "borders": {
+          "dry": [50, ["asia"]],
+          "sea": 50,
+          "air": 50
+        }
+      },
+      {
+        "id": "north_america",
+        "info": {
+          "name": "North America",
+          "temperature": 50,
+          "health_care": 50,
+          "density": 10
+        },
+        "population": 200,
+        "borders": {
+          "dry": [50, ["south_america"]],
+          "sea": 50,
+          "air": 50
+        }
+      },
+      {
+        "id": "south_america",
+        "info": {
+          "name": "South America",
+          "temperature": 50,
+          "health_care": 50,
+          "density": 10
+        },
+        "population": 200,
+        "borders": {
+          "dry": [50, ["north_america"]],
+          "sea": 50,
+          "air": 50
+        }
+      }
+    ],
+    "cure_progress": 0.0,
+    "cure_rate": 0.001
+  },
+  "shop": [
+    {
+      "id": "cough",
+      "name": "Symptom: Coughing",
+      "offsets": {
+        "infectivity": 0.001,
+        "severity": 0,
+        "hality": 0,
+        "heat_res": 0,
+        "cold_res": 0,
+        "drug_res": 0,
+        "anti_cure": 0
+      },
+      "cost": 100
+    },
+    {
+      "id": "organfailure",
+      "name": "Symptom: Organ Failure",
+      "offsets": {
+        "infectivity": 0,
+        "severity": 0.01,
+        "hality": 0.001,
+        "heat_res": 0,
+        "cold_res": 0,
+        "drug_res": 0,
+        "anti_cure": 0
+      },
+      "cost": 1000000
+    }
+  ]
+}
