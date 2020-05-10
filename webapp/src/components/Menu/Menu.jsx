@@ -6,15 +6,12 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import { FilePicker } from "react-file-picker";
 
-export default ({ menuOptionHandler }) => {
+export default ({ menuOptionHandler, customGameHandler }) => {
   const [isInInstructions, setInstructionsState] = useState(false);
   const [open, setOpen] = React.useState(false);
   const nameTextRef = useRef("");
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
 
   const handleClose = () => {
     if (nameTextRef.current.value !== "") {
@@ -79,9 +76,9 @@ export default ({ menuOptionHandler }) => {
                 <Button
                   variant="contained"
                   className={styles.MainMenuButton}
-                  onClick={handleClickOpen}
+                  onClick={() => setInstructionsState(false)}
                 >
-                  Start
+                  Back
                 </Button>
               </div>
             ) : (
@@ -92,10 +89,30 @@ export default ({ menuOptionHandler }) => {
                       <Button
                         variant="contained"
                         className={styles.MainMenuButton}
-                        onClick={handleClickOpen}
+                        onClick={() => setOpen(true)}
                       >
-                        Play
+                        Play Campaign
                       </Button>
+                    </Grid>
+                    <Grid item>
+                      <FilePicker
+                        extensions={["json"]}
+                        onChange={async (blob) => {
+                          const text = await blob.text();
+                          customGameHandler(JSON.parse(text));
+                          setOpen(true);
+                        }}
+                        onError={(errMsg) => {
+                          console.log(errMsg);
+                        }}
+                      >
+                        <Button
+                          variant="contained"
+                          className={styles.MainMenuButton}
+                        >
+                          Play Custom
+                        </Button>
+                      </FilePicker>
                     </Grid>
                     <Grid item>
                       <Button

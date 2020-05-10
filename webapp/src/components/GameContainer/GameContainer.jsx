@@ -16,13 +16,12 @@ import {
 import MuiAlert from "@material-ui/lab/Alert";
 import WorldMap from "./WorldMap";
 import ReactTooltip from "react-tooltip";
-import InitGameDataJSON from "./data/sample_game.json";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-export default ({ virusName }) => {
+export default ({ virusName, gameData }) => {
   const [name, setName] = useState(virusName);
   const [startingCountry, setStartingCountry] = useState("");
   const [score, setScore] = useState(0);
@@ -68,7 +67,7 @@ export default ({ virusName }) => {
         headers: {
           "content-type": "application/json",
         },
-        body: JSON.stringify(InitGameDataJSON),
+        body: JSON.stringify(gameData),
       });
       const data = await fetch("/init", {
         method: "POST",
