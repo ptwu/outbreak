@@ -37,6 +37,7 @@ export default ({ virusName }) => {
   const [startTime, setStartTime] = useState(0);
   const [open, setOpen] = useState(false);
   const [toastOpen, setToastOpen] = useState(false);
+  const [errorToastOpen, setErrorToastOpen] = useState(false);
   const [isErrorPresent, setError] = useState(false);
   const handleClickOpen = () => {
     setOpen(true);
@@ -48,7 +49,7 @@ export default ({ virusName }) => {
 
   const handlePurchase = async (itemId, itemCost) => {
     if (itemCost > points) {
-      setToastOpen(true);
+      setErrorToastOpen(true);
     } else {
       setToastOpen(true);
       await fetch(`/purchase/${itemId}`, {
@@ -115,8 +116,8 @@ export default ({ virusName }) => {
     if (startingCountry !== '') {
       const interval = setInterval(async () => {
         await fetch('/step', { method: 'POST' })
-          .then((data) => data.json(), (err) => { setError(true); })
-          .then(d => { gameStateHandler(d); });
+          .then((data) => data.json(), (err) => setError(true))
+          .then(d => gameStateHandler(d));
       }, 1000);
       return () => clearInterval(interval);
     }
@@ -128,7 +129,16 @@ export default ({ virusName }) => {
     if (score === 0) {
       return (
         <>
-
+          <Snackbar open={toastOpen} autoHideDuration={6000} onClose={() => setToastOpen(false)}>
+            <Alert onClose={() => setToastOpen(false)} severity="success">
+              Upgrade purchased!
+            </Alert>
+          </Snackbar>
+          <Snackbar open={errorToastOpen} autoHideDuration={6000} onClose={() => setErrorToastOpen(false)}>
+            <Alert onClose={() => setErrorToastOpen(false)} severity="error">
+              You don't have enough DNA points to buy that upgrade!
+            </Alert>
+          </Snackbar>
           <div>
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" disableBackdropClick>
               <DialogTitle id="form-dialog-title">Shop</DialogTitle>
