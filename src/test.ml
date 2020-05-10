@@ -363,6 +363,20 @@ let bad_upgrade = {
   cost = 100
 }
 
+let blank_upgrade = {
+  dummy_upgrade with 
+  offsets =
+    {
+      infectivity = 0.;
+      severity = 0.;
+      hality = 0.;
+      heat_res = 0.;
+      cold_res = 0.;
+      drug_res = 0.;
+      anti_cure = 0.;
+    };
+}
+
 let expected_upgraded_virus = {
   dummy_virus with
   stats={
@@ -374,6 +388,12 @@ let expected_upgraded_virus = {
     drug_res = 4.;
     anti_cure = 6.;
   };
+  upgrades=["test_upgrade"];
+  points=1;
+}
+
+let expected_upgraded_virus2 = {
+  dummy_virus with
   upgrades=["test_upgrade"];
   points=1;
 }
@@ -458,11 +478,23 @@ let w3 = {
   countries = [dummy_country3]
 }
 
+let w4 = {
+  w with
+  countries = [dummy_kill_expected_country]
+}
+
+let w5 = {
+  w with
+  countries = [dummy_kill_expected_country2]
+}
+
 let virus_tests = [
   make_virus_upgrade_test "testing basic upgrade with dummy virus" 
     dummy_upgrade dummy_virus expected_upgraded_virus;
   make_virus_upgrade_test "testing too expensive upgrade with dummy virus" 
     bad_upgrade dummy_virus dummy_virus;
+  make_virus_upgrade_test "testing blank upgrade with dummy virus" 
+    blank_upgrade dummy_virus expected_upgraded_virus2;
   make_add_points_test "testing adding points with dummy virus"
     3 dummy_virus0 dummy_virus;
   make_change_name_test "testing changing virus name"
@@ -544,8 +576,30 @@ let world_tests = [
     "greenland" 0 w w;
   make_infect_country_test "testing infecting too many in country"
     "greenland" 1000000 w w3;
-  make_score_test "testing changing player score in world"
+  make_world_healthy_pop_test "testing changed world healthy population in world"
+    w3 0;
+  make_world_infected_pop_test "testing changed world infected population in world"
+    w3 300000;
+  make_world_dead_pop_test "testing changed world dead population in world"
+    w3 0;
+  make_score_test "testing changing player score with infected in world"
     w3 300000.;
+  make_world_healthy_pop_test "testing changed world healthy population in world"
+    w4 250000;
+  make_world_infected_pop_test "testing changed world infected population in world"
+    w4 25000;
+  make_world_dead_pop_test "testing changed world dead population in world"
+    w4 25000;
+  make_score_test "testing changing score with infected and dead in world"
+    w4 75000.;
+  make_world_healthy_pop_test "testing changed world healthy population in world"
+    w5 250000;
+  make_world_infected_pop_test "testing changed world infected population in world"
+    w5 0;
+  make_world_dead_pop_test "testing changed world dead population in world"
+    w5 50000;
+  make_score_test "testing changing score with infected and dead in world"
+    w5 100000.;
 ]
 
 let suite = "outbreak tests suite" >::: List.flatten [
