@@ -12,7 +12,7 @@
 (these instructions assume you have OCaml and opam installed to the directions in the CS 3110 course page)
 
 1. You can install Node.js and npm by running `sudo apt update`, `sudo apt install nodejs`,  and `sudo apt install npm`. 
-    - Use the commands `node -v` and `npm -v` to verify that your versions are up to date. (known bug for WSL on Windows: you may have to execute `sudonpm install -g npm` once or twice after installing it with `sudo apt install` if your version is way below 6.9.x.)
+    - Use the commands `node -v` and `npm -v` to verify that your versions are up to date. (known bug for WSL on Windows: you may have to execute `sudo npm install -g npm` once or twice (possibly restarting VSCode) after installing it with `sudo apt install` if your version is way below 6.9.x.)
 
 2. Assuming you have the default CS 3110 OCaml `opam` installations, you still have to 
 install the opium package. 

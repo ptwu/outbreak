@@ -64,7 +64,5 @@ let upgrade (v : t) (u : upgrade) : t =
   else v
 
 let change_name (n : string) (v : t) : t =
-  {
-    v with
-    name = n
-  }
+  if (n <> "") then {v with name = n}
+  else v
