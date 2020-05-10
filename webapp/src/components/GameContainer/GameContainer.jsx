@@ -52,6 +52,7 @@ export default ({ virusName }) => {
       setErrorToastOpen(true);
     } else {
       setToastOpen(true);
+      handleClose();
       await fetch(`/purchase/${itemId}`, {
         method: 'POST',
       })
@@ -141,24 +142,24 @@ export default ({ virusName }) => {
           </Snackbar>
           <div>
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" disableBackdropClick>
-              <DialogTitle id="form-dialog-title">Shop</DialogTitle>
+              <DialogTitle id="form-dialog-title" className={styles.ShopText}>Shop</DialogTitle>
               <DialogContent>
                 <Grid container>
                   <Grid item xs={12}>
-                    <Grid container justify="center" spacing={8}>
+                    <Grid container justify="center" spacing={3}>
                       {
                         shop.map((item, i) => (
                           <Grid item xs key={i}>
                             <Card>
                               <CardContent>
-                                <Typography gutterBottom variant="h5" component="h2">
+                                <Typography gutterBottom variant="h5" component="h2" className={styles.ShopText}>
                                   {item.name}
                                 </Typography>
-                                <Typography variant="body2" color="textSecondary" component="p" align="left">
-                                  Cost: {item.cost}
+                                <Typography variant="body2" color="textSecondary" component="p" align="left" className={styles.ShopText}>
+                                  Cost: 🧬{item.cost}
                                 </Typography>
                               </CardContent>
-                              <Button size="large" onClick={() => handlePurchase(item.id, item.cost)}>
+                              <Button size="large" className={styles.ShopText} onClick={() => handlePurchase(item.id, item.cost)}>
                                 Buy
                             </Button>
                             </Card>
@@ -176,13 +177,17 @@ export default ({ virusName }) => {
               </DialogActions>
             </Dialog>
           </div>
+
+          {/* Display card */}
           <Container maxWidth="xl">
             <Card className={styles.GameplayCard} style={{ position: 'relative' }}>
+
               <div className={styles.WorldMapContainer}>
                 <h1 className={styles.VirusNameText}>{name}</h1>
                 {startingCountry === ''
                   ? <h2>Choose a continent to start your outbreak!</h2>
                   : <h2>Your Outbreak started in {startingCountry}</h2>}
+
                 <WorldMap setContent={setTooltipContent} pickCountryHandler={pickStartingCountryHandler} data={countryData} />
                 <ReactTooltip>{tooltipContent}</ReactTooltip>
               </div>
