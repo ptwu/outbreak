@@ -31,8 +31,6 @@ play:
 server:
 	$(OCAMLBUILD) src/$(SERVER) && ./$(SERVER)
 
-docs: docs-public docs-private
-	
 web:
 	cd webapp; npm start
 
