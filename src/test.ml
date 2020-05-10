@@ -522,7 +522,9 @@ let world_tests = [
   make_score_test "testing player score in world"
     w 0.0;
   make_infect_country_test "testing infecting country"
-    "greenland" 100 w w2
+    "greenland" 100 w w2;
+  make_infect_country_test "testing infecting no one in country"
+    "greenland" 0 w w
 ]
 
 let suite = "outbreak tests suite" >::: List.flatten [
