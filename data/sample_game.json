@@ -121,14 +121,14 @@
       }
     ],
     "cure_progress": 0.0,
-    "cure_rate": 0.0005
+    "cure_rate": 0.005
   },
   "shop": [
     {
       "id": "cough",
       "name": "Symptom: Coughing",
       "offsets": {
-        "infectivity": 0.01,
+        "infectivity": 0.002,
         "severity": 0.001,
         "hality": 0,
         "heat_res": 0,
@@ -136,13 +136,13 @@
         "drug_res": 0,
         "anti_cure": 0
       },
-      "cost": 100
+      "cost": 50
     },
     {
       "id": "cysts",
       "name": "Symptom: Cysts",
       "offsets": {
-        "infectivity": 0.02,
+        "infectivity": 0.002,
         "severity": 0.001,
         "hality": 0,
         "heat_res": 0,
@@ -150,13 +150,13 @@
         "drug_res": 0,
         "anti_cure": 0
       },
-      "cost": 100
+      "cost": 50
     },
     {
       "id": "psychosis",
       "name": "Symptom: Psychosis",
       "offsets": {
-        "infectivity": 0.01,
+        "infectivity": 0.005,
         "severity": 0,
         "hality": 0.05,
         "heat_res": 0,
@@ -164,7 +164,7 @@
         "drug_res": 0,
         "anti_cure": 0
       },
-      "cost": 300
+      "cost": 100
     },
     {
       "id": "organfailure",
@@ -172,13 +172,13 @@
       "offsets": {
         "infectivity": 0,
         "severity": 0.01,
-        "hality": 0.1,
+        "hality": 0.05,
         "heat_res": 0,
         "cold_res": 0,
         "drug_res": 0,
         "anti_cure": 0
       },
-      "cost": 1000
+      "cost": 300
     }
   ]
 }

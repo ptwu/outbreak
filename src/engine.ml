@@ -30,13 +30,14 @@ let step_kill { hality } w =
     simulation has passed for all countries in [st]. *)
 let step_infect { infectivity } w =
   let m c =
-    1. +. float_of_int (infected c) /.float_of_int (total_pop c) *. 1000.
+    100. *. float_of_int (infected c + dead c) /. float_of_int (total_pop c)
   in
   let round c n =
-    print_endline (Printf.sprintf "%f" (m c));
     n |> float_of_int |> ( *. ) (infectivity *. m c) |> ceil |> int_of_float
   in
-  let infected c = healthy c |> round c |> infect c in
+  let infected c =
+    (if infected c > 0 then healthy c else 0) |> round c |> infect c
+  in
   { w with countries = w.countries |> List.map infected }
 
 (** [step_spread v w] is the resulting world state after one tick of spreading
@@ -51,10 +52,10 @@ let step_spread { infectivity } w =
     in
     let bad_neighbors = List.fold_left helper 0 countries in
     (* if bordering countries are infected, then land infection more likely *)
-    Random.float 500. -. infectivity < float_of_int bad_neighbors *. chance
+    Random.float 10000. -. infectivity *. 100000. < float_of_int bad_neighbors *. chance
   in
-  let roll_sea { sea } = Random.float 500. -. infectivity < sea in
-  let roll_air { air } = Random.float 500. -. infectivity < air in
+  let roll_sea { sea } = Random.float 10000. -. infectivity *. 100000. < sea in
+  let roll_air { air } = Random.float 10000. -. infectivity *. 100000. < air in
   let spread roll c = if roll c.borders then infect c 1 else c in
   {
     w with
@@ -94,12 +95,13 @@ let step_once ({ virus; world; status } as st) =
     in
     let rec points _ =
       if Random.int 100 >= 50 then
-        (log (5. +. stats.infectivity *. 5. +. stats.hality *. 10.) |> ceil |> int_of_float) + Random.int 2 + points ()
+        (log (5. +. stats.infectivity *. 5. +. stats.hality *. 10.)
+         |> ceil |> int_of_float) + Random.int 2 + points ()
       else 0
     in
     {
       st with
-      virus = virus |> add_points (max 0 (points ()));
+      virus = virus |> add_points (points () |> max 0);
       world = world';
     } |> update_status
 
