@@ -27,6 +27,9 @@ val json_of_world : World.t -> Ezjsonm.t
 (** [json_of_upgrade o] is [o] parsed into type [Ezjsonm.t]. *)
 val json_of_upgrade : Upgrades.upgrade -> Ezjsonm.t
 
+(** [json_of_shop o] is [o] parsed into type [Ezjsonm.t]. *)
+val json_of_shop : Upgrades.t -> Ezjsonm.t
+
 (** [json_of_game o] is [o] parsed into type [Ezjsonm.t]. *)
 val json_of_game : Engine.t -> Ezjsonm.t
 

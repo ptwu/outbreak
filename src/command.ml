@@ -10,11 +10,6 @@ exception Empty
 
 exception Malformed
 
-let rec checkempty lst =
-  match lst with
-  | [] -> []
-  | h :: t -> if (h = "") then checkempty t else h :: checkempty t
-
 let parse str =
   let list =
     str |> String.split_on_char ' ' |> List.filter (fun s -> s <> "")

@@ -16,4 +16,4 @@ _build
 *~
 \#*\#
 .DS_Store
-docs/
+doc*/
