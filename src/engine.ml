@@ -6,26 +6,16 @@ open Upgrades
 
 type status = Init | Playing | Done of bool * float
 
-type t = { virus : Virus.t; world : World.t; shop : Upgrades.t; status : status }
+type t = { virus : Virus.t; world : World.t; shop : Upgrades.t; status : status}
 
+(** [step_cure_progress w] is the resulting world state after one tick of 
+    cure progress simulation has passed for [w]. *)
 let step_cure_progress w =
   { w with cure_progress = min 100.0 (w.cure_progress +. w.cure_rate) }
 
+(** [step_cure_rate w] is the resulting world state after one tick of 
+    cure rate simulation has passed for [w]. *)
 let step_cure_rate w = { w with cure_rate = w.cure_rate *. 1.01 }
-
-let update_status ({ world } as st) =
-  let status =
-    if world_healthy_pop world = 0 && world_infected_pop world = 0 then
-      Done (true, score world)
-    else if cure_progress world >= 100.0 then
-      Done (false, score world)
-    else
-      Playing
-  in
-  {
-    st with
-    status = status;
-  }
 
 (** [(/./) a b] is the floating division of b by a. *)
 let ( /./ ) a b = b /. a
@@ -76,6 +66,22 @@ let step_spread { infectivity } w =
       |> List.map (spread roll_air);
   }
 
+(** [update_status st] is the game state with status [Done] if the game is over
+    and [Playing] otherwise. *)
+let update_status ({ world } as st) =
+  let status =
+    if world_infected_pop world = 0 && world_infected_pop world = 0 then
+      Done (true, score world)
+    else if cure_progress world >= 100.0 || world_infected_pop world = 0 then
+      Done (false, score world)
+    else
+      Playing
+  in
+  {
+    st with
+    status = status;
+  }
+
 (** [step_once st] is the resulting world state after one tick of
     simulation has passed for [st]. *)
 let step_once ({ virus; world; status } as st) =
@@ -111,7 +117,7 @@ let purchase name ({ virus; shop; status } as st) =
     | None -> st
     | Some u -> { st with virus = upgrade virus u; }
 
-let init (name : string) (cid : country_id) ({ virus; world; status } as st : t) =
+let init (name : string) (cid : country_id) ({ virus; world; status } as st:t) =
   match status with
   | Init ->
     {
