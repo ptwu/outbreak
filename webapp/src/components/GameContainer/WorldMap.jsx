@@ -80,7 +80,7 @@ const WorldMap = ({ setContent, pickCountryHandler, data }) => {
         const { healthy, infected, dead } = population;
         const percentage = healthy / (healthy + infected + dead);
         const red = Math.floor(255 - (255 * percentage));
-        const green = Math.floor(255 * percentage);
+        const green = Math.floor(220 * percentage);
         const blue = 0
         return rgbToHex(red, green, blue);
       } else {
@@ -93,7 +93,7 @@ const WorldMap = ({ setContent, pickCountryHandler, data }) => {
 
   function componentToHex(c) {
     var hex = c.toString(16);
-    return hex.length == 1 ? "0" + hex : hex;
+    return hex.length === 1 ? "0" + hex : hex;
   }
 
   function rgbToHex(r, g, b) {

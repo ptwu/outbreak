@@ -46,10 +46,10 @@ export default ({ menuOptionHandler }) => {
           <DialogActions>
             <Button onClick={() => setOpen(false)}>
               Cancel
-          </Button>
+            </Button>
             <Button onClick={handleClose}>
               Start Game
-          </Button>
+            </Button>
           </DialogActions>
         </Dialog>
       </div>

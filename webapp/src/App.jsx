@@ -8,7 +8,7 @@ import GameView from './components/GameView';
 export default () => (
   <AppBar className="Navbar">
     <Toolbar className="NavbarText">
-      Outbreak
+      #outbreak;;
     </Toolbar>
     <GameView />
   </AppBar>
