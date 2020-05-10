@@ -37,8 +37,7 @@ docs: build
 		-html -stars -d docs src/*.ml[i]
 
 clean:
-	ocamlbuild -clean
-	rm -rf docs
+	rm -rf _build docs
 	
-zip:
-	ocamlbuild -clean && zip -r outbreak.zip * .merlin .ocamlinit .gitignore -x webapp/node_modules/\*
+zip: clean
+	zip -r outbreak.zip * .merlin .ocamlinit .gitignore -x webapp/node_modules/\*
