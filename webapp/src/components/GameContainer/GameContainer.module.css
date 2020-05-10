@@ -1,6 +1,11 @@
 .GameplayCard {
   padding-bottom: 42px !important;
   max-height: 80vh;
+  background: url(../../assets/ocean.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 
 h1, h2 {
@@ -25,12 +30,12 @@ h1, h2 {
 
 .VirusStats {
   position:absolute;
-  width:500px;
+  width:840px;
   bottom:0px;
   color: white;
   background: #1f1f1f;
   border: 5px solid #49A9F2;
-  left:calc(50% - 250px);
+  left:calc(50% - 420px);
 }
 
 .CureProgress {
@@ -40,7 +45,7 @@ h1, h2 {
   right: 0;
   font-size: 24px;
   border: 5px solid #49A9F2;
-  background: grey;
+  background: #cccccc;
 }
 
 .ShopLHS {
@@ -49,7 +54,7 @@ h1, h2 {
   bottom:0px;
   left: 0;
   font-size: 16px;
-  background: grey;
+  background: #cccccc;
   border: 5px solid #49A9F2;
   padding-bottom: 10px;
 }
@@ -59,6 +64,8 @@ h1, h2 {
 }
 
 .DateDisplay {
+  background: #cccccc;
+  border: 5px solid #49A9F2;
   position:absolute;
   width:300px;
   top: 0;
