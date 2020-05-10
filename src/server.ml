@@ -18,7 +18,8 @@ let game : Engine.t ref = ref init_state
 (** [game_response g] is the json representation of [!g]. *)
 let game_response g = `Json (!g |> json_of_game)
 
-(** [game_state req] is the promise resolving to the [game] state json response. *)
+(** [game_state req] is the promise resolving to the [game] state json
+    response. *)
 let game_state req =
   game |> game_response |> respond'
 
@@ -81,7 +82,8 @@ let app : Opium.App.t =
 let _ =
   match App.run_command' app with
   | `Ok app ->
-    Printf.sprintf "starting #outbreak;; server on port %i \n" port |> print_endline;
+    Printf.sprintf "starting #outbreak;; server on port %i \n" port 
+    |> print_endline;
     Lwt_main.run app
   | `Error -> exit 1
   | `Not_running -> exit 0
