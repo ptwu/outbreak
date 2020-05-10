@@ -28,6 +28,9 @@ play:
 server:
 	$(OCAMLBUILD) src/$(SERVER) && ./$(SERVER)
 	
+web:
+	cd webapp; npm start
+
 docs: build
 	mkdir -p docs
 	ocamlfind ocamldoc -I _build/src -package yojson,ANSITerminal,opium \

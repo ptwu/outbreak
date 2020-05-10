@@ -60,31 +60,45 @@ export default ({ virusName }) => {
 
   const [tooltipContent, setTooltipContent] = useState('');
 
-  return (
-    <>
-      <Container maxWidth="xl">
+  if (points === 0) {
+    return (
+      <>
+        <Container maxWidth="xl">
+          <Card className={styles.GameplayCard} style={{ position: 'relative' }}>
+            <div className={styles.WorldMapContainer}>
+              <h1>{name}</h1>
+              {startingCountry === ''
+                ? <h2>Choose a continent to start your outbreak!</h2>
+                : <h2>Your Outbreak started in {startingCountry}</h2>}
+              <WorldMap setContent={setTooltipContent} pickCountryHandler={pickStartingCountryHandler} data={countryData} />
+              <ReactTooltip>{tooltipContent}</ReactTooltip>
+            </div>
+            <div className={styles.Points}>
+              <p>Stats: {JSON.stringify(stats)}</p>
+              <p>Upgrades: {JSON.stringify(upgrades)}</p>
+              <p>Country Data: {JSON.stringify(countryData)}</p>
+              <p>Cure Progress: {cureProgress}</p>
+              <p># Healthy: {healthy}</p>
+              <p># Infected: {infected}</p>
+              <p># Dead: {deaths}</p>
+              <p>Shop: {JSON.stringify(shop)}</p>
+            </div>
+          </Card>
+        </Container>
+      </>
+    );
+  } else {
+    return (
+      <Container maxWidth="lg">
         <Card className={styles.GameplayCard}>
-          <div className={styles.WorldMapContainer}>
-            <h1>{name}</h1>
-            {startingCountry === ''
-              ? <h2>Choose a continent to start your outbreak!</h2>
-              : <h2>Your Outbreak started in {startingCountry}</h2>}
-            <WorldMap setContent={setTooltipContent} pickCountryHandler={pickStartingCountryHandler} data={countryData} />
-            <ReactTooltip>{tooltipContent}</ReactTooltip>
-          </div>
-          {/* <div className={styles.Points}>
-            <p>Stats: {JSON.stringify(stats)}</p>
-            <p>Upgrades: {JSON.stringify(upgrades)}</p>
-            <p>Points: {points}</p>
-            <p>Country Data: {JSON.stringify(countryData)}</p>
-            <p>Cure Progress: {cureProgress}</p>
-            <p># Healthy: {healthy}</p>
-            <p># Infected: {infected}</p>
-            <p># Dead: {deaths}</p>
-            <p>Shop: {JSON.stringify(shop)}</p>
-          </div> */}
+          {cureProgress >= 100 ? <h1 style={{ color: '#A60000' }}>You Lose</h1> : <h1 style={{ color: '#008a25' }}>You Win</h1>}
+          {cureProgress >= 100
+            ? <h3>A vaccine has been discovered for {name}, and the world is back to <i>functional</i> order.</h3>
+            : <h3>{name} has wrought havoc on the entire world!</h3>}
+          <br />
+          <h1>Final Score: {points}</h1>
         </Card>
       </Container>
-    </>
-  )
+    );
+  }
 }
