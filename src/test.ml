@@ -397,6 +397,11 @@ let dummy_country2 = {
   population = { healthy = 299900; infected = 100; dead = 0 }
 }
 
+let dummy_country3 = {
+  dummy_country with
+  population = { healthy = 0; infected = 300000; dead = 0 }
+}
+
 let dummy_land_expected_country = {
   dummy_country with
   borders = { dry = (0., []); sea = 50.; air = 50. }
@@ -448,7 +453,10 @@ let w2 = {
   countries = [dummy_country2]
 }
 
-let w = ("data/sample_game.json" |> open_in |> Ezjsonm.from_channel |> game_from_json).world
+let w3 = {
+  w with 
+  countries = [dummy_country3]
+}
 
 let virus_tests = [
   make_virus_upgrade_test "testing basic upgrade with dummy virus" 
@@ -496,16 +504,22 @@ let country_tests = [
     dummy_country AIR dummy_air_expected_country;
   make_infect_test "testing country infection with dummy country"
     dummy_country 100000 dummy_infect_expected_country;
-  make_infect_test "testing invalid country infection with dummy country"
+  make_infect_test "testing too much country infection with dummy country"
     dummy_country 1000000 dummy_infect_expected_country2;
+  make_infect_test "testing no country infection with dummy country"
+    dummy_country 0 dummy_country;
   make_recover_test "testing country recovery with dummy country"
     dummy_infect_expected_country 50000 dummy_recover_expected_country;
-  make_recover_test "testing invalid country recovery with dummy country"
+  make_recover_test "testing too much country recovery with dummy country"
     dummy_infect_expected_country 1000000 dummy_country;
+  make_recover_test "testing no country recovery with dummy country"
+    dummy_infect_expected_country 0 dummy_infect_expected_country;
   make_kill_test "testing country death with dummy country"
     dummy_recover_expected_country 25000 dummy_kill_expected_country;
-  make_kill_test "testing invalid country death with dummy country"
+  make_kill_test "testing too much country death with dummy country"
     dummy_recover_expected_country 1000000 dummy_kill_expected_country2;
+  make_kill_test "testing no country death with dummy country"
+    dummy_recover_expected_country 0 dummy_recover_expected_country;
 ]
 
 
@@ -527,7 +541,11 @@ let world_tests = [
   make_infect_country_test "testing infecting country"
     "greenland" 100 w w2;
   make_infect_country_test "testing infecting no one in country"
-    "greenland" 0 w w
+    "greenland" 0 w w;
+  make_infect_country_test "testing infecting too many in country"
+    "greenland" 1000000 w w3;
+  make_score_test "testing changing player score in world"
+    w3 300000.;
 ]
 
 let suite = "outbreak tests suite" >::: List.flatten [
