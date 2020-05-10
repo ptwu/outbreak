@@ -9,7 +9,7 @@
           "health_care": 50,
           "density": 10
         },
-        "population": 2500,
+        "population": 25000000,
         "borders": {
           "dry": [
             50,
@@ -27,7 +27,7 @@
           "health_care": 50,
           "density": 10
         },
-        "population": 4400,
+        "population": 4400000000,
         "borders": {
           "dry": [
             50,
@@ -47,7 +47,7 @@
           "health_care": 50,
           "density": 10
         },
-        "population": 7410,
+        "population": 741000000,
         "borders": {
           "dry": [
             50,
@@ -67,7 +67,7 @@
           "health_care": 50,
           "density": 10
         },
-        "population": 1216,
+        "population": 1216000000,
         "borders": {
           "dry": [
             50,
@@ -87,7 +87,7 @@
           "health_care": 50,
           "density": 10
         },
-        "population": 5790,
+        "population": 579000000,
         "borders": {
           "dry": [
             50,
@@ -107,7 +107,7 @@
           "health_care": 50,
           "density": 10
         },
-        "population": 4225,
+        "population": 422500000,
         "borders": {
           "dry": [
             50,
@@ -151,90 +151,6 @@
         "anti_cure": 0
       },
       "cost": 1000000
-    },
-    {
-      "id": "fsdfsdf",
-      "name": "fsdfsdf",
-      "offsets": {
-        "infectivity": 0,
-        "severity": 0.01,
-        "hality": 0.001,
-        "heat_res": 0,
-        "cold_res": 0,
-        "drug_res": 0,
-        "anti_cure": 0
-      },
-      "cost": 1
-    },
-    {
-      "id": "fsdfsdf",
-      "name": "fsdfsdf",
-      "offsets": {
-        "infectivity": 0,
-        "severity": 0.01,
-        "hality": 0.001,
-        "heat_res": 0,
-        "cold_res": 0,
-        "drug_res": 0,
-        "anti_cure": 0
-      },
-      "cost": 1
-    },
-    {
-      "id": "fsdfsdf",
-      "name": "fsdfsdf",
-      "offsets": {
-        "infectivity": 0,
-        "severity": 0.01,
-        "hality": 0.001,
-        "heat_res": 0,
-        "cold_res": 0,
-        "drug_res": 0,
-        "anti_cure": 0
-      },
-      "cost": 1
-    },
-    {
-      "id": "fsdfsdf",
-      "name": "fsdfsdf",
-      "offsets": {
-        "infectivity": 0,
-        "severity": 0.01,
-        "hality": 0.001,
-        "heat_res": 0,
-        "cold_res": 0,
-        "drug_res": 0,
-        "anti_cure": 0
-      },
-      "cost": 1
-    },
-    {
-      "id": "fsdfsdf",
-      "name": "fsdfsdf",
-      "offsets": {
-        "infectivity": 0,
-        "severity": 0.01,
-        "hality": 0.001,
-        "heat_res": 0,
-        "cold_res": 0,
-        "drug_res": 0,
-        "anti_cure": 0
-      },
-      "cost": 1
-    },
-    {
-      "id": "fsdfsdf",
-      "name": "fsdfsdf",
-      "offsets": {
-        "infectivity": 0,
-        "severity": 0.01,
-        "hality": 0.001,
-        "heat_res": 0,
-        "cold_res": 0,
-        "drug_res": 0,
-        "anti_cure": 0
-      },
-      "cost": 1
     }
   ]
 }
