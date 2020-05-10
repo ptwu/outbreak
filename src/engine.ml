@@ -70,7 +70,7 @@ let step_spread { infectivity } w =
     and [Playing] otherwise. *)
 let update_status ({ world } as st) =
   let status =
-    if world_infected_pop world = 0 then
+    if world_infected_pop world = 0 && world_infected_pop world = 0 then
       Done (true, score world)
     else if cure_progress world >= 100.0 || world_infected_pop world = 0 then
       Done (false, score world)
