@@ -36,6 +36,8 @@ docs: docs-public docs-private
 web:
 	cd webapp; npm start
 
+docs: docs-public docs-private
+	
 docs-public: build
 	mkdir -p doc.public
 	ocamlfind ocamldoc -I _build/src -short-functors -package ANSITerminal,opium \

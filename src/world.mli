@@ -11,7 +11,8 @@ type t = {
   cure_rate: float;
 }
 
-(** [cure_progress w] is the progress of cure development in [w] for the virus *)
+(** [cure_progress w] is the progress of cure development in [w] for the 
+    virus *)
 val cure_progress : t -> float
 
 (** [cure_rate w] is the rate of the cure development in [w] for the virus *)
@@ -29,12 +30,14 @@ val world_infected_pop : t -> int
 (** [world_dead_pop w] is the dead population in [w]*)
 val world_dead_pop : t -> int
 
-(** [world_pop w] is a record containing the healthy, infected, and dead populations in [w]*)
+(** [world_pop w] is a record containing the healthy, infected, and dead 
+    populations in [w]*)
 val world_pop : t -> Country.population
 
 (** [infect_country cid w] is the world [w] with country [cid]
     infected by [n] additional people. *)
 val infect_country : Country.country_id -> int -> t -> t
 
-(** [score w] is the player's score, calculated with the world infected and dead population along with cure progress*)
+(** [score w] is the player's score, calculated with the world infected and 
+    dead population along with cure progress*)
 val score : t -> float

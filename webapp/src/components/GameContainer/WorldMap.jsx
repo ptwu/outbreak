@@ -80,7 +80,7 @@ const WorldMap = ({ setContent, pickCountryHandler, data }) => {
         const { healthy, infected, dead } = population;
         const percentage = healthy / (healthy + infected + dead);
         const red = Math.floor(255 - (255 * percentage));
-        const green = Math.floor(255 * percentage);
+        const green = Math.floor(220 * percentage);
         const blue = 0
         return rgbToHex(red, green, blue);
       } else {

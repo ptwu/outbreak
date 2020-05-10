@@ -6,7 +6,7 @@ open Upgrades
 
 type status = Init | Playing | Done of bool * float
 
-type t = { virus : Virus.t; world : World.t; shop : Upgrades.t; status : status }
+type t = { virus : Virus.t; world : World.t; shop : Upgrades.t; status : status}
 
 (** [step_cure_progress w] is the resulting world state after one tick of 
     cure progress simulation has passed for [w]. *)
@@ -115,7 +115,7 @@ let purchase name ({ virus; shop; status } as st) =
     | None -> st
     | Some u -> { st with virus = upgrade virus u; }
 
-let init (name : string) (cid : country_id) ({ virus; world; status } as st : t) =
+let init (name : string) (cid : country_id) ({ virus; world; status } as st:t) =
   match status with
   | Init ->
     {
