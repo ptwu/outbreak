@@ -91,7 +91,7 @@ let step_once ({ virus; world; status } as st) =
       |> step_infect stats |> step_spread stats
     in
     let rec points _ =
-      if Random.int 100 >= 50 && world_infected_pop world' - world_infected_pop world > 0 then
+      if Random.int 100 >= 50 then
        (log (5. +. stats.infectivity *. 5. +. stats.hality *. 10.) |> ceil |> int_of_float) + Random.int 2 + points ()
       else 0
     in

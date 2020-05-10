@@ -129,7 +129,7 @@
       "name": "Symptom: Coughing",
       "offsets": {
         "infectivity": 0.01,
-        "severity": 0,
+        "severity": 0.001,
         "hality": 0,
         "heat_res": 0,
         "cold_res": 0,
@@ -139,8 +139,36 @@
       "cost": 100
     },
     {
+      "id": "cysts",
+      "name": "Symptom: Cysts",
+      "offsets": {
+        "infectivity": 0.02,
+        "severity": 0.001,
+        "hality": 0,
+        "heat_res": 0,
+        "cold_res": 0,
+        "drug_res": 0,
+        "anti_cure": 0
+      },
+      "cost": 100
+    },
+    {
+      "id": "psychosis",
+      "name": "Symptom: Psychosis",
+      "offsets": {
+        "infectivity": 0.01,
+        "severity": 0,
+        "hality": 0.05,
+        "heat_res": 0,
+        "cold_res": 0,
+        "drug_res": 0,
+        "anti_cure": 0
+      },
+      "cost": 300
+    },
+    {
       "id": "organfailure",
-      "name": "Symptom: Organ Failure",
+      "name": "Symptom: Total Organ Failure",
       "offsets": {
         "infectivity": 0,
         "severity": 0.01,
@@ -150,7 +178,7 @@
         "drug_res": 0,
         "anti_cure": 0
       },
-      "cost": 500
+      "cost": 1000
     }
   ]
 }
