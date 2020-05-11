@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { memo, useState } from "react";
 import styles from "./WorldMap.module.css";
 import geoUrl from "./world-50m.json";
@@ -87,7 +88,7 @@ const WorldMap = ({ setContent, pickCountryHandler, data }) => {
         const percentage = healthy / (healthy + infected + dead);
         let startingGreen = 140;
         if (infected > 0) {
-          startingGreen = 120;
+          startingGreen = 100;
         }
 
         const red = Math.floor(255 - 255 * (percentage));
@@ -262,7 +263,7 @@ const WorldMap = ({ setContent, pickCountryHandler, data }) => {
                 setContent("");
               }}
             >
-              {getContinentData(name).infected + getContinentData(name).dead > 0 ? '☣️' : undefined} {name}
+              {name}
             </text>
           </Marker>
         ))}

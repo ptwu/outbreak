@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect, useState } from "react";
 import styles from "./GameContainer.module.css";
 import {
@@ -12,6 +13,7 @@ import {
   CardContent,
   Typography,
   Snackbar,
+  Portal,
 } from "@material-ui/core";
 import MuiAlert from "@material-ui/lab/Alert";
 import WorldMap from "./WorldMap";
@@ -147,24 +149,28 @@ export default ({ virusName }) => {
     if (score === 0) {
       return (
         <>
-          <Snackbar
-            open={toastOpen}
-            autoHideDuration={6000}
-            onClose={() => setToastOpen(false)}
-          >
-            <Alert onClose={() => setToastOpen(false)} severity="success">
-              Upgrade purchased!
+          <Portal>
+            <Snackbar
+              open={toastOpen}
+              autoHideDuration={6000}
+              onClose={() => setToastOpen(false)}
+            >
+              <Alert onClose={() => setToastOpen(false)} severity="success">
+                Upgrade purchased!
             </Alert>
-          </Snackbar>
-          <Snackbar
-            open={errorToastOpen}
-            autoHideDuration={6000}
-            onClose={() => setErrorToastOpen(false)}
-          >
-            <Alert onClose={() => setErrorToastOpen(false)} severity="error">
-              You don't have enough DNA points to buy that upgrade!
+            </Snackbar>
+          </Portal>
+          <Portal>
+            <Snackbar
+              open={errorToastOpen}
+              autoHideDuration={6000}
+              onClose={() => setErrorToastOpen(false)}
+            >
+              <Alert onClose={() => setErrorToastOpen(false)} severity="error">
+                You don't have enough DNA points to buy that upgrade!
             </Alert>
-          </Snackbar>
+            </Snackbar>
+          </Portal>
           <div>
             <Dialog
               open={open}
