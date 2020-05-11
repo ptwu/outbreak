@@ -26,6 +26,10 @@ install this dependency for the backend.
 
 3. Run `make buildall` in the root directory (the folder this file is in). This
 will build all the necessary source code in the project.
+    - This might take a couple minutes; sorry about that, our node project
+    uses some modules we need to download. Rest assured though that you can
+    delete the folder after you're done working with this game and all of the
+    downloaded stuff will be gone.
 
 ### Commands For Building the System and Running It
 
@@ -48,3 +52,6 @@ for the exposed functions and a doc.private for helpers/unexposed functions.
 - `make test` evaluates the test cases in src/test.ml.
 
 - `make clean` cleans the OCaml temp files out of the project.
+
+- `make play` plays the game in command line mode (LEGACY, not intended method
+of gameplay)
