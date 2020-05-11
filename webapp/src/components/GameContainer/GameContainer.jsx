@@ -18,13 +18,12 @@ import {
 import MuiAlert from "@material-ui/lab/Alert";
 import WorldMap from "./WorldMap";
 import ReactTooltip from "react-tooltip";
-import InitGameDataJSON from "./data/sample_game.json";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-export default ({ virusName }) => {
+export default ({ virusName, gameData }) => {
   const [name, setName] = useState(virusName);
   const [startingCountry, setStartingCountry] = useState("");
   const [score, setScore] = useState(0);
@@ -58,7 +57,7 @@ export default ({ virusName }) => {
       fetch(`/purchase/${itemId}`, {
         method: "POST",
       }).catch((err) => console.log(err));
-      setShop(shop => shop.filter(u => u.id !== itemId))
+      setShop((shop) => shop.filter((u) => u.id !== itemId));
       console.log(itemId + " " + itemCost);
     }
   };
@@ -71,7 +70,7 @@ export default ({ virusName }) => {
         headers: {
           "content-type": "application/json",
         },
-        body: JSON.stringify(InitGameDataJSON),
+        body: JSON.stringify(gameData),
       });
       const data = await fetch("/init", {
         method: "POST",
@@ -185,38 +184,48 @@ export default ({ virusName }) => {
                 <Grid container>
                   <Grid item xs={12}>
                     <Grid container justify="center" spacing={3}>
-                      {shop.map((item, i) => (
-                        <Grid item xs key={i}>
+                      {shop ? (
+                        shop.map((item, i) => (
+                          <Grid item xs key={i}>
+                            <Card>
+                              <CardContent>
+                                <Typography
+                                  gutterBottom
+                                  variant="h5"
+                                  component="h2"
+                                  className={styles.ShopText}
+                                >
+                                  {item.name}
+                                </Typography>
+                                <Typography
+                                  variant="body2"
+                                  color="textSecondary"
+                                  component="p"
+                                  align="left"
+                                  className={styles.ShopText}
+                                >
+                                  Cost: 🧬{item.cost}
+                                </Typography>
+                              </CardContent>
+                              <Button
+                                size="large"
+                                className={styles.ShopText}
+                                onClick={() =>
+                                  handlePurchase(item.id, item.cost)
+                                }
+                              >
+                                Buy
+                              </Button>
+                            </Card>
+                          </Grid>
+                        ))
+                      ) : (
                           <Card>
                             <CardContent>
-                              <Typography
-                                gutterBottom
-                                variant="h5"
-                                component="h2"
-                                className={styles.ShopText}
-                              >
-                                {item.name}
-                              </Typography>
-                              <Typography
-                                variant="body2"
-                                color="textSecondary"
-                                component="p"
-                                align="left"
-                                className={styles.ShopText}
-                              >
-                                Cost: 🧬{item.cost}
-                              </Typography>
-                            </CardContent>
-                            <Button
-                              size="large"
-                              className={styles.ShopText}
-                              onClick={() => handlePurchase(item.id, item.cost)}
-                            >
-                              Buy
-                            </Button>
+                              "No more available upgrades!"
+                          </CardContent>
                           </Card>
-                        </Grid>
-                      ))}
+                        )}
                     </Grid>
                   </Grid>
                 </Grid>

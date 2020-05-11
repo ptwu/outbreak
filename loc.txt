@@ -1,0 +1,10 @@
+Our system has 1095 lines of OCaml code, including all of the modules we are
+actively using, as well as the module main.ml. We wrote main.ml at an early
+stage of development before we had implemented the webapp, and had intended it
+to function as a form of rudimentary, text-based gameplay.It continues to hold
+that functionality even though we switched our focus to the webapp, server.ml,
+and engine.ml. We believe it is important to include because it allows for the
+game to still be played at a basic level even if the webapp does not function.
+
+Regardless of the presence of main.ml, our system has over 900 LOC that 
+contribute to gameplay.
