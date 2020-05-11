@@ -73,6 +73,13 @@ export default ({ menuOptionHandler, customGameHandler }) => {
                   sizable amount of people, the world starts to counter your
                   disease with a cure. Your goal is to infect and kill the whole
                   world before the cure is created and distributed.
+                  <br /> <br />
+                  <b>Disclaimer:</b> Regarding the current COVID-19 pandemic,
+                  we intend
+                  no ill-will or are not trying to make a joke out of a very
+                  serious situation. This game is intended as a simulation and
+                  is for learning purposes. We thank all the healthcare heroes
+                  and workers braving the crisis, and wish you all well.
                 </p>
                 <Button
                   variant="contained"
