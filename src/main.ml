@@ -44,15 +44,11 @@ let rec repl st =
 
 (** [play_game] begins the game with default values. *)
 let play_game =
-  repl 
-    {
-      virus = Virus.init_virus;
-      world = "data/init_world.json" |> open_in |> Ezjsonm.from_channel 
-              |> world_from_json;
-      shop = "data/init_shop.json" |> open_in |> Ezjsonm.from_channel 
-             |> shop_from_json;
-      status = Init;
-    }
+  "data/sample_game.json"
+  |> open_in
+  |> Ezjsonm.from_channel
+  |> game_from_json
+  |> repl
 
 (** [main ()] prompts for the game to play, then starts it. *)
 let main () =
