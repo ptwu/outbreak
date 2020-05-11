@@ -214,18 +214,22 @@ export default ({ virusName }) => {
               style={{ position: "relative" }}
             >
               <div className={styles.WorldMapContainer}>
-                <h1 className={styles.VirusNameText}>{name}</h1>
-                {startingCountry === "" ? (
-                  <h2>Choose a continent to start your outbreak!</h2>
-                ) : (
-                    <h2>Your Outbreak started in {startingCountry}</h2>
-                  )}
-                <WorldMap
-                  setContent={setTooltipContent}
-                  pickCountryHandler={pickStartingCountryHandler}
-                  data={countryData}
-                />
-                <ReactTooltip>{tooltipContent}</ReactTooltip>
+                <div className={styles.HeaderSection}>
+                  <h1 className={styles.VirusNameText}>{name}</h1>
+                  {startingCountry === "" ? (
+                    <h2>Choose a continent to start your outbreak!</h2>
+                  ) : (
+                      <h2>Your Outbreak started in {startingCountry}</h2>
+                    )}
+                </div>
+                <div className={styles.WorldMapWrap}>
+                  <WorldMap
+                    setContent={setTooltipContent}
+                    pickCountryHandler={pickStartingCountryHandler}
+                    data={countryData}
+                  />
+                  <ReactTooltip>{tooltipContent}</ReactTooltip>
+                </div>
               </div>
 
               {startingCountry !== "" ? (
@@ -272,7 +276,7 @@ export default ({ virusName }) => {
     } else {
       return (
         <Container maxWidth="lg">
-          <Card className={styles.GameplayCard}>
+          <Card className={styles.InfoCard}>
             {cureProgress >= 100 ? (
               <h1 style={{ color: '#A60000' }}>You Lose</h1>
             ) : (
@@ -295,7 +299,7 @@ export default ({ virusName }) => {
   } else {
     return (
       <Container maxWidth="lg">
-        <Card className={styles.GameplayCard}>
+        <Card className={styles.InfoCard}>
           <h1>Error: Server is likely not running.</h1>
           <h3>Have you run `make server` in the root folder?</h3>
         </Card>

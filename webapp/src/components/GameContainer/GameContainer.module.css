@@ -8,6 +8,24 @@
   background-size: cover;
 }
 
+.HeaderSection {
+  background: rgb(255, 137, 137);
+  margin-top: 0px;
+  padding-bottom: 20px;
+  border: 5px solid black;
+}
+
+.InfoCard {
+  padding-bottom: 42px !important;
+  max-height: 80vh;
+}
+
+.WorldMapWrap {
+  margin-top: -70px !important;
+  width: 100%;
+  height: 100%;
+}
+
 h1, h2 {
   margin-bottom: 0;
 }
@@ -68,7 +86,7 @@ h1, h2 {
   border: 5px solid #49A9F2;
   position:absolute;
   width:300px;
-  top: 0;
+  top: 147px;
   right: 0;
   font-size: 24px;
 }
