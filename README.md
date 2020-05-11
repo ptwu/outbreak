@@ -2,6 +2,8 @@
 
 ## Created by Enoch Chen, Shefali Janorkar, and Peter Wu
 
+![#outbreak;; gameplay](https://i.imgur.com/Xa6y7IU.png)
+
 This README.md is intended for the GitHub monorepo. If you're a TA, please refer
 to the INSTALL.md for more direct instructions on how to get the app running.
 Thanks!
