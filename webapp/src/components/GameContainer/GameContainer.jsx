@@ -202,7 +202,7 @@ export default ({ virusName }) => {
                 </Grid>
               </DialogContent>
               <DialogActions>
-                <Button onClick={handleClose}>Exit</Button>
+                <Button onClick={handleClose} className={styles.ShopText}>Exit</Button>
               </DialogActions>
             </Dialog>
           </div>
@@ -277,20 +277,30 @@ export default ({ virusName }) => {
       return (
         <Container maxWidth="lg">
           <Card className={styles.InfoCard}>
-            {cureProgress >= 100 ? (
+            {(cureProgress >= 100 || healthy > 0) ? (
               <h1 style={{ color: '#A60000' }}>You Lose</h1>
             ) : (
                 <h1 style={{ color: '#008a25' }}>You Win</h1>
               )}
+
             {cureProgress >= 100 ? (
               <h3>
                 A vaccine has been discovered for {name}, and the world is back
                 to <i>functional</i> order.
               </h3>
+            ) : (healthy > 0) ? (
+              <h3>
+                {name} has eradicated all of its patients, but it was too deadly
+                for its own good. All of those infected with the outbreak have
+                since passed away, and the remaining healthy people live on to
+                tell the tale.
+              </h3>
             ) : (
-                <h3>{name} has wrought havoc on the entire world!</h3>
-              )}
+                  <h3>{name} has wrought havoc on the entire world!</h3>
+                )}
             <br />
+
+
             <h1>Final Score: {points}</h1>
           </Card>
         </Container>

@@ -85,8 +85,13 @@ const WorldMap = ({ setContent, pickCountryHandler, data }) => {
         const { population } = continent;
         const { healthy, infected, dead } = population;
         const percentage = healthy / (healthy + infected + dead);
-        const red = Math.floor(255 - 255 * percentage);
-        const green = Math.floor(170 * percentage);
+        let startingGreen = 140;
+        if (infected > 0) {
+          startingGreen = 120;
+        }
+
+        const red = Math.floor(255 - 255 * (percentage));
+        const green = Math.floor(startingGreen * percentage);
         const blue = 0;
         return rgbToHex(red, green, blue);
       } else {
@@ -142,7 +147,7 @@ const WorldMap = ({ setContent, pickCountryHandler, data }) => {
             onClick={() => { setMode(false); pickCountryHandler(id, name); }}
             data-tip=""
             onMouseEnter={() => {
-              setContent(`Start Outbreak in ${name}`);
+              setContent(`☣️ Start Outbreak in ${name}`);
             }}
             onMouseLeave={() => {
               setContent("");
@@ -165,12 +170,12 @@ const WorldMap = ({ setContent, pickCountryHandler, data }) => {
               y={markerOffset}
               style={{
                 fontFamily: "system-ui",
-                fill: "#000000",
+                fill: "#FFFFFF",
                 fontWeight: "bold",
               }}
               className={styles.marker}
               onMouseEnter={() => {
-                setContent(`Start Outbreak in ${name}`);
+                setContent(`☣️ Start Outbreak in ${name}`);
               }}
               onMouseLeave={() => {
                 setContent("");
@@ -244,7 +249,7 @@ const WorldMap = ({ setContent, pickCountryHandler, data }) => {
               y={markerOffset}
               style={{
                 fontFamily: "system-ui",
-                fill: "#000000",
+                fill: "#FFFFFF",
                 fontWeight: "bold",
               }}
               className={styles.marker}
@@ -257,7 +262,7 @@ const WorldMap = ({ setContent, pickCountryHandler, data }) => {
                 setContent("");
               }}
             >
-              {name}
+              {getContinentData(name).infected > 0 ? '☣️' : undefined} {name}
             </text>
           </Marker>
         ))}
