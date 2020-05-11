@@ -44,7 +44,7 @@ let get_drug v = v.drug_res
 let add_points p v = { v with points = v.points + p }
 
 let upgrade (v : t) (u : upgrade) : t =
-  if v.points >= u.cost then
+  if v.points >= u.cost && not (List.mem u.id v.upgrades) then
     let us, vs = (u.offsets, v.stats) in
     {
       v with
