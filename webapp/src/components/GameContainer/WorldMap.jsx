@@ -56,9 +56,9 @@ const WorldMap = ({ setContent, pickCountryHandler, data }) => {
       if (continent !== undefined) {
         return {
           name: continent.info.name,
-          healthy: continent.population.healthy,
-          infected: continent.population.infected,
-          dead: continent.population.dead,
+          healthy: continent.population.healthy.toLocaleString(),
+          infected: continent.population.infected.toLocaleString(),
+          dead: continent.population.dead.toLocaleString(),
         };
       } else {
         return {

@@ -232,21 +232,21 @@ export default ({ virusName }) => {
                 </div>
               </div>
 
-              {startingCountry !== "" ? (
+              {startingCountry !== '' ? (
                 <>
                   <div className={styles.DateDisplay}>
                     <p>
-                      📅 <b>Date</b>: {getDate()}{" "}
+                      📅 <b>Date</b>: {getDate()}{' '}
                     </p>
                   </div>
                   <div className={styles.VirusStats}>
                     <p>
-                      💓 <b>Healthy</b>: {healthy}
+                      💓 <b>Healthy</b>: {healthy.toLocaleString()}
                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ☣️ <b>
                         Infected
-                      </b>: {infected}
-                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 💀 <b>Dead</b>:{" "}
-                      {deaths}
+                      </b>: {infected.toLocaleString()}
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 💀 <b>Dead</b>:{' '}
+                      {deaths.toLocaleString()}
                     </p>
                   </div>
                   <div className={styles.CureProgress}>
