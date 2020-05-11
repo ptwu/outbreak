@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useState, useRef } from "react";
 import styles from "./Menu.module.css";
 import { Card, Container, Grid, Button } from "@material-ui/core";
@@ -82,51 +83,51 @@ export default ({ menuOptionHandler, customGameHandler }) => {
                 </Button>
               </div>
             ) : (
-              <Grid container spacing={2}>
-                <Grid item xs={12}>
-                  <Grid container justify="center" spacing={8}>
-                    <Grid item>
-                      <Button
-                        variant="contained"
-                        className={styles.MainMenuButton}
-                        onClick={() => setOpen(true)}
-                      >
-                        Play Campaign
-                      </Button>
-                    </Grid>
-                    <Grid item>
-                      <FilePicker
-                        extensions={["json"]}
-                        onChange={async (blob) => {
-                          const text = await blob.text();
-                          customGameHandler(JSON.parse(text));
-                          setOpen(true);
-                        }}
-                        onError={(errMsg) => {
-                          console.log(errMsg);
-                        }}
-                      >
+                <Grid container spacing={2}>
+                  <Grid item xs={12}>
+                    <Grid container justify="center" spacing={8}>
+                      <Grid item>
                         <Button
                           variant="contained"
                           className={styles.MainMenuButton}
+                          onClick={() => setOpen(true)}
                         >
-                          Play Custom
-                        </Button>
-                      </FilePicker>
-                    </Grid>
-                    <Grid item>
-                      <Button
-                        variant="contained"
-                        className={styles.MainMenuButton}
-                        onClick={() => setInstructionsState(true)}
-                      >
-                        Instructions
+                          Play Campaign
                       </Button>
+                      </Grid>
+                      <Grid item>
+                        <FilePicker
+                          extensions={["json"]}
+                          onChange={async (blob) => {
+                            const text = await blob.text();
+                            customGameHandler(JSON.parse(text));
+                            setOpen(true);
+                          }}
+                          onError={(errMsg) => {
+                            console.log(errMsg);
+                          }}
+                        >
+                          <Button
+                            variant="contained"
+                            className={styles.MainMenuButton}
+                          >
+                            Play Custom
+                        </Button>
+                        </FilePicker>
+                      </Grid>
+                      <Grid item>
+                        <Button
+                          variant="contained"
+                          className={styles.MainMenuButton}
+                          onClick={() => setInstructionsState(true)}
+                        >
+                          Instructions
+                      </Button>
+                      </Grid>
                     </Grid>
                   </Grid>
                 </Grid>
-              </Grid>
-            )}
+              )}
           </Container>
         </Card>
       </Container>

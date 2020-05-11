@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { memo, useState } from "react";
 import styles from "./WorldMap.module.css";
 import geoUrl from "./world-50m.json";
@@ -56,9 +57,9 @@ const WorldMap = ({ setContent, pickCountryHandler, data }) => {
       if (continent !== undefined) {
         return {
           name: continent.info.name,
-          healthy: continent.population.healthy,
-          infected: continent.population.infected,
-          dead: continent.population.dead,
+          healthy: continent.population.healthy.toLocaleString(),
+          infected: continent.population.infected.toLocaleString(),
+          dead: continent.population.dead.toLocaleString(),
         };
       } else {
         return {
@@ -85,8 +86,13 @@ const WorldMap = ({ setContent, pickCountryHandler, data }) => {
         const { population } = continent;
         const { healthy, infected, dead } = population;
         const percentage = healthy / (healthy + infected + dead);
-        const red = Math.floor(255 - 255 * percentage);
-        const green = Math.floor(220 * percentage);
+        let startingGreen = 140;
+        if (infected > 0) {
+          startingGreen = 100;
+        }
+
+        const red = Math.floor(255 - 255 * (percentage));
+        const green = Math.floor(startingGreen * percentage);
         const blue = 0;
         return rgbToHex(red, green, blue);
       } else {
@@ -142,7 +148,7 @@ const WorldMap = ({ setContent, pickCountryHandler, data }) => {
             onClick={() => { setMode(false); pickCountryHandler(id, name); }}
             data-tip=""
             onMouseEnter={() => {
-              setContent(`Start Outbreak in ${name}`);
+              setContent(`☣️ Start Outbreak in ${name}`);
             }}
             onMouseLeave={() => {
               setContent("");
@@ -165,12 +171,12 @@ const WorldMap = ({ setContent, pickCountryHandler, data }) => {
               y={markerOffset}
               style={{
                 fontFamily: "system-ui",
-                fill: "#000000",
+                fill: "#FFFFFF",
                 fontWeight: "bold",
               }}
               className={styles.marker}
               onMouseEnter={() => {
-                setContent(`Start Outbreak in ${name}`);
+                setContent(`☣️ Start Outbreak in ${name}`);
               }}
               onMouseLeave={() => {
                 setContent("");
@@ -244,7 +250,7 @@ const WorldMap = ({ setContent, pickCountryHandler, data }) => {
               y={markerOffset}
               style={{
                 fontFamily: "system-ui",
-                fill: "#000000",
+                fill: "#FFFFFF",
                 fontWeight: "bold",
               }}
               className={styles.marker}

@@ -6,7 +6,8 @@
 
 - OCaml 4.09.x
 - Node.js 10.x.x
-- npm 6.9.x (this is required to install the dependencies for the webapp; installed with Node.js)
+- npm 6.9.x
+- opium 0.18.0
 
 You can install Node.js and npm by running `sudo apt update`, `sudo apt install nodejs`,  and `sudo apt install npm`. 
 
@@ -20,4 +21,21 @@ Inspired by the famed game Plague Inc., you start by choosing a disease to play 
 
 ### Commands
 
-TODO
+For use in the root directory.
+
+- `make buildall` builds everything in the app (compiles OCaml code + webapp 
+dependencies)
+
+- `make run` runs the app and OCaml backend. You must have run `make buildall` 
+prior to this for it to work
+    - Alternatively, if you are having issues with this command, you might
+    want to try `make server` in one terminal window and `make web` in another.
+    If this doesn't work, your Node.js/npm version are probably out of date,
+    or some weird OS bug is happening. (We hope this doesn't happen!)
+
+- `make docs` generates documentation folders for the OCaml code: a doc.public
+for the exposed functions and a doc.private for helpers/unexposed functions.
+
+- `make test` evaluates the test cases in src/test.ml.
+
+- `make clean` cleans the OCaml temp files out of the project.

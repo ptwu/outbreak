@@ -5,9 +5,9 @@
         "id": "oceania",
         "info": {
           "name": "Oceania",
-          "temperature": -100,
+          "temperature": 100,
           "health_care": 50,
-          "density": 10
+          "density": 6
         },
         "population": 25000000,
         "borders": {
@@ -15,8 +15,8 @@
             50,
             []
           ],
-          "sea": 50,
-          "air": 50
+          "sea": 70,
+          "air": 30
         }
       },
       {
@@ -24,8 +24,8 @@
         "info": {
           "name": "Asia",
           "temperature": 50,
-          "health_care": 50,
-          "density": 10
+          "health_care": 30,
+          "density": 20
         },
         "population": 4400000000,
         "borders": {
@@ -35,17 +35,17 @@
               "europe"
             ]
           ],
-          "sea": 50,
-          "air": 50
+          "sea": 40,
+          "air": 60
         }
       },
       {
         "id": "europe",
         "info": {
           "name": "Europe",
-          "temperature": 50,
-          "health_care": 50,
-          "density": 10
+          "temperature": 40,
+          "health_care": 60,
+          "density": 15
         },
         "population": 741000000,
         "borders": {
@@ -63,9 +63,9 @@
         "id": "africa",
         "info": {
           "name": "Africa",
-          "temperature": 50,
-          "health_care": 50,
-          "density": 10
+          "temperature": 80,
+          "health_care": 20,
+          "density": 13
         },
         "population": 1216000000,
         "borders": {
@@ -83,9 +83,9 @@
         "id": "north_america",
         "info": {
           "name": "North America",
-          "temperature": 50,
-          "health_care": 50,
-          "density": 10
+          "temperature": 60,
+          "health_care": 70,
+          "density": 9
         },
         "population": 579000000,
         "borders": {
@@ -105,7 +105,7 @@
           "name": "South America",
           "temperature": 50,
           "health_care": 50,
-          "density": 10
+          "density": 11
         },
         "population": 422500000,
         "borders": {
@@ -124,6 +124,48 @@
     "cure_rate": 0.005
   },
   "shop": [
+    {
+      "id": "air_transmission",
+      "name": "Upgrade: Air Transmission",
+      "offsets": {
+        "infectivity": 0.002,
+        "severity": 0,
+        "hality": 0,
+        "heat_res": 0,
+        "cold_res": 0,
+        "drug_res": 0,
+        "anti_cure": 0
+      },
+      "cost": 30
+    },
+    {
+      "id": "blood_transmission",
+      "name": "Upgrade: Blood Transmission",
+      "offsets": {
+        "infectivity": 0.002,
+        "severity": 0,
+        "hality": 0,
+        "heat_res": 0,
+        "cold_res": 0,
+        "drug_res": 0,
+        "anti_cure": 0
+      },
+      "cost": 30
+    },
+    {
+      "id": "water_transmission",
+      "name": "Upgrade: Water Transmission",
+      "offsets": {
+        "infectivity": 0.0021,
+        "severity": 0,
+        "hality": 0,
+        "heat_res": 0,
+        "cold_res": 0,
+        "drug_res": 0,
+        "anti_cure": 0
+      },
+      "cost": 30
+    },
     {
       "id": "cough",
       "name": "Symptom: Coughing",
@@ -167,6 +209,34 @@
       "cost": 100
     },
     {
+      "id": "vomiting",
+      "name": "Symptom: Vomiting",
+      "offsets": {
+        "infectivity": 0.01,
+        "severity": 0,
+        "hality": 0.01,
+        "heat_res": 0,
+        "cold_res": 0,
+        "drug_res": 0,
+        "anti_cure": 0
+      },
+      "cost": 250
+    },
+    {
+      "id": "pneumonia",
+      "name": "Symptom: Pneumonia",
+      "offsets": {
+        "infectivity": 0.01,
+        "severity": 0,
+        "hality": 0.025,
+        "heat_res": 0,
+        "cold_res": 0,
+        "drug_res": 0,
+        "anti_cure": 0
+      },
+      "cost": 350
+    },
+    {
       "id": "organfailure",
       "name": "Symptom: Total Organ Failure",
       "offsets": {
@@ -178,7 +248,49 @@
         "drug_res": 0,
         "anti_cure": 0
       },
-      "cost": 300
+      "cost": 500
+    },
+    {
+      "id": "drug_resistance1",
+      "name": "Upgrade: Drug Resistance",
+      "offsets": {
+        "infectivity": 0,
+        "severity": 0,
+        "hality": 0,
+        "heat_res": 0,
+        "cold_res": 0,
+        "drug_res": 0,
+        "anti_cure": 0.001
+      },
+      "cost": 100
+    },
+    {
+      "id": "heat_resistance1",
+      "name": "Upgrade: Heat Resistance",
+      "offsets": {
+        "infectivity": 0,
+        "severity": 0,
+        "hality": 0,
+        "heat_res": 0.005,
+        "cold_res": 0,
+        "drug_res": 0,
+        "anti_cure": 0
+      },
+      "cost": 30
+    },
+    {
+      "id": "cold_resistance1",
+      "name": "Upgrade: Cold Resistance",
+      "offsets": {
+        "infectivity": 0,
+        "severity": 0,
+        "hality": 0,
+        "heat_res": 0,
+        "cold_res": 0.005,
+        "drug_res": 0,
+        "anti_cure": 0
+      },
+      "cost": 30
     }
   ]
 }

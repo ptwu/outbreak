@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect, useState } from "react";
 import styles from "./GameContainer.module.css";
 import {
@@ -12,6 +13,7 @@ import {
   CardContent,
   Typography,
   Snackbar,
+  Portal,
 } from "@material-ui/core";
 import MuiAlert from "@material-ui/lab/Alert";
 import WorldMap from "./WorldMap";
@@ -38,6 +40,7 @@ export default ({ virusName, gameData }) => {
   const [toastOpen, setToastOpen] = useState(false);
   const [errorToastOpen, setErrorToastOpen] = useState(false);
   const [isErrorPresent, setError] = useState(false);
+  const [HeaderText, setHeaderText] = useState('');
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -81,6 +84,7 @@ export default ({ virusName, gameData }) => {
       console.log(error);
       setError(true);
     }
+    setHeaderText(`Your Outbreak started in ${name}.`);
     setStartTime(performance.now());
   };
 
@@ -95,6 +99,18 @@ export default ({ virusName, gameData }) => {
     setInfected(world.population.infected);
     setDeaths(world.population.dead);
     setShop(shop.filter((x) => !virus.upgrades.includes(x.id)));
+    if (world.population.infected > 4101482) {
+      setHeaderText(`${name} has infected more people than the Novel Coronavirus (COVID-19)`);
+    }
+    if (world.population.dead > 0) {
+      setHeaderText(`${name} is now deadly.`);
+    }
+    if (world.population.dead > world.population.healthy) {
+      setHeaderText(`There are now fewer healthy people than dead in the world.`);
+    }
+    if (world.population.dead > 7000000000) {
+      setHeaderText(`${name} is coming close to eradicating human civilization.`);
+    }
   };
 
   const getDate = () => {
@@ -132,24 +148,28 @@ export default ({ virusName, gameData }) => {
     if (score === 0) {
       return (
         <>
-          <Snackbar
-            open={toastOpen}
-            autoHideDuration={6000}
-            onClose={() => setToastOpen(false)}
-          >
-            <Alert onClose={() => setToastOpen(false)} severity="success">
-              Upgrade purchased!
+          <Portal>
+            <Snackbar
+              open={toastOpen}
+              autoHideDuration={6000}
+              onClose={() => setToastOpen(false)}
+            >
+              <Alert onClose={() => setToastOpen(false)} severity="success">
+                Upgrade purchased!
             </Alert>
-          </Snackbar>
-          <Snackbar
-            open={errorToastOpen}
-            autoHideDuration={6000}
-            onClose={() => setErrorToastOpen(false)}
-          >
-            <Alert onClose={() => setErrorToastOpen(false)} severity="error">
-              You don't have enough DNA points to buy that upgrade!
+            </Snackbar>
+          </Portal>
+          <Portal>
+            <Snackbar
+              open={errorToastOpen}
+              autoHideDuration={6000}
+              onClose={() => setErrorToastOpen(false)}
+            >
+              <Alert onClose={() => setErrorToastOpen(false)} severity="error">
+                You don't have enough DNA points to buy that upgrade!
             </Alert>
-          </Snackbar>
+            </Snackbar>
+          </Portal>
           <div>
             <Dialog
               open={open}
@@ -200,18 +220,18 @@ export default ({ virusName, gameData }) => {
                           </Grid>
                         ))
                       ) : (
-                        <Card>
-                          <CardContent>
-                            "No more available upgrades!"
+                          <Card>
+                            <CardContent>
+                              "No more available upgrades!"
                           </CardContent>
-                        </Card>
-                      )}
+                          </Card>
+                        )}
                     </Grid>
                   </Grid>
                 </Grid>
               </DialogContent>
               <DialogActions>
-                <Button onClick={handleClose}>Exit</Button>
+                <Button onClick={handleClose} className={styles.ShopText}>Exit</Button>
               </DialogActions>
             </Dialog>
           </div>
@@ -223,35 +243,39 @@ export default ({ virusName, gameData }) => {
               style={{ position: "relative" }}
             >
               <div className={styles.WorldMapContainer}>
-                <h1 className={styles.VirusNameText}>{name}</h1>
-                {startingCountry === "" ? (
-                  <h2>Choose a continent to start your outbreak!</h2>
-                ) : (
-                  <h2>Your Outbreak started in {startingCountry}</h2>
-                )}
-                <WorldMap
-                  setContent={setTooltipContent}
-                  pickCountryHandler={pickStartingCountryHandler}
-                  data={countryData}
-                />
-                <ReactTooltip>{tooltipContent}</ReactTooltip>
+                <div className={styles.HeaderSection}>
+                  <h1 className={styles.VirusNameText}>{name}</h1>
+                  {startingCountry === "" ? (
+                    <h2>Choose a continent to start your outbreak!</h2>
+                  ) : (
+                      <h2>{HeaderText}</h2>
+                    )}
+                </div>
+                <div className={styles.WorldMapWrap}>
+                  <WorldMap
+                    setContent={setTooltipContent}
+                    pickCountryHandler={pickStartingCountryHandler}
+                    data={countryData}
+                  />
+                  <ReactTooltip>{tooltipContent}</ReactTooltip>
+                </div>
               </div>
 
-              {startingCountry !== "" ? (
+              {startingCountry !== '' ? (
                 <>
                   <div className={styles.DateDisplay}>
                     <p>
-                      📅 <b>Date</b>: {getDate()}{" "}
+                      📅 <b>Date</b>: {getDate()}{' '}
                     </p>
                   </div>
                   <div className={styles.VirusStats}>
                     <p>
-                      💓 <b>Healthy</b>: {healthy}
+                      💓 <b>Healthy</b>: {healthy.toLocaleString()}
                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ☣️ <b>
                         Infected
-                      </b>: {infected}
-                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 💀 <b>Dead</b>:{" "}
-                      {deaths}
+                      </b>: {infected.toLocaleString()}
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 💀 <b>Dead</b>:{' '}
+                      {deaths.toLocaleString()}
                     </p>
                   </div>
                   <div className={styles.CureProgress}>
@@ -281,21 +305,31 @@ export default ({ virusName, gameData }) => {
     } else {
       return (
         <Container maxWidth="lg">
-          <Card className={styles.GameplayCard}>
-            {cureProgress >= 100 ? (
-              <h1 style={{ color: "#A60000" }}>You Lose</h1>
+          <Card className={styles.InfoCard}>
+            {(cureProgress >= 100 || healthy > 0) ? (
+              <h1 style={{ color: '#A60000' }}>You Lose</h1>
             ) : (
-              <h1 style={{ color: "#008a25" }}>You Win</h1>
-            )}
+                <h1 style={{ color: '#008a25' }}>You Win</h1>
+              )}
+
             {cureProgress >= 100 ? (
               <h3>
                 A vaccine has been discovered for {name}, and the world is back
                 to <i>functional</i> order.
               </h3>
+            ) : (healthy > 0) ? (
+              <h3>
+                {name} has eradicated all of its patients, but it was too deadly
+                for its own good. All of those infected with the outbreak have
+                since passed away, and the remaining healthy people live on to
+                tell the tale.
+              </h3>
             ) : (
-              <h3>{name} has wrought havoc on the entire world!</h3>
-            )}
+                  <h3>{name} has wrought havoc on the entire world!</h3>
+                )}
             <br />
+
+
             <h1>Final Score: {points}</h1>
           </Card>
         </Container>
@@ -304,7 +338,7 @@ export default ({ virusName, gameData }) => {
   } else {
     return (
       <Container maxWidth="lg">
-        <Card className={styles.GameplayCard}>
+        <Card className={styles.InfoCard}>
           <h1>Error: Server is likely not running.</h1>
           <h3>Have you run `make server` in the root folder?</h3>
         </Card>

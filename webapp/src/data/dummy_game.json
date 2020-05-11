@@ -1,0 +1,142 @@
+{
+  "world": {
+    "countries": [
+      {
+        "id": "oceania",
+        "info": {
+          "name": "Oceania",
+          "temperature": 100,
+          "health_care": 50,
+          "density": 6
+        },
+        "population": 25000000,
+        "borders": {
+          "dry": [
+            50,
+            []
+          ],
+          "sea": 70,
+          "air": 30
+        }
+      },
+      {
+        "id": "asia",
+        "info": {
+          "name": "Asia",
+          "temperature": 50,
+          "health_care": 30,
+          "density": 20
+        },
+        "population": 4400000000,
+        "borders": {
+          "dry": [
+            50,
+            [
+              "europe"
+            ]
+          ],
+          "sea": 40,
+          "air": 60
+        }
+      },
+      {
+        "id": "europe",
+        "info": {
+          "name": "Europe",
+          "temperature": 40,
+          "health_care": 60,
+          "density": 15
+        },
+        "population": 741000000,
+        "borders": {
+          "dry": [
+            50,
+            [
+              "asia"
+            ]
+          ],
+          "sea": 50,
+          "air": 50
+        }
+      },
+      {
+        "id": "africa",
+        "info": {
+          "name": "Africa",
+          "temperature": 80,
+          "health_care": 20,
+          "density": 13
+        },
+        "population": 1216000000,
+        "borders": {
+          "dry": [
+            50,
+            [
+              "asia"
+            ]
+          ],
+          "sea": 50,
+          "air": 50
+        }
+      },
+      {
+        "id": "north_america",
+        "info": {
+          "name": "North America",
+          "temperature": 60,
+          "health_care": 70,
+          "density": 9
+        },
+        "population": 579000000,
+        "borders": {
+          "dry": [
+            50,
+            [
+              "south_america"
+            ]
+          ],
+          "sea": 50,
+          "air": 50
+        }
+      },
+      {
+        "id": "south_america",
+        "info": {
+          "name": "South America",
+          "temperature": 50,
+          "health_care": 50,
+          "density": 11
+        },
+        "population": 422500000,
+        "borders": {
+          "dry": [
+            50,
+            [
+              "north_america"
+            ]
+          ],
+          "sea": 50,
+          "air": 50
+        }
+      }
+    ],
+    "cure_progress": 0.0,
+    "cure_rate": 0.005
+  },
+  "shop": [
+    {
+      "id": "supertransmission",
+      "name": "Epic Hax: Super Transmission",
+      "offsets": {
+        "infectivity": 0.1,
+        "severity": 0,
+        "hality": 0,
+        "heat_res": 0,
+        "cold_res": 0,
+        "drug_res": 0,
+        "anti_cure": 0
+      },
+      "cost": 1
+    }
+  ]
+}
