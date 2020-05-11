@@ -262,7 +262,7 @@ const WorldMap = ({ setContent, pickCountryHandler, data }) => {
                 setContent("");
               }}
             >
-              {getContinentData(name).infected > 0 ? '☣️' : undefined} {name}
+              {getContinentData(name).infected + getContinentData(name).dead > 0 ? '☣️' : undefined} {name}
             </text>
           </Marker>
         ))}

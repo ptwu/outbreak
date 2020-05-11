@@ -39,6 +39,7 @@ export default ({ virusName }) => {
   const [toastOpen, setToastOpen] = useState(false);
   const [errorToastOpen, setErrorToastOpen] = useState(false);
   const [isErrorPresent, setError] = useState(false);
+  const [HeaderText, setHeaderText] = useState('');
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -82,6 +83,7 @@ export default ({ virusName }) => {
       console.log(error);
       setError(true);
     }
+    setHeaderText(`Your Outbreak started in ${name}.`);
     setStartTime(performance.now());
   };
 
@@ -96,6 +98,18 @@ export default ({ virusName }) => {
     setInfected(world.population.infected);
     setDeaths(world.population.dead);
     setShop(shop.filter((x) => !virus.upgrades.includes(x.id)));
+    if (world.population.infected > 4101482) {
+      setHeaderText(`${name} has infected more people than the Novel Coronavirus (COVID-19)`);
+    }
+    if (world.population.dead > 0) {
+      setHeaderText(`${name} is now deadly.`);
+    }
+    if (world.population.dead > world.population.healthy) {
+      setHeaderText(`There are now fewer healthy people than dead in the world.`);
+    }
+    if (world.population.dead > 7000000000) {
+      setHeaderText(`${name} is coming close to eradicating human civilization.`);
+    }
   };
 
   const getDate = () => {
@@ -219,7 +233,7 @@ export default ({ virusName }) => {
                   {startingCountry === "" ? (
                     <h2>Choose a continent to start your outbreak!</h2>
                   ) : (
-                      <h2>Your Outbreak started in {startingCountry}</h2>
+                      <h2>{HeaderText}</h2>
                     )}
                 </div>
                 <div className={styles.WorldMapWrap}>
