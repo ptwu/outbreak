@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import styles from './GameContainer.module.css';
+import React, { useEffect, useState } from "react";
+import styles from "./GameContainer.module.css";
 import {
   Card,
   Container,
@@ -12,19 +12,18 @@ import {
   CardContent,
   Typography,
   Snackbar,
-} from '@material-ui/core';
-import MuiAlert from '@material-ui/lab/Alert';
-import WorldMap from './WorldMap';
-import ReactTooltip from 'react-tooltip';
-import InitGameDataJSON from './data/sample_game.json';
+} from "@material-ui/core";
+import MuiAlert from "@material-ui/lab/Alert";
+import WorldMap from "./WorldMap";
+import ReactTooltip from "react-tooltip";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-export default ({ virusName }) => {
+export default ({ virusName, gameData }) => {
   const [name, setName] = useState(virusName);
-  const [startingCountry, setStartingCountry] = useState('');
+  const [startingCountry, setStartingCountry] = useState("");
   const [score, setScore] = useState(0);
   const [points, setPoints] = useState(0);
   const [countryData, setCountryData] = useState([]);
@@ -52,39 +51,38 @@ export default ({ virusName }) => {
       setErrorToastOpen(true);
     } else {
       setToastOpen(true);
-      await fetch(`/purchase/${itemId}`, {
-        method: 'POST',
-      })
-        .then(() => { }, (err) => console.log(err));
-      console.log(itemId + ' ' + itemCost);
+      fetch(`/purchase/${itemId}`, {
+        method: "POST",
+      }).catch((err) => console.log(err));
+      setShop((shop) => shop.filter((u) => u.id !== itemId));
+      console.log(itemId + " " + itemCost);
     }
-  }
+  };
 
-  const pickStartingCountryHandler = async (countryName) => {
-    setStartingCountry(countryName);
+  const pickStartingCountryHandler = async (id, name) => {
+    setStartingCountry(name);
     try {
-      await fetch('/reset', {
-        method: 'POST',
+      await fetch("/reset", {
+        method: "POST",
         headers: {
-          'content-type': 'application/json'
+          "content-type": "application/json",
         },
-        body: JSON.stringify(InitGameDataJSON),
-      })
-        .then(() => { }, (err) => console.log(err));
-      await fetch('/init', {
-        method: 'POST',
+        body: JSON.stringify(gameData),
+      });
+      const data = await fetch("/init", {
+        method: "POST",
         headers: {
-          'content-type': 'application/json'
+          "content-type": "application/json",
         },
-        body: JSON.stringify({ name: virusName, starter: countryName }),
-      })
-        .then((data) => data.json(), (err) => console.log(err))
-        .then(d => gameStateHandler(d));
+        body: JSON.stringify({ name: virusName, starter: id }),
+      });
+      gameStateHandler(await data.json());
     } catch (error) {
+      console.log(error);
       setError(true);
     }
     setStartTime(performance.now());
-  }
+  };
 
   const gameStateHandler = (data) => {
     const { virus, world, shop } = data;
@@ -96,122 +94,186 @@ export default ({ virusName }) => {
     setHealthy(world.population.healthy);
     setInfected(world.population.infected);
     setDeaths(world.population.dead);
-    setShop(shop);
-  }
+    setShop(shop.filter((x) => !virus.upgrades.includes(x.id)));
+  };
 
   const getDate = () => {
     let date = new Date();
     const endTime = performance.now();
     date.setDate(date.getDate() + Math.floor((endTime - startTime) / 1000));
     return (
-      (date.getMonth() > 8 ? date.getMonth() + 1 : "0" + (date.getMonth() + 1)) +
+      (date.getMonth() > 8
+        ? date.getMonth() + 1
+        : "0" + (date.getMonth() + 1)) +
       "/" +
       (date.getDate() > 9 ? date.getDate() : "0" + date.getDate()) +
       "/" +
       date.getFullYear()
     );
-  }
+  };
 
   useEffect(() => {
-    if (startingCountry !== '') {
+    if (startingCountry !== "") {
       const interval = setInterval(async () => {
-        await fetch('/step', { method: 'POST' })
-          .then((data) => data.json(), (err) => setError(true))
-          .then(d => gameStateHandler(d));
-      }, 1000);
+        await fetch("/step", { method: "POST" })
+          .then(
+            (data) => data.json(),
+            (err) => setError(true)
+          )
+          .then((d) => gameStateHandler(d));
+      }, 500);
       return () => clearInterval(interval);
     }
   }, [startingCountry]);
 
-  const [tooltipContent, setTooltipContent] = useState('');
+  const [tooltipContent, setTooltipContent] = useState("");
 
   if (!isErrorPresent) {
     if (score === 0) {
       return (
         <>
-          <Snackbar open={toastOpen} autoHideDuration={6000} onClose={() => setToastOpen(false)}>
+          <Snackbar
+            open={toastOpen}
+            autoHideDuration={6000}
+            onClose={() => setToastOpen(false)}
+          >
             <Alert onClose={() => setToastOpen(false)} severity="success">
               Upgrade purchased!
             </Alert>
           </Snackbar>
-          <Snackbar open={errorToastOpen} autoHideDuration={6000} onClose={() => setErrorToastOpen(false)}>
+          <Snackbar
+            open={errorToastOpen}
+            autoHideDuration={6000}
+            onClose={() => setErrorToastOpen(false)}
+          >
             <Alert onClose={() => setErrorToastOpen(false)} severity="error">
               You don't have enough DNA points to buy that upgrade!
             </Alert>
           </Snackbar>
           <div>
-            <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" disableBackdropClick>
-              <DialogTitle id="form-dialog-title">Shop</DialogTitle>
+            <Dialog
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="form-dialog-title"
+              disableBackdropClick
+            >
+              <DialogTitle id="form-dialog-title" className={styles.ShopText}>
+                Shop
+              </DialogTitle>
               <DialogContent>
                 <Grid container>
                   <Grid item xs={12}>
-                    <Grid container justify="center" spacing={8}>
-                      {
+                    <Grid container justify="center" spacing={3}>
+                      {shop ? (
                         shop.map((item, i) => (
                           <Grid item xs key={i}>
                             <Card>
                               <CardContent>
-                                <Typography gutterBottom variant="h5" component="h2">
+                                <Typography
+                                  gutterBottom
+                                  variant="h5"
+                                  component="h2"
+                                  className={styles.ShopText}
+                                >
                                   {item.name}
                                 </Typography>
-                                <Typography variant="body2" color="textSecondary" component="p" align="left">
-                                  Cost: {item.cost}
+                                <Typography
+                                  variant="body2"
+                                  color="textSecondary"
+                                  component="p"
+                                  align="left"
+                                  className={styles.ShopText}
+                                >
+                                  Cost: 🧬{item.cost}
                                 </Typography>
                               </CardContent>
-                              <Button size="large" onClick={() => handlePurchase(item.id, item.cost)}>
+                              <Button
+                                size="large"
+                                className={styles.ShopText}
+                                onClick={() =>
+                                  handlePurchase(item.id, item.cost)
+                                }
+                              >
                                 Buy
-                            </Button>
+                              </Button>
                             </Card>
                           </Grid>
                         ))
-                      }
+                      ) : (
+                        <Card>
+                          <CardContent>
+                            "No more available upgrades!"
+                          </CardContent>
+                        </Card>
+                      )}
                     </Grid>
                   </Grid>
                 </Grid>
               </DialogContent>
               <DialogActions>
-                <Button onClick={handleClose}>
-                  Exit
-              </Button>
+                <Button onClick={handleClose}>Exit</Button>
               </DialogActions>
             </Dialog>
           </div>
+
+          {/* Display card */}
           <Container maxWidth="xl">
-            <Card className={styles.GameplayCard} style={{ position: 'relative' }}>
+            <Card
+              className={styles.GameplayCard}
+              style={{ position: "relative" }}
+            >
               <div className={styles.WorldMapContainer}>
                 <h1 className={styles.VirusNameText}>{name}</h1>
-                {startingCountry === ''
-                  ? <h2>Choose a continent to start your outbreak!</h2>
-                  : <h2>Your Outbreak started in {startingCountry}</h2>}
-                <WorldMap setContent={setTooltipContent} pickCountryHandler={pickStartingCountryHandler} data={countryData} />
+                {startingCountry === "" ? (
+                  <h2>Choose a continent to start your outbreak!</h2>
+                ) : (
+                  <h2>Your Outbreak started in {startingCountry}</h2>
+                )}
+                <WorldMap
+                  setContent={setTooltipContent}
+                  pickCountryHandler={pickStartingCountryHandler}
+                  data={countryData}
+                />
                 <ReactTooltip>{tooltipContent}</ReactTooltip>
               </div>
 
-              {startingCountry !== ''
-                ? <>
+              {startingCountry !== "" ? (
+                <>
                   <div className={styles.DateDisplay}>
-                    <p>📅 <b>Date</b>: {getDate()} </p>
+                    <p>
+                      📅 <b>Date</b>: {getDate()}{" "}
+                    </p>
                   </div>
                   <div className={styles.VirusStats}>
-                    <p>💓 <b>Healthy</b>: {healthy}
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                ☣️ <b>Infected</b>: {infected}
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                💀 <b>Dead</b>: {deaths}</p>
+                    <p>
+                      💓 <b>Healthy</b>: {healthy}
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ☣️ <b>
+                        Infected
+                      </b>: {infected}
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 💀 <b>Dead</b>:{" "}
+                      {deaths}
+                    </p>
                   </div>
                   <div className={styles.CureProgress}>
-                    <p>🧪 <b>Cure Progress</b>: {Math.round(cureProgress)}%</p>
+                    <p>
+                      🧪 <b>Cure Progress</b>: {Math.round(cureProgress)}%
+                    </p>
                   </div>
                   <div className={styles.ShopLHS}>
-                    <p>🧬 <b>DNA Points</b>: {points}</p>
+                    <p>
+                      🧬 <b>DNA Points</b>: {points}
+                    </p>
 
-                    <Button variant="contained" onClick={handleClickOpen} className={styles.ShopButton}>
+                    <Button
+                      variant="contained"
+                      onClick={handleClickOpen}
+                      className={styles.ShopButton}
+                    >
                       Shop
-                  </Button>
+                    </Button>
                   </div>
                 </>
-                : undefined}
-
+              ) : undefined}
             </Card>
           </Container>
         </>
@@ -220,10 +282,19 @@ export default ({ virusName }) => {
       return (
         <Container maxWidth="lg">
           <Card className={styles.GameplayCard}>
-            {cureProgress >= 100 ? <h1 style={{ color: '#A60000' }}>You Lose</h1> : <h1 style={{ color: '#008a25' }}>You Win</h1>}
-            {cureProgress >= 100
-              ? <h3>A vaccine has been discovered for {name}, and the world is back to <i>functional</i> order.</h3>
-              : <h3>{name} has wrought havoc on the entire world!</h3>}
+            {cureProgress >= 100 ? (
+              <h1 style={{ color: "#A60000" }}>You Lose</h1>
+            ) : (
+              <h1 style={{ color: "#008a25" }}>You Win</h1>
+            )}
+            {cureProgress >= 100 ? (
+              <h3>
+                A vaccine has been discovered for {name}, and the world is back
+                to <i>functional</i> order.
+              </h3>
+            ) : (
+              <h3>{name} has wrought havoc on the entire world!</h3>
+            )}
             <br />
             <h1>Final Score: {points}</h1>
           </Card>
@@ -240,4 +311,4 @@ export default ({ virusName }) => {
       </Container>
     );
   }
-}
+};

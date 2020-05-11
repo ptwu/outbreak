@@ -35,7 +35,6 @@ val drug_res : t -> float
 val anti_cure : t -> float
 
 (** [add_points p v] adds p points to the virus [v] *)
-
 val add_points : int -> t -> t
 
 (** [upgrade u v] is an upgraded virus representing the new stats
