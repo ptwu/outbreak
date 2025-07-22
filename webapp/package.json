@@ -12,7 +12,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-file-picker": "0.0.6",
-    "react-scripts": "3.4.1",
+    "react-scripts": "5.0.1",
     "react-simple-maps": "^2.0.0",
     "react-tooltip": "^4.2.5"
   },
